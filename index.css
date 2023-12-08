@@ -1,0 +1,60 @@
+body{
+
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #bcbcbc;
+    align-items: center;
+    justify-content: center;
+    font-family: Calibri;
+    font-size: 30px;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+}
+
+.btnnums{
+    background-color: #798eff;
+    width: 70px;
+    height: 70px;
+    margin: 0 5PX 0 5PX;
+}
+
+.zero{
+    background-color: #798eff;
+    width: 150px;
+    height: 70px;
+    margin: 0 5PX 0 5PX;
+}
+
+.btns{
+    margin: 5px 20px 5px 20px;
+    display: flex;
+    justify-content: center;
+}
+.btnzero{
+    display: flex;
+    justify-content: center;
+}
+
+input{
+    margin: 10px;
+}
+
+.form input{
+    height: 40px;
+}
+
+label{
+    font-size: 30px;
+}
+
+button {
+    font-weight: bold;
+    height: 70px;
+    background-color: #798eff;
+    border-radius: 10px;
+    border: 2px black solid;
+}
