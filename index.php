@@ -15,19 +15,19 @@
         <label for="mesa">Digite o numero da mesa:</label>
         <input type="text" id="mesa" name="mesa" pattern="[0-9]+" title="Número da mesa" readonly>
         <div class="btns">
-            <button type="button"class="btnnums" onclick="mudanum(1)">1</button>
-            <button type="button"class="btnnums" onclick="mudanum(2)">2</button>
-            <button type="button"class="btnnums" onclick="mudanum(3)">3</button>
+            <button type="button" class="btnnums" onclick="mudanum(1)">1</button>
+            <button type="button" class="btnnums" onclick="mudanum(2)">2</button>
+            <button type="button" class="btnnums" onclick="mudanum(3)">3</button>
         </div>
         <div class="btns">
-            <button type="button"class="btnnums" onclick="mudanum(4)">4</button>
-            <button type="button"class="btnnums" onclick="mudanum(5)">5</button>
-            <button type="button"class="btnnums" onclick="mudanum(6)">6</button>
+            <button type="button" class="btnnums" onclick="mudanum(4)">4</button>
+            <button type="button" class="btnnums" onclick="mudanum(5)">5</button>
+            <button type="button" class="btnnums" onclick="mudanum(6)">6</button>
         </div>
         <div class="btns">
-            <button type="button"class="btnnums" onclick="mudanum(7)">7</button>
-            <button type="button"class="btnnums" onclick="mudanum(8)">8</button>
-            <button type="button"class="btnnums" onclick="mudanum(9)">9</button>
+            <button type="button" class="btnnums" onclick="mudanum(7)">7</button>
+            <button type="button" class="btnnums" onclick="mudanum(8)">8</button>
+            <button type="button" class="btnnums" onclick="mudanum(9)">9</button>
         </div>
         <div class="btns">
             <button type="button" class="zero" onclick="mudanum(0)">0</button>
