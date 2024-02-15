@@ -11,9 +11,13 @@
 </head>
 <body>
 <div class="main">
-    <form action="garcon.php" method="get" class="form">
+    <form action="criaficha.php" method="get" class="form">
         <label for="mesa">Digite o numero da mesa:</label>
-        <input type="text" id="mesa" name="mesa" pattern="[0-9]+" title="Número da mesa" readonly>
+        <div class="btns">
+            <input type="text" id="mesa" name="mesa" pattern="[0-9]+" title="Número da mesa" readonly class="input">
+            <button type="button" class="btnlimpa" onclick="limpa()">Limpar</button>
+        </div>
+
         <div class="btns">
             <button type="button" class="btnnums" onclick="mudanum(1)">1</button>
             <button type="button" class="btnnums" onclick="mudanum(2)">2</button>
@@ -33,13 +37,21 @@
             <button type="button" class="zero" onclick="mudanum(0)">0</button>
             <button type="button" class="btnnums" onclick="backspace()">⌫</button>
         </div>
-        <button type="submit">Enviar</button>
+        <button type="submit" style="margin-top: 5px">Enviar</button>
     </form>
 </div>
 <script>
+
+    function limpa(){
+     let inp = document.getElementById('mesa');
+     inp.value = ''
+    }
+
     function mudanum(numero){
         let inp = document.getElementById('mesa');
-        inp.value = inp.value + numero;
+        if (inp.value.length < 5){
+            inp.value = inp.value + numero;
+        }
     }
 
     function backspace(){

@@ -12,11 +12,9 @@ header{
 
 h1{
     margin: 0;
-    font-family: Calibri;
 }
 
 h8{
-    font-family: Calibri;
     font-size: 100px;
 }
 
@@ -38,7 +36,7 @@ body .btns{
 }
 
 .btns{
-    display: flex;
+    display: none;
     flex-wrap: wrap;
     flex-direction: row;
     height: auto;
@@ -55,6 +53,7 @@ body .btns{
 .pedidos{
     display: none;
     flex-direction: column;
+    align-items: center;
     flex-wrap: wrap;
     width: 95%;
     height: auto;
@@ -62,7 +61,10 @@ body .btns{
 }
 
 .product-group {
+    width: 90%;
     display: none;
+    flex-direction: column;
+    align-items: center;
     margin-bottom: 20px;
     border: 5px solid #ccc;
     padding: 10px;
@@ -70,14 +72,15 @@ body .btns{
 
 .product {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    align-items: center;
     flex-direction: row;
     margin-bottom: 10px;
 }
 
 .product .bot{
     margin-left: 20px;
-    width: 200px;
+    width: 150px;
     height: 50px;
     background-color: #798eff;
     border-radius: 5px;
@@ -85,7 +88,6 @@ body .btns{
 
 .pedidos li{
     color: #000;
-    font-family: Calibri;
     font-size: 30px;
 }
 
@@ -94,19 +96,22 @@ body .btns{
     border: 5px #000;
 }
 
-.product-group p {
-    font-size: 20px;
-}
-
 .carrinho{
-    display: none;
-    width: 80%;
+    display: flex;
+    width: 100%;
+    justify-content: center;
     height: auto;
     overflow-y: auto;
 }
 
+.pedidoconfere{
+    display: none;
+}
+
 .divitembtn{
     display: flex;
+    align-items: center;
+    justify-content: space-evenly;
 }
 
 .btnpedido{
@@ -116,11 +121,11 @@ body .btns{
     display: block;
     background-color: #233873;
     color: #fff;
-    width: 90%;
+    width: 70%;
     height: 100px;
     border-radius: 10px;
     border: 10px #35518c;
-    margin: 5px
+    margin: 10px
 }
 
 .btndivs{
@@ -139,4 +144,127 @@ body .btns{
 
 .hidden{
     display: none;
+}
+
+.quant{
+    align-items: center;
+    width: 35px;
+    height: 35px;
+}
+
+.btnquant{
+    font-size: 200%;
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    margin: 0 5px 0 5px;
+    background-color: #35518c;
+    color: #ffffff;
+}
+
+.product-group p {
+    font-size: 25px;
+}
+
+.btnremover{
+    height: 70px;
+    width: 200px;
+    background-color: #e33535;
+    border-radius: 15px;
+    margin-left: 15px;
+    color: #ffff;
+    font-size: 25px;
+}
+
+.carrinhoitem{
+    margin: 10px;
+    border: black 5px;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btnlimpacarrinho{
+    background-color: #ff4655;
+    font-size: 30px;
+    margin: 10px 5px 5px 10px;
+    border-radius: 10px;
+    height: 100px;
+    width: 330px;
+    color: #ffff
+}
+.btnverificapedido{
+    background-color: #4ec010;
+    flex-wrap: wrap;
+    font-size: 30px;
+    margin: 10px 5px 5px 10px;
+    border-radius: 10px;
+    height: 100px;
+    width: 330px;
+    color: #ffff
+}
+
+.btnlimpaconfere{
+    display: flex;
+    flex-direction: row;
+}
+
+.formcarrinho{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.btnobs{
+    height: 80px;
+    width: 250px;
+    color: #ffff;
+    font-size: 17px;
+    border-radius: 15px;
+    margin-left: 10px;
+    background-color: #45a20f;
+}
+
+.inputobs{
+    font-size: 30px;
+    height: 80px;
+    width: 400px;
+}
+
+.btn-flutuante {
+    position: fixed;
+    bottom: 20px; /* Distância da parte inferior da tela */
+    right: 20px; /* Distância da parte direita da tela */
+    padding: 15px 25px;
+    background-color: #1b961d;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s;
+}
+
+.btn-flutuante:hover {
+    background-color: #1f7234;
+}
+
+.btnplus{
+    height: 30px;
+    width: 30px;
+    border-radius: 30px;
+    margin-right: 5px;
+    background-color: #000;
+    color: #ffff;
+    font-size: 20px;
+    font-weight: 20;
+}
+
+.gira {
+    transform: rotate(90deg);
+    transition: transform 0.5s ease-in-out;
 }

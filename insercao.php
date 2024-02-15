@@ -1,75 +1,131 @@
 <?php
-// Verifica se o número da mesa do cartão está presente no $_GET
-if (isset($_GET['mesa'])) {
-    $numeroMesaCartao = $_GET['mesa'];
-    // Verifica se o formulário foi enviado e se o botão "inserir_sql" foi pressionado
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['inserir_sql'])) {
-        // Obtém o array de sessão
-        $carrinho = isset($_SESSION['carrinho']) ? $_SESSION['carrinho'] : array();
+session_start();
+date_default_timezone_set('America/Sao_Paulo');
 
-        try {
-            // Conectar ao banco de dados
-            $conn = new PDO('firebird:host=PC-Gui;dbname=D:\Astracon\Dados\ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+// Verifica se a sessão carrinho existe e não está vazia
+if (!empty($_SESSION['carrinho'])) {
+    // Conectar ao banco de dados
+    try {
+        $mesa = $_GET['mesa'];
+        $conn = new PDO('firebird:host=PC-Gui;dbname=D:\Astracon\Dados\ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            // Consulta SQL para obter os dados
-            $sql = "SELECT produto.cod_proapp AS PRODUTO, produto.descricao AS NOME, produto.valor AS PRECO, PRODMOVBAR.quant AS QUANTIDADE, PRODMOVBAR.obs AS OBSERVACAO, PRODMOVBAR.codigo AS ID
-                    FROM produto
-                    INNER JOIN PRODMOVBAR ON produto.cod_pro = PRODMOVBAR.cod_pro
-                    INNER JOIN VENDABAR ON VENDABAR.docto = PRODMOVBAR.docto
-                    WHERE VENDABAR.ficha = :numeroMesaCartao AND VENDABAR.caixa = ''";
+        // Obter o número da mesa da sessão
+        // Inserir itens do carrinho no banco de dados
+        foreach ($_SESSION['carrinho'] as $item) {
+            $null = null;
+            $codgar = 1;
+            $produto = $item['produto'];
+            $preco = $item['preco'];
+            $cod_gruest = $item['cod_gruest'];
+            $quantidade = $item['quantidade'];
+            $cod_pro = $item['cod_pro'];
+            $hora = date('H:i:s');
+            $observacao = $item['observacao'];
+            // Consultas SQL para obter valores necessários
+            $sqlCodPro = "SELECT cod_pro FROM produto WHERE COD_PROAPP = " . $cod_pro;
+            $sqlValor = "SELECT VALOR FROM produto WHERE COD_PROAPP = " . $cod_pro;
+            $sqlDocto = "select VENDABAR.docto as ID from VENDABAR  where ficha =" . $mesa . " and caixa = ''";
+            $sqldata = "select DATACAIXA from EMPRESA";
+            $stmtCodPro = $conn->prepare($sqlCodPro);
+            $stmtValor = $conn->prepare($sqlValor);
+            $stmtDocto = $conn->prepare($sqlDocto);
+            $stmtdata = $conn->prepare($sqldata);
 
-            // Prepara a consulta
-            $stmt = $conn->prepare($sql);
+            $stmtCodPro->execute();
+            $stmtValor->execute();
+            $stmtDocto->execute();
+            $stmtdata->execute();
+            $cod_pro = $stmtCodPro->fetchColumn();
+            $valor_unit = floatval($stmtValor->fetchColumn());
+            $docto = intval($stmtDocto->fetchColumn());
+            $datasemform = $stmtdata->fetchColumn();
 
-            // Binda o parâmetro
-            $stmt->bindParam(':numeroMesaCartao', $numeroMesaCartao);
+            $data = date('Y-m-d', strtotime($datasemform));
 
-            // Executa a consulta
-            $stmt->execute();
+            echo $data;
 
-            // Loop pelos resultados e insere na tabela PRODMOVBAR
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                // Código de inserção
-                $cod_pro = "o_valor_cod_pro"; // Substitua pelo valor real
-                $quantidade = $row['QUANTIDADE'];
-                $valor_unit = $row['PRECO']; // Substitua pelo valor real
-                $cod_gar = ""; // Substitua pelo valor real
-                $dataMov = date("d/m/Y");
-                $hora = date("H:i:s");
-                $obs = "o_valor_obs"; // Substitua pelo valor real
+            var_dump($cod_pro);
+            echo '<br>';
+            var_dump($valor_unit);
+            echo '<br>';
+            var_dump($docto);
+            echo '<br>';
+            $valor_tot = $valor_unit * $quantidade;
 
-                $insertSQL = "INSERT INTO PRODMOVBAR (CODIGO, DOCTO, COD_PRO, QUANT, VALOR_UNIT, VALOR_TOT, COD_GAR, DATAMOV, HORA, OBS)
-                              VALUES ((select MAX(codigo) + 1 from PRODMOVBAR), (select VENDABAR.docto from VENDABAR where ficha = $numeroMesaCartao and (vendabar.caixa is null or vendabar.caixa = '') and (vendabar.SITUACAO is null or vendabar.SITUACAO = '')),
-                                      :cod_pro, :quantidade, :valor_unit, :valor_tot, :cod_gar, :dataMov, :hora, :obs)";
+            // Consulta SQL para obter o próximo código
+            $sqlMaxCodigo = "SELECT MAX(codigo) + 1 FROM PRODMOVBAR";
+            $maxCodigo = $conn->query($sqlMaxCodigo)->fetchColumn();
+            echo 'inserção';
+            echo '<br>';
+            // Consulta SQL para a inserção
+            $sqlInsercao = "INSERT INTO PRODMOVBAR (CODIGO, DOCTO, COD_PRO, QUANT, VALOR_UNIT, VALOR_TOT, COD_GAR, DATAMOV, HORA, OBS) 
+                            VALUES (:codigo, :docto, :cod_pro, :quantidade, :valor_unit, :valor_tot, :cod_gar, CAST('" . $data . "' as DATE), :hora, :observacao)";
 
-                $stmtInsert = $conn->prepare($insertSQL);
-
-                $stmtInsert->bindParam(':codigo', $codigo);
-                $stmtInsert->bindParam(':docto', $docto);
-                $stmtInsert->bindParam(':cod_pro', $cod_pro);
-                $stmtInsert->bindParam(':quantidade', $quantidade);
-                $stmtInsert->bindParam(':valor_unit', $valor_unit);
-                $stmtInsert->bindParam(':valor_tot', $valor_tot);
-                $stmtInsert->bindParam(':cod_gar', $cod_gar);
-                $stmtInsert->bindParam(':dataMov', $dataMov);
-                $stmtInsert->bindParam(':hora', $hora);
-                $stmtInsert->bindParam(':obs', $obs);
-
-                $stmtInsert->execute();
-            }
-
-            // Zerar o array de sessão
-            unset($_SESSION['carrinho']);
-
-            echo "Inserção realizada com sucesso!";
-        } catch (PDOException $e) {
-            echo "Erro: " . $e->getMessage();
+            $stmtInsercao = $conn->prepare($sqlInsercao);
+            /*echo 'Código : Int    ';
+            echo'<br>';
+            var_dump($maxCodigo);
+            echo'<br>';
+            echo 'Docto : Int    ';
+            echo'<br>';
+            var_dump($docto);
+            echo'<br>';
+            echo 'Cod pro : Varchar    ';
+            echo'<br>';
+            var_dump($cod_pro);
+            echo'<br>';
+            echo 'Quantidade : float    ';
+            echo'<br>';
+            var_dump($quantidade);
+            echo'<br>';
+            echo 'Valor unit: float    ';
+            echo'<br>';
+            var_dump($valor_unit);
+            echo'<br>';
+            echo 'Valor total : float    ';
+            echo'<br>';
+            var_dump($valor_tot);
+            echo'<br>';
+            echo'cod Gar: int    ';
+            echo'<br>';
+            var_dump($codgar);
+            echo'<br>';
+            echo'data : ';
+            echo'<br>';
+            echo $data;
+            echo '<br>';
+            echo'hora : ' . $hora . '    ';
+            echo'<br>';
+            var_dump($hora);
+            echo'<br>';
+            echo'<br>';
+            echo 'observacao : Varchar    ';
+            echo'<br>';
+            var_dump($observacao);
+            echo'<br>';*/
+            $stmtInsercao->bindParam(':codigo', $maxCodigo, PDO::PARAM_INT);
+            $stmtInsercao->bindParam(':docto', $docto,  PDO::PARAM_INT);
+            $stmtInsercao->bindParam(':cod_pro', $cod_pro, PDO::PARAM_INT);
+            $stmtInsercao->bindParam(':quantidade', $quantidade, PDO::PARAM_STR);
+            $stmtInsercao->bindParam(':valor_unit', $valor_unit, PDO::PARAM_STR);
+            $stmtInsercao->bindParam(':valor_tot', $valor_tot, PDO::PARAM_STR);
+            $stmtInsercao->bindParam(':cod_gar', $codgar, PDO::PARAM_INT);
+            $stmtInsercao->bindParam(':hora', $hora);
+            $stmtInsercao->bindParam(':observacao', $observacao);
+            echo $sqlInsercao . '<br>';
+            $stmtInsercao->execute();
+            echo'<BR>';
         }
-    } else {
-        echo "Formulário não enviado ou botão não pressionado.";
+        unset($_SESSION['carrinho']);
+
+        echo 'Inserção no banco de dados realizada com sucesso!';
+        header("Location: index.php");
+        exit;
+    } catch (PDOException $e) {
+        echo "Erro de conexão: " . $e->getMessage();
+    } catch (Exception $e) {
     }
 } else {
-    echo "Número da mesa do cartão não encontrado na URL.";
+    echo 'Carrinho vazio. Nada a inserir.';
 }
-?>
