@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['observacao'])) {
 <div class="btns" id="200">
     <?php
     try {
-        $conn = new PDO('firebird:host=PC-Gui;dbname=D:\Astracon\Dados\ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
+        $conn = new PDO('firebird:host=PC-Gui;dbname=caminhoarquivo;charset=utf8', 'SYSDBA', 'masterkey');
         $sql = 'select * from GRUPOEST order by NOME';
         $stmt = $conn->query($sql);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
@@ -121,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['observacao'])) {
 <div id="produtos" class="pedidos" id="100">
     <?php
     $mesa = $_GET['mesa'];
-    $conn = new PDO('firebird:host=PC-Gui;dbname=D:\Astracon\Dados\ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
+    $conn = new PDO('firebird:host=PC-Gui;dbname=caminhoarquivo;charset=utf8', 'SYSDBA', 'masterkey');
 
     $sql = "select produto.cod_proapp as PRODUTO, produto.descricao as NOME, produto.descricaonota as DESCRICAO, produto.valor as PRECO, PRODMOVBAR.quant as QUANTIDADE, PRODMOVBAR.obs AS OBSERVACAO, PRODMOVBAR.codigo AS ID from produto
 inner join PRODMOVBAR on produto.cod_pro = PRODMOVBAR.cod_pro
@@ -176,7 +176,7 @@ where VENDABAR.ficha = $mesa and VENDABAR.caixa = '' and PRODMOVBAR.VALOR_TOT > 
 </div>
 <!-- Mostra as divs de cada COD_GRUEST -->
 <?php
-$conn = new PDO('firebird:host=PC-Gui;dbname=D:\Astracon\Dados\ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
+$conn = new PDO('firebird:host=PC-Gui;dbname=caminhoarquivo;charset=utf8', 'SYSDBA', 'masterkey');
 $sql = "select COD_PROAPP, DESCRICAO, COD_GRUEST, VALOR from produto where COD_GRUEST is not null and valor is not null and cod_pro is not null and descricao is not null";
 $stmt2 = $conn->query($sql);
 $produtosAgrupados = array();
