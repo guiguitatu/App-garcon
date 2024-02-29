@@ -1,5 +1,19 @@
 <?php
 session_start();
+if ($_COOKIE['usuario']) {
+    $cod = $_COOKIE['usuario']['codido'];
+    $gar = $_COOKIE['usuario']['nome'];
+    $gararray = array(
+        'codido' => $cod,
+        'garcon' => $gar
+    );
+    $_SESSION['usuario'] = $gararray;
+    $codgar = $_SESSION['usuario']['codido'];
+    $garcon = $_SESSION['usuario']['garcon'];
+} else {
+    header("Location: login.php");
+}
+
 date_default_timezone_set('America/Sao_Paulo');
 
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
@@ -21,17 +35,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($itensParaCarrinho)) {
         exit;
     } elseif ((isset($_POST['produto']) && isset($_POST['preco']) && isset($_POST['cod_gruest'])) || isset($itensParaCarrinho)) {
 
-        // Verifica se a sessão do carrinho já existe
         if (!isset($_SESSION['carrinho'])) {
             $_SESSION['carrinho'] = [];
         }
 
-        // Adiciona os itens ao carrinho
         foreach ($itensParaCarrinho as $item) {
             $_SESSION['carrinho'][] = $item;
         }
 
-        // Redireciona de volta para onde estava
         header('Location: ' . $_SERVER['HTTP_REFERER']);
         exit;
     }
@@ -72,14 +83,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['observacao'])) {
     <h1>Astra</h1>
     <?php
     $mesa = $_GET['mesa'];
-    echo '<h1>' . ' | Mesa: ' . $mesa . ' |</h1>';
+    echo '<h1>' . ' | Mesa: ' . $mesa . ' | </h1>';
     echo' ';
-    echo '<h1>Última seção em: ' . date('d/m h:i') . '</h1>';
+    echo '<h1>Usuársssio: ' . $garcon . '</h1>';
 
     ?>
     </header>
+
 <!--Mostra os botões dpara a inserção no pedido-->
-<div class="btns" id="carrossel">
+<div class="btns" id="200">
     <?php
     try {
         $conn = new PDO('firebird:host=PC-Gui;dbname=D:\Astracon\Dados\ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
@@ -101,12 +113,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['observacao'])) {
     if (empty($_SESSION['carrinho'])) {
         echo '<h1>Não foi adicionado nada no carrinho</h1>';
     } else {
-        echo '<button class="btnpedido" onclick="escondediv(100)">Ver o que está sendo colocado no pedido</button>';
+        echo '<button class="btnpedido" onclick="escondediv(200)">Ver o que está sendo colocado no pedido</button>';
     }
     ?>
 </div>
 <!-- Mostra os itens para o pedido -->
-<div id="produtos" class="pedidos">
+<div id="produtos" class="pedidos" id="100">
     <?php
     $mesa = $_GET['mesa'];
     $conn = new PDO('firebird:host=PC-Gui;dbname=D:\Astracon\Dados\ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
@@ -155,13 +167,14 @@ where VENDABAR.ficha = $mesa and VENDABAR.caixa = '' and PRODMOVBAR.VALOR_TOT > 
             echo "<h1>Não há nada inserido na ficha ainda</h1>";
         }
         echo '</div>';
-        echo '<button class="btnpedido" onclick="voltartelainicial()">Voltar a Tela de pedidos</button>';
+        echo '<button class="btnpedido" onclick="voltartelainicial()">Voltar a Tela do carrinho</button>';
+        echo '<button class="btnpedido" onclick="telabtns()">Voltar para tela dos botões';
     } catch (PDOException $e) {
         echo "Erro na execução da consulta: " . $e->getMessage();
     }
     ?>
 </div>
-
+<!-- Mostra as divs de cada COD_GRUEST -->
 <?php
 $conn = new PDO('firebird:host=PC-Gui;dbname=D:\Astracon\Dados\ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
 $sql = "select COD_PROAPP, DESCRICAO, COD_GRUEST, VALOR from produto where COD_GRUEST is not null and valor is not null and cod_pro is not null and descricao is not null";
@@ -172,9 +185,8 @@ while ($row = $stmt2->fetch(PDO::FETCH_ASSOC)) {
     $produtosAgrupados[$cod_gruest][] = $row;
 }
 foreach ($produtosAgrupados as $cod_gruest => $produtos) {
-    //echo '<div class="produto'.$cod_gruest .'" style="display:none; margin: 0px; padding: 0px; width: auto; height: auto;" id="' . $cod_gruest . '">';
-    echo '<div class="product-group product-group'. $cod_gruest .'" id="' . $cod_gruest . '" style=display: none>';
-
+   echo '<div class="product-group product-group'. $cod_gruest .'" id="' . $cod_gruest . '" style="display: none">';
+    echo '<button class="btnpedido" onclick="escondediv(' . $cod_gruest . ')" style="align-content: center">Voltar a tela de botões</button>';
     foreach ($produtos as $produto) {
         $produtoId = 'produto_' . $produto['COD_PROAPP'] . '_' . $cod_gruest;
         echo '<div class="product">';
@@ -190,51 +202,14 @@ foreach ($produtosAgrupados as $cod_gruest => $produtos) {
 
         echo '</form>';
         echo '</div>';
-      //  echo '</div>';
     }
-    echo '<button class="btnpedido" onclick="escondediv(' . $cod_gruest . ')" style="align-content: center">Voltar a tela inicial</button>';
     echo '<button class="btn-flutuante" onclick="adicionarItensCarrinho(\'' . $cod_gruest . '\')">Adicionar Itens ao Carrinho</button>';
     echo '</div>';
 }
 ?>
-
-<!-- Carrinho para o pedido -->
-<!--<div class="carrinho" id="100">
-    <form action="" method="post" class="formcarrinho">
-        <?php
-        /*if (empty($_SESSION['carrinho'])) {
-            echo "<h1>Nada adicionado ao carrinho ainda</h1>";
-        } else {
-            foreach ($_SESSION['carrinho'] as $index => $item) {
-                echo '<div class="carrinhoitem" id="carrinho-' . $index . '">';
-                echo '<div class="divitembtn">';
-                echo "<button type='button' class='btnplus' onclick='fadeInObservacao(" . $index . ")'>+</button>";
-                echo "<p style='font-size: 35px'> {$item['quantidade']} x {$item['produto']}</p>";
-                echo "<button type='submit' class='btnremover' name='remover_item' value='" . $index . "'>Remover Item</button>";
-                echo "<br>";
-                echo '</div>';
-                echo '<div style="display: flex; flex-direction: row">';
-
-                $observacao = $item['observacao'] ?? '';
-
-                echo '<input type="text" style="display:none" class="inputobs" name="observacao[' . $index . ']" placeholder="Digite a observação" class="input-observacao" value="' . htmlspecialchars($observacao) . '">';
-
-                echo '<button type="button" style="display:none" class="btnobs" id="btn'.$index.'" onclick="adicionarObservacao(' . $index . ')">Adicionar Observação</button>';
-                echo '</div>';
-                echo '</div>';
-            }
-            echo '<div class="btnlimpaconfere">';
-            echo '<input type="submit"  class="btnlimpacarrinho" name="limpar_carrinho" value="Limpar pedido">';
-            echo '<button type="button" class="btnverificapedido" name="mandarpedido" value="Verificarpedido" class="btnsmanda" onclick="mostraconclusao(100)">Conferir o pedido e fazer a insercão</button>';
-            echo '</div>';
-        }
-        echo '<button type="button" class="btnpedido" onclick="escondediv(100)">Adicionar item à ficha</button>';
-        */?>
-        <input type="hidden" name="refresh" value="1">
-    </form>
-</div>-->
-<div class="carrinho" id="100">
-    <form action="" method="post" class="formcarrinho">
+<!-- Div para o carrinho -->
+<div class="carrinho" id="300">
+    <form action="" method="post" class="formcarrinho" onsubmit="tecladonao(event); naoenvia(event)">
         <?php
         if (empty($_SESSION['carrinho'])) {
             echo "<h1>Nada adicionado ao carrinho ainda</h1>";
@@ -262,34 +237,34 @@ foreach ($produtosAgrupados as $cod_gruest => $produtos) {
             }
             echo '<div class="btnlimpaconfere">';
             echo '<input type="submit"  class="btnlimpacarrinho" name="limpar_carrinho" value="Limpar pedido">';
-            echo '<button type="button" class="btnverificapedido" name="mandarpedido" value="Verificarpedido" class="btnsmanda" onclick="mostraconclusao(100)">Conferir o pedido e fazer a insercão</button>';
+            echo '<button type="button" class="btnverificapedido" name="mandarpedido" value="Verificarpedido" class="btnsmanda" onclick="mostraconclusao(300)">Conferir o pedido e fazer a insercão</button>';
             echo '</div>';
         }
-        echo '<button type="button" class="btnpedido" onclick="escondediv(100)">Adicionar item à ficha</button>';
+        echo '<button type="button" class="btnpedido" onclick="mostrabtns(200)">Adicionar item à ficha</button>';
         ?>
         <input type="hidden" name="refresh" value="1">
     </form>
 </div>
 
-<button class='btnpedido' onclick="mostrapedidos()">Ver os itens da ficha</button>
+<button class='btnpedido' onclick="mostrapedidos()" id="btnverpedido" id="btnverprodutos">Ver os itens da ficha</button>
 <div class="pedidoconfere" id="conferepedido">
     <form action="insercao.php?mesa=<?php echo $mesa ?>" method="post">
         <?php
         foreach ($_SESSION['carrinho'] as $index => $item) {
             echo '<div class="carrinho-item" id="carrinho-' . $index . '">';
-            echo "<p style='font-size: 35px;'>{$item['quantidade']} x {$item['produto']} - $ {$item['preco']}</p>";
+            echo "<li style='font-size: 35px;'>{$item['quantidade']} x {$item['produto']} - $ {$item['preco']}</li>";
             if ($item['observacao'] != ""){
                 echo "<p style='font-size: 25px'> Observação: {$item['observacao']}</p>";
             }
         }
-        echo '<button type="submit" name="mandarpedido" value="Verificarpedido" class="btnsmanda">Fazer a inserção na ficha</button>';
-        echo '<button type="button" class="btnpedido" onclick="escondediv(100)">Voltar para tela do pedido';
+        echo '<button type="submit" name="mandarpedido" value="Verificarpedido" class="btnenvia">Fazer a inserção na ficha</button>';
+        echo '<button type="button" class="btnsmanda" onclick="escondediv(300)">Voltar para tela do pedido';
         ?>
     </form>
 </div>
 <!-- div para imprimir os itens da variável de sessão (DEBUG)
 <div class="itens-carrinho" style="display: block">
-<h2>DEBUG</h2>-->
+<h2>DEBUG</h2>
 <?php
 //    if (!empty($_SESSION['carrinho'])) {
 //        foreach ($_SESSION['carrinho'] as $index => $item) {
@@ -304,6 +279,6 @@ foreach ($produtosAgrupados as $cod_gruest => $produtos) {
 //        echo "<h1>Carrinho vazio</h1>";
 //    }
 //    ?>
-<!--</div>-->
+</div>-->
 </body>
 </html>

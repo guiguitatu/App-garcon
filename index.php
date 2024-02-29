@@ -1,3 +1,9 @@
+<?php
+session_start();
+if (!$_COOKIE['usuario']){
+    header("Location: login.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

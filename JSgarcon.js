@@ -24,18 +24,15 @@ function adicionarItensCarrinho(grupoId) {
         });
     });
 
-    // Criar um formulário para enviar os dados via POST
     let form = document.createElement('form');
     form.method = 'POST';
     form.action = 'garcon.php';
 
-    // Criar um input oculto para enviar os itens para o carrinho
     let inputItens = document.createElement('input');
     inputItens.type = 'hidden';
     inputItens.name = 'itens_para_carrinho';
     inputItens.value = JSON.stringify(itensParaCarrinho);
 
-    // Adicionar o input ao formulário e submeter
     form.appendChild(inputItens);
     document.body.appendChild(form);
     form.submit();
@@ -44,16 +41,32 @@ function adicionarItensCarrinho(grupoId) {
 
 function mostrapedidos(){
     let ped = document.getElementById('produtos');
-    let car = document.getElementById('carrossel');
-    ped.style.display = 'flex'
-    car.style.display = 'none'
+    let car = document.getElementById('200');
+    let btn = document.getElementById('btnverpedido');
+    let carrinho = document.getElementById('300');
+    ped.style.display = 'flex';
+    car.style.display = 'none';
+    btn.style.display = 'none';
+    carrinho.style.display = 'none';
+}
+
+function telabtns(){
+    let btns = document.getElementById('200');
+    let pedido = document.getElementById('produtos');
+    let btnpedido = document.getElementById('btnverpedido');
+
+    btns.style.display = 'flex';
+    pedido.style.display = 'none';
+    btnpedido.style.display = 'block';
 }
 
 function voltartelainicial(){
-    let ped = document.getElementById('produtos');
-    let car = document.getElementById('carrossel');
+    let ped = document.getElementById("produtos");
+    let car = document.getElementById("300");
+    let btn = document.getElementById("btnverpedido");
     ped.style.display = 'none'
     car.style.display = 'flex'
+    btn.style.display = 'block'
 }
 
 function alteraQuantidade(inputId, quantidade) {
@@ -69,17 +82,35 @@ function alteraQuantidade(inputId, quantidade) {
 
 function escondediv(num) {
     let div = document.getElementById(num);
-    let btns = document.getElementById('carrossel');
+    let carrinho;
+    if (num <= 100){
+        carrinho = document.getElementById("200");
+    } else {
+        carrinho = document.getElementById("carrinho");
+    }
     let confere = document.getElementById("conferepedido");
+    let btn = document.getElementById("btnverpedido");
+
     if (div.style.display === 'none' || div.style.display === '') {
         div.style.display = 'flex';
-        btns.style.display = 'none';
+        carrinho.style.display = 'none';
         confere.style.display = 'none';
+        btn.style.display = 'none';
     } else {
         div.style.display = 'none';
-        btns.style.display = 'flex';
+        carrinho.style.display = 'flex';
+        btn.style.display = 'block';
         confere.style.display = 'none';
     }
+}
+
+function mostrabtns(num){
+    let btns = document.getElementById(num);
+    let carrinho = document.getElementById("300");
+
+    carrinho.style.display = 'none';
+    btns.style.display = 'flex';
+
 }
 
 function fadeInObservacao(index) {
@@ -136,11 +167,13 @@ function toggleObservacao(index) {
 }
 
 function mostraconclusao(para){
-    let idpedido = document.getElementById(para);
+    let idpedido = document.getElementById('300');
     let idconc = document.getElementById("conferepedido");
+    let btnpedido = document.getElementById("btnverpedido");
 
     idpedido.style.display= 'none';
     idconc.style.display= 'flex';
+    btnpedido.style.display = 'none';
 
 }
 
@@ -149,28 +182,15 @@ function mudanum(numero){
     inp.value = inp.value + 1;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Adicione um listener para cada input de observação
-    document.querySelectorAll('.inputobs').forEach(function(input, index) {
-        input.addEventListener('input', function(event) {
-            handleInput(event, index);
-        });
-    });
-});
-
-function handleInput(event, index) {
-    if (event.inputType === 'insertLineBreak') {
-        event.preventDefault();
-        hideKeyboard();
-        mostrarObservacao(index);
+function tecladonao(event) {
+    if (event.key === "Enter") {
+        const focusedElement = document.activeElement;
+        focusedElement.blur();
     }
 }
 
-function hideKeyboard() {
-    if ("ontouchstart" in document.documentElement) {
-        let activeElement = document.activeElement;
-        if (activeElement.tagName.toLowerCase() == "input" || activeElement.tagName.toLowerCase() == "textarea") {
-            activeElement.blur();
-        }
+function naoenvia(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
     }
 }

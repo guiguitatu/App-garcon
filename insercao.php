@@ -1,20 +1,29 @@
 <?php
 session_start();
 date_default_timezone_set('America/Sao_Paulo');
+if ($_COOKIE['usuario']) {
+    $cod = $_COOKIE['usuario']['codido'];
+    $gar = $_COOKIE['usuario']['nome'];
+    $gararray = array(
+        'codido' => $cod,
+        'garcon' => $gar
+    );
+    $_SESSION['usuario'] = $gararray;
+    $codgarcon = $_SESSION['usuario']['codido'];
+    $garcon = $_SESSION['usuario']['garcon'];
+} else {
+    header("Location: login.php");
+}
 
-// Verifica se a sessão carrinho existe e não está vazia
 if (!empty($_SESSION['carrinho'])) {
-    // Conectar ao banco de dados
+
     try {
         $mesa = $_GET['mesa'];
         $conn = new PDO('firebird:host=PC-Gui;dbname=D:\Astracon\Dados\ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // Obter o número da mesa da sessão
-        // Inserir itens do carrinho no banco de dados
         foreach ($_SESSION['carrinho'] as $item) {
             $null = null;
-            $codgar = 1;
             $produto = $item['produto'];
             $preco = $item['preco'];
             $cod_gruest = $item['cod_gruest'];
@@ -22,6 +31,7 @@ if (!empty($_SESSION['carrinho'])) {
             $cod_pro = $item['cod_pro'];
             $hora = date('H:i:s');
             $observacao = $item['observacao'];
+            $codgar = intval($codgarcon);
             // Consultas SQL para obter valores necessários
             $sqlCodPro = "SELECT cod_pro FROM produto WHERE COD_PROAPP = " . $cod_pro;
             $sqlValor = "SELECT VALOR FROM produto WHERE COD_PROAPP = " . $cod_pro;
@@ -53,17 +63,15 @@ if (!empty($_SESSION['carrinho'])) {
             echo '<br>';
             $valor_tot = $valor_unit * $quantidade;
 
-            // Consulta SQL para obter o próximo código
             $sqlMaxCodigo = "SELECT MAX(codigo) + 1 FROM PRODMOVBAR";
             $maxCodigo = $conn->query($sqlMaxCodigo)->fetchColumn();
             echo 'inserção';
             echo '<br>';
-            // Consulta SQL para a inserção
             $sqlInsercao = "INSERT INTO PRODMOVBAR (CODIGO, DOCTO, COD_PRO, QUANT, VALOR_UNIT, VALOR_TOT, COD_GAR, DATAMOV, HORA, OBS) 
                             VALUES (:codigo, :docto, :cod_pro, :quantidade, :valor_unit, :valor_tot, :cod_gar, CAST('" . $data . "' as DATE), :hora, :observacao)";
 
             $stmtInsercao = $conn->prepare($sqlInsercao);
-            /*echo 'Código : Int    ';
+            echo 'Código : Int    ';
             echo'<br>';
             var_dump($maxCodigo);
             echo'<br>';
@@ -103,7 +111,7 @@ if (!empty($_SESSION['carrinho'])) {
             echo 'observacao : Varchar    ';
             echo'<br>';
             var_dump($observacao);
-            echo'<br>';*/
+            echo'<br>';
             $stmtInsercao->bindParam(':codigo', $maxCodigo, PDO::PARAM_INT);
             $stmtInsercao->bindParam(':docto', $docto,  PDO::PARAM_INT);
             $stmtInsercao->bindParam(':cod_pro', $cod_pro, PDO::PARAM_INT);

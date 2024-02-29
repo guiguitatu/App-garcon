@@ -16,6 +16,48 @@ h2{
     padding-right: 3vh;
 }
 
+span{
+    width: 85%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.formulario{
+    flex-direction: column;
+    align-items: center;
+    width: 95%
+}
+
+.formu{
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.formu label{
+    font-size: 50px;
+    width: auto;
+}
+
+.formu input{
+    font-size: 30px;
+    width: 40%;
+    height: 50px;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+textarea{
+    font-size: 30px;
+    width: 50%;
+    height: 50px;
+    border: 2px solid black;
+    border-radius: 10px;
+}
 
 body{
     margin: 0;
@@ -31,4 +73,35 @@ body{
     background-color: #35518c;
     color: #ffff;
     border-radius: 10px;
+}
+
+.btnenvia{
+    background-color: #35518c;
+    color: #ffff;
+    font-size: 30px;
+}
+
+.btnescolha{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.sim{
+    width: 150px;
+    height: 70px;
+    border-radius: 30px;
+    font-size: 40px;
+    background-color: #46a61e;
+    color: #ffff;
+    margin: 10px;
+}
+.nao{
+    width: 150px;
+    height: 70px;
+    border-radius: 30px;
+    font-size: 40px;
+    background-color: #ec5858;
+    color: #ffff;
+    margin: 10px;
 }

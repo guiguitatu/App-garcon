@@ -106,6 +106,11 @@ body .btns{
 
 .pedidoconfere{
     display: none;
+    padding-top: 30px;
+}
+
+.pedidoconfere li{
+    margin: 10px 0 10px 0;
 }
 
 .divitembtn{
@@ -126,6 +131,32 @@ body .btns{
     border-radius: 10px;
     border: 10px #35518c;
     margin: 10px
+}
+.btnsmanda{
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    display: block;
+    background-color: #233873;
+    color: #fff;
+    width: 500px;
+    height: 100px;
+    border-radius: 10px;
+    border: 10px #35518c;
+    margin: 10px
+}
+.btnenvia{
+    margin: 30px 10px 10px 10px;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    display: block;
+    background-color: #67b72e;
+    color: #fff;
+    width: 500px;
+    height: 100px;
+    border-radius: 10px;
+    border: 10px #757575;
 }
 
 .btndivs{
@@ -234,18 +265,20 @@ body .btns{
 }
 
 .btn-flutuante {
+    width: 500px;
+    height: 100px;
+    font-size: 35px;
     position: fixed;
-    bottom: 20px; /* Distância da parte inferior da tela */
-    right: 20px; /* Distância da parte direita da tela */
+    bottom: 20px;
+    right: 20px;
     padding: 15px 25px;
     background-color: #1b961d;
     color: #fff;
     border: none;
     border-radius: 50px;
-    font-size: 16px;
     cursor: pointer;
     text-decoration: none;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s;
 }
 

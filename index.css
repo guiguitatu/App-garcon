@@ -1,5 +1,4 @@
 body{
-
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -8,6 +7,10 @@ body{
     justify-content: center;
     font-family: Calibri;
     font-size: 30px;
+}
+
+p{
+    margin: 0;
 }
 
 .form{
@@ -65,4 +68,70 @@ button {
     background-color: #798eff;
     border-radius: 10px;
     border: 2px black solid;
+}
+
+.principal{
+    background-color: #ffff;
+    border: solid 3px black;
+    border-radius: 50px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 700px;
+    height: 500px;
+
+}
+
+h2 {
+    font-size: 80px;
+    margin: 10px auto 5px auto;
+}
+
+option {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.login {
+    display: flex;
+    flex-direction: column;
+    height: 300px;
+}
+
+.input {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.login label {
+    font-size: 50px;
+}
+
+.login select {
+    width: 300px;
+    height: 45px;
+    font-size: 27px;
+}
+.login input {
+    width: 300px;
+    height: 45px;
+    font-size: 27px;
+}
+
+.erro {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    padding-left: 20px;
+    height: 60px;
+    border-radius: 20px;
+    background-color: #f8b2b7;
+    color: red;
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 10px;
 }
