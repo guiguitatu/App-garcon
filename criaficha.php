@@ -1,5 +1,9 @@
 <?php
 session_start();
+if(!isset($_POST["mesa"])){
+    header("location: index.php");
+}
+
 if ($_COOKIE['usuario']) {
     $cod = $_COOKIE['usuario']['codido'];
     $gar = $_COOKIE['usuario']['nome'];
@@ -13,7 +17,8 @@ if ($_COOKIE['usuario']) {
 } else {
     header("Location: login.php");
 }
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+$mesa = intval($_POST["mesa"]);
+if ($_SERVER["REQUEST_METHOD"] == "POST" && $mesa != null){
     $nome = test_input($_POST["nome"]) ?? '';
     $numPessoas = intval(test_input($_POST["numPessoas"])) ?? 1;
     $observacao = test_input($_POST["observacao"])?? '';
@@ -24,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     var_dump($numeromesa);
 
     try {
-        $conn = new PDO('firebird:host=PC-Gui;dbname=caminhoarquivo;charset=utf8', 'SYSDBA', 'masterkey');
+        $conn = new PDO('firebird:host=PC-Gui;dbname=D:/Astracon/Dados/ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
         $sqldata = "select DATACAIXA from EMPRESA";
         $stmtdata = $conn->prepare($sqldata);
         $stmtdata->execute();
@@ -66,7 +71,7 @@ values
  */
 try {
     $numeromesa = $_GET['mesa'];
-    $conn = new PDO('firebird:host=PC-Gui;dbname=caminhoarquivo;charset=utf8', 'SYSDBA', 'masterkey');
+    $conn = new PDO('firebird:host=PC-Gui;dbname=D:/Astracon/Dados/ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
     $sqlficha = "SELECT ficha FROM vendabar WHERE FICHA = $numeromesa AND CAIXA='' AND (BLOQUEADA = '' OR BLOQUEADA IS NULL)";
     $sqlbloqueada = "SELECT ficha FROM vendabar WHERE FICHA = $numeromesa AND CAIXA='' AND BLOQUEADA = 'S'";
     $stmtficha = $conn->prepare($sqlficha);

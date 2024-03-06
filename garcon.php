@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+$teste = $_GET['mesa'];
+if (!isset($teste)){
+    header("Location: index.php");
+}
+
 if ($_COOKIE['usuario']) {
     $cod = $_COOKIE['usuario']['codido'];
     $gar = $_COOKIE['usuario']['nome'];
@@ -51,12 +57,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($itensParaCarrinho)) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remover_item'])) {
     $index = $_POST['remover_item'];
 
-    if (isset($_SESSION['carrinho'][$index])) {
+    if (isset($_SESSION['carrinho'][$index]) && is_numeric($index) && $index >= 0) {
         unset($_SESSION['carrinho'][$index]);
         $_SESSION['carrinho'] = array_values($_SESSION['carrinho']);
 
         $numeroMesa = $_GET['mesa'];
         header('Location: ' . $_SERVER['PHP_SELF'] . '?mesa=' . $numeroMesa);
+        exit;
+    } else {
+        // Índice inválido, redireciona de volta para a página anterior
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
         exit;
     }
 }
@@ -85,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['observacao'])) {
     $mesa = $_GET['mesa'];
     echo '<h1>' . ' | Mesa: ' . $mesa . ' | </h1>';
     echo' ';
-    echo '<h1>Usuársssio: ' . $garcon . '</h1>';
+    echo '<h1>Usuário: ' . $garcon . '</h1>';
 
     ?>
     </header>
@@ -94,13 +104,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['observacao'])) {
 <div class="btns" id="200">
     <?php
     try {
-        $conn = new PDO('firebird:host=PC-Gui;dbname=caminhoarquivo;charset=utf8', 'SYSDBA', 'masterkey');
+        $conn = new PDO('firebird:host=PC-Gui;dbname=D:/Astracon/Dados/ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
         $sql = 'select * from GRUPOEST order by NOME';
         $stmt = $conn->query($sql);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 
             if ($row['COD_GRUEST'] != 9) {
-                echo '<button class="btndivs" onclick="escondediv(' . $row['COD_GRUEST'] . ')"> <img src="imgs/comer.png"style="height: 150px; width: 150px;"> <br>' . $row['NOME'] . '</button>';
+                echo '<button class="btndivs" onclick="escondediv(' . $row['COD_GRUEST'] . ')"> <img src="imgs/comer.png" style="height: 150px; width: 150px;"> <br>' . $row['NOME'] . '</button>';
             } else {
                 echo '<button class="btndivs" onclick="escondediv(' . $row['COD_GRUEST'] . ')"><img src="imgs/comer.png" style="height: 150px; width: 150px;"> DESTILADOS </button>';
             }
@@ -121,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['observacao'])) {
 <div id="produtos" class="pedidos" id="100">
     <?php
     $mesa = $_GET['mesa'];
-    $conn = new PDO('firebird:host=PC-Gui;dbname=caminhoarquivo;charset=utf8', 'SYSDBA', 'masterkey');
+    $conn = new PDO('firebird:host=PC-Gui;dbname=D:/Astracon/Dados/ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
 
     $sql = "select produto.cod_proapp as PRODUTO, produto.descricao as NOME, produto.descricaonota as DESCRICAO, produto.valor as PRECO, PRODMOVBAR.quant as QUANTIDADE, PRODMOVBAR.obs AS OBSERVACAO, PRODMOVBAR.codigo AS ID from produto
 inner join PRODMOVBAR on produto.cod_pro = PRODMOVBAR.cod_pro
@@ -176,7 +186,7 @@ where VENDABAR.ficha = $mesa and VENDABAR.caixa = '' and PRODMOVBAR.VALOR_TOT > 
 </div>
 <!-- Mostra as divs de cada COD_GRUEST -->
 <?php
-$conn = new PDO('firebird:host=PC-Gui;dbname=caminhoarquivo;charset=utf8', 'SYSDBA', 'masterkey');
+$conn = new PDO('firebird:host=PC-Gui;dbname=D:/Astracon/Dados/ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
 $sql = "select COD_PROAPP, DESCRICAO, COD_GRUEST, VALOR from produto where COD_GRUEST is not null and valor is not null and cod_pro is not null and descricao is not null";
 $stmt2 = $conn->query($sql);
 $produtosAgrupados = array();
@@ -209,7 +219,7 @@ foreach ($produtosAgrupados as $cod_gruest => $produtos) {
 ?>
 <!-- Div para o carrinho -->
 <div class="carrinho" id="300">
-    <form action="" method="post" class="formcarrinho" onsubmit="tecladonao(event); naoenvia(event)">
+    <form action="" method="post" class="formcarrinho" id="carrinhoform" onsubmit="cancelFormSubmission(event)">
         <?php
         if (empty($_SESSION['carrinho'])) {
             echo "<h1>Nada adicionado ao carrinho ainda</h1>";
@@ -230,7 +240,7 @@ foreach ($produtosAgrupados as $cod_gruest => $produtos) {
                     echo '<div style="display: none; flex-direction: row" id="observacao-' . $index . '">';
                 }
 
-                echo '<input type="text" style="display: flex" class="inputobs" name="observacao[' . $index . ']" placeholder="Digite a observação" class="input-observacao" value="' . htmlspecialchars($observacao) . '">';
+                echo '<input type="text" style="display: flex" class="inputobs" name="observacao[' . $index . ']" placeholder="Digite a obserssdssssvação" class="input-observacao" value="' . htmlspecialchars($observacao) . '" onsubmit="hideMobileKeyboardOnEnter(event)">';
                 echo '<button type="button" class="btnobs" onclick="adicionarObservacao(' . $index . ')">Adicionar Observação</button>';
                 echo '</div>';
                 echo '</div>';
@@ -248,7 +258,7 @@ foreach ($produtosAgrupados as $cod_gruest => $produtos) {
 
 <button class='btnpedido' onclick="mostrapedidos()" id="btnverpedido" id="btnverprodutos">Ver os itens da ficha</button>
 <div class="pedidoconfere" id="conferepedido">
-    <form action="insercao.php?mesa=<?php echo $mesa ?>" method="post">
+    <form action="insercao.php?mesa=<?php echo $mesa ?>" method="post" style="justify-content: center">
         <?php
         foreach ($_SESSION['carrinho'] as $index => $item) {
             echo '<div class="carrinho-item" id="carrinho-' . $index . '">';
@@ -258,7 +268,7 @@ foreach ($produtosAgrupados as $cod_gruest => $produtos) {
             }
         }
         echo '<button type="submit" name="mandarpedido" value="Verificarpedido" class="btnenvia">Fazer a inserção na ficha</button>';
-        echo '<button type="button" class="btnsmanda" onclick="escondediv(300)">Voltar para tela do pedido';
+        echo '<button type="button" class="btnpedido" style="width: 500px;" onclick="escondediv(300)">Voltar para tela do pedido';
         ?>
     </form>
 </div>

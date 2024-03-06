@@ -90,7 +90,7 @@ function escondediv(num) {
     }
     let confere = document.getElementById("conferepedido");
     let btn = document.getElementById("btnverpedido");
-
+    confere.style.display = 'none';
     if (div.style.display === 'none' || div.style.display === '') {
         div.style.display = 'flex';
         carrinho.style.display = 'none';
@@ -105,6 +105,7 @@ function escondediv(num) {
 }
 
 function mostrabtns(num){
+    console.log("funcmostrabtns")
     let btns = document.getElementById(num);
     let carrinho = document.getElementById("300");
 
@@ -182,15 +183,31 @@ function mudanum(numero){
     inp.value = inp.value + 1;
 }
 
-function tecladonao(event) {
+/*function hideMobileKeyboardOnEnter(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        const focusedElement = document.activeElement;
+        focusedElement.blur();
+        return false; // Impede o envio do formulário
+    }
+    return true; // Permite o envio do formulário para outros casos
+}*/
+
+function hideMobileKeyboardOnEnter(event) {
     if (event.key === "Enter") {
         const focusedElement = document.activeElement;
         focusedElement.blur();
     }
 }
 
-function naoenvia(event) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-    }
+const inputObservacoes = document.querySelectorAll('.inputobs');
+inputObservacoes.forEach(input => {
+    input.addEventListener('keydown', hideMobileKeyboardOnEnter);
+});
+
+function cancelFormSubmission(event) {
+    event.preventDefault();
 }
+
+const form = document.getElementById('carrinhoForm');
+form.addEventListener('submit', cancelFormSubmission);
