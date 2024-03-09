@@ -1,11 +1,6 @@
 <?php
 session_start();
 
-$teste = $_GET['mesa'];
-if (!isset($teste)){
-    header("Location: index.php");
-}
-
 if ($_COOKIE['usuario']) {
     $cod = $_COOKIE['usuario']['codido'];
     $gar = $_COOKIE['usuario']['nome'];
@@ -219,7 +214,7 @@ foreach ($produtosAgrupados as $cod_gruest => $produtos) {
 ?>
 <!-- Div para o carrinho -->
 <div class="carrinho" id="300">
-    <form action="" method="post" class="formcarrinho" id="carrinhoform" onsubmit="cancelFormSubmission(event)">
+    <form action="" method="post" class="formcarrinho" id="carrinhoform" onkeydown="return event.key != 'Enter';">
         <?php
         if (empty($_SESSION['carrinho'])) {
             echo "<h1>Nada adicionado ao carrinho ainda</h1>";
@@ -240,7 +235,7 @@ foreach ($produtosAgrupados as $cod_gruest => $produtos) {
                     echo '<div style="display: none; flex-direction: row" id="observacao-' . $index . '">';
                 }
 
-                echo '<input type="text" style="display: flex" class="inputobs" name="observacao[' . $index . ']" placeholder="Digite a obserssdssssvação" class="input-observacao" value="' . htmlspecialchars($observacao) . '" onsubmit="hideMobileKeyboardOnEnter(event)">';
+                echo '<input type="text" style="display: flex" class="inputobs" name="observacao[' . $index . ']" placeholder="Digite a observação" class="input-observacao" value="' . htmlspecialchars($observacao) . '" onsubmit="hideMobileKeyboardOnEnter(event)">';
                 echo '<button type="button" class="btnobs" onclick="adicionarObservacao(' . $index . ')">Adicionar Observação</button>';
                 echo '</div>';
                 echo '</div>';
