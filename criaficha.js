@@ -5,6 +5,6 @@ function mudapagina(bool){
         div.style.display = 'flex';
         btns.style.display = 'none';
     } else {
-        window.location.href = '//192.168.1.38';
+        window.location.href = '//192.168.1.38:3030';
     }
 }

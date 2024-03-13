@@ -11,6 +11,7 @@ if (!$_COOKIE['usuario']){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="imgs/logoastraconbranco.png" type="imagem">
     <link rel="stylesheet" href="index.CSS">
 
     <title>Formulário</title>
@@ -55,7 +56,7 @@ if (!$_COOKIE['usuario']){
 
     function mudanum(numero){
         let inp = document.getElementById('mesa');
-        if (inp.value.length < 5){
+        if (inp.value.length < 4){
             inp.value = inp.value + numero;
         }
     }

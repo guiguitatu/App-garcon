@@ -41,11 +41,11 @@ function adicionarItensCarrinho(grupoId) {
 
 function mostrapedidos(){
     let ped = document.getElementById('produtos');
-    let car = document.getElementById('200');
+    let btns = document.getElementById('200');
     let btn = document.getElementById('btnverpedido');
-    let carrinho = document.getElementById('300');
+    let carrinho = document.getElementById('carrinhoform');
     ped.style.display = 'flex';
-    car.style.display = 'none';
+    btns.style.display = 'none';
     btn.style.display = 'none';
     carrinho.style.display = 'none';
 }
@@ -62,11 +62,15 @@ function telabtns(){
 
 function voltartelainicial(){
     let ped = document.getElementById("produtos");
-    let car = document.getElementById("300");
+    let car = document.getElementById("carrinhoform");
+    let btns = document.getElementById("200");
     let btn = document.getElementById("btnverpedido");
-    ped.style.display = 'none'
-    car.style.display = 'flex'
-    btn.style.display = 'block'
+    let confere = document.getElementById("conferepedido");
+    btns.style.display = 'none';
+    ped.style.display = 'none';
+    confere.style.display = 'none';
+    car.style.display = 'flex';
+    btn.style.display = 'block';
 }
 
 function alteraQuantidade(inputId, quantidade) {
@@ -86,7 +90,7 @@ function escondediv(num) {
     if (num <= 100){
         carrinho = document.getElementById("200");
     } else {
-        carrinho = document.getElementById("carrinho");
+        carrinho = document.getElementById("carrinhoform");
     }
     let confere = document.getElementById("conferepedido");
     let btn = document.getElementById("btnverpedido");
@@ -107,7 +111,9 @@ function escondediv(num) {
 function mostrabtns(num){
     console.log("funcmostrabtns")
     let btns = document.getElementById(num);
-    let carrinho = document.getElementById("300");
+    let carrinho = document.getElementById("carrinhoform");
+    let pedido = document.getElementById('100');
+
 
     carrinho.style.display = 'none';
     btns.style.display = 'flex';
@@ -168,7 +174,7 @@ function toggleObservacao(index) {
 }
 
 function mostraconclusao(para){
-    let idpedido = document.getElementById('300');
+    let idpedido = document.getElementById('carrinhoform');
     let idconc = document.getElementById("conferepedido");
     let btnpedido = document.getElementById("btnverpedido");
 
@@ -182,32 +188,3 @@ function mudanum(numero){
     let inp = document.getElementById(numero);
     inp.value = inp.value + 1;
 }
-
-/*function hideMobileKeyboardOnEnter(event) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        const focusedElement = document.activeElement;
-        focusedElement.blur();
-        return false; // Impede o envio do formulário
-    }
-    return true; // Permite o envio do formulário para outros casos
-}*/
-
-function hideMobileKeyboardOnEnter(event) {
-    if (event.key === "Enter") {
-        const focusedElement = document.activeElement;
-        focusedElement.blur();
-    }
-}
-
-const inputObservacoes = document.querySelectorAll('.inputobs');
-inputObservacoes.forEach(input => {
-    input.addEventListener('keydown', hideMobileKeyboardOnEnter);
-});
-
-function cancelFormSubmission(event) {
-    event.preventDefault();
-}
-
-const form = document.getElementById('carrinhoForm');
-form.addEventListener('submit', cancelFormSubmission);

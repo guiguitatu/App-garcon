@@ -166,14 +166,14 @@ body .btns{
 
 .quant{
     align-items: center;
-    width: 35px;
-    height: 35px;
+    width: 50px;
+    height: 50px;
 }
 
 .btnquant{
     font-size: 200%;
-    width: 45px;
-    height: 45px;
+    width: 60px;
+    height: 60px;
     border-radius: 10px;
     margin: 0 5px 0 5px;
     background-color: #35518c;
@@ -181,7 +181,7 @@ body .btns{
 }
 
 .product-group p {
-    font-size: 25px;
+    font-size: 35px;
 }
 
 .btnremover{
@@ -274,13 +274,13 @@ body .btns{
 }
 
 .btnplus{
-    height: 30px;
-    width: 30px;
+    height: 45px;
+    width: 45px;
     border-radius: 30px;
     margin-right: 5px;
     background-color: #000;
     color: #ffff;
-    font-size: 20px;
+    font-size: 30px;
     font-weight: 20;
 }
 

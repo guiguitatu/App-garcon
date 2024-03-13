@@ -1,8 +1,5 @@
 <?php
 session_start();
-if(!isset($_POST["mesa"])){
-    header("location: index.php");
-}
 
 if ($_COOKIE['usuario']) {
     $cod = $_COOKIE['usuario']['codido'];
@@ -72,8 +69,8 @@ values
 try {
     $numeromesa = $_GET['mesa'];
     $conn = new PDO('firebird:host=PC-Gui;dbname=D:/Astracon/Dados/ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
-    $sqlficha = "SELECT ficha FROM vendabar WHERE FICHA = $numeromesa AND CAIXA='' AND (BLOQUEADA = '' OR BLOQUEADA IS NULL)";
-    $sqlbloqueada = "SELECT ficha FROM vendabar WHERE FICHA = $numeromesa AND CAIXA='' AND BLOQUEADA = 'S'";
+    $sqlficha = "SELECT ficha FROM vendabar WHERE FICHA = $numeromesa AND (CAIXA='' or CAIXA is NULL) AND (SITUACAO='' or SITUACAO is NULL) AND (BLOQUEADA = '' OR BLOQUEADA IS NULL)";
+    $sqlbloqueada = "SELECT ficha FROM vendabar WHERE FICHA = $numeromesa AND (CAIXA='' or CAIXA is NULL) AND (SITUACAO='' or SITUACAO is NULL) AND BLOQUEADA = 'S'";
     $stmtficha = $conn->prepare($sqlficha);
     $stmtbloqueada = $conn->prepare($sqlbloqueada);
     $stmtficha->execute();
@@ -85,6 +82,7 @@ try {
     if ($mesabar != null){
         header("location: garcon.php?mesa=$numeromesa");
     } else if($bloqueada != null) {
+        echo '<link rel="shortcut icon" href="imgs/logoastraconbranco.png" type="imagem">';
         echo '<link rel="stylesheet" href="criaficha.CSS">';
         echo "<header>";
         echo "<h1>Astra</h1>";
