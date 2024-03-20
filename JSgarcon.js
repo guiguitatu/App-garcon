@@ -75,6 +75,14 @@ function voltartelainicial(){
 
 function alteraQuantidade(inputId, quantidade) {
     let input = document.getElementById(inputId);
+    let btnmais = document.getElementById('mais' + inputId)
+    if (quantidade === 1) {
+        btnmais.style.backgroundColor = '#e37069';
+    } else {
+        if (input.value <= 1){
+            btnmais.style.backgroundColor = '#35518c';
+        }
+    }
 
     if (input) {
         let valorAtual = parseInt(input.value, 10);

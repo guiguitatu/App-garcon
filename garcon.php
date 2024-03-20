@@ -1,6 +1,9 @@
 <?php
 session_start();
-
+include('trocanome.php');
+if ($_GET['mesa'] == null or $_GET['mesa'] == ''){
+    header('location: index.php');
+}
 if ($_COOKIE['usuario']) {
     $cod = $_COOKIE['usuario']['codido'];
     $gar = $_COOKIE['usuario']['nome'];
@@ -176,12 +179,13 @@ where VENDABAR.ficha = $mesa and VENDABAR.caixa = '' and PRODMOVBAR.VALOR_TOT > 
             }
 
             echo '</ul>';
+            echo '<button class="btnpedido" onclick="voltartelainicial()">Inserir item à ficha</button>';
+            echo '<button class="btnpedido" onclick="telabtns()">Voltar para tela dos botões';
         } else {
             echo "<h1>Não há nada inserido na ficha ainda</h1>";
+            echo '<button class="btnpedido" onclick="telabtns()"> Inserir item na ficha </button>';
         }
         echo '</div>';
-        echo '<button class="btnpedido" onclick="voltartelainicial()">Voltar a Tela do carrinho</button>';
-        echo '<button class="btnpedido" onclick="telabtns()">Voltar para tela dos botões';
     } catch (PDOException $e) {
         echo "Erro na execução da consulta: " . $e->getMessage();
     }
@@ -203,16 +207,16 @@ foreach ($produtosAgrupados as $cod_gruest => $produtos) {
     foreach ($produtos as $produto) {
         $produtoId = 'produto_' . $produto['COD_PROAPP'] . '_' . $cod_gruest;
         echo '<div class="product">';
-        echo "<p>" . $produto['DESCRICAO'] . "</p>";
         //echo "<p>" . $produto['DESCRICAO'] . "- R$ " . number_format($produto['VALOR'], 2 , ',') . "</p>";
         echo '<form action="" class="produto" method="post" style="display: flex; align-items: center">';
+        echo '<input type="button" class="btnquant" id="mais' . $produtoId . '" name="mais" onclick="alteraQuantidade(\'' . $produtoId . '\', 1)" value="+">';
+        echo "<p>" . $produto['DESCRICAO'] . "</p>";
         echo '<input type="hidden" name="produto" value="' . $produto['DESCRICAO'] . '">';
         echo '<input type="hidden" name="cod_pro" value="' . $produto['COD_PROAPP'] . '">';
         echo '<input type="hidden" name="preco" value="' . number_format($produto['VALOR'], 2, ",") . '">';
         echo '<input type="hidden" name="cod_gruest" value="' . $cod_gruest . '">';
-        echo '<input type="button" class="btnquant" name="menos" onclick="alteraQuantidade(\'' . $produtoId . '\', -1)" value="-">';
         echo '<input name="quantidade" class="quant" id="' . $produtoId . '" value="0" min="0">';
-        echo '<input type="button" class="btnquant" name="mais" onclick="alteraQuantidade(\'' . $produtoId . '\', 1)" value="+">';
+        echo '<input type="button" class="btnquant" name="menos" onclick="alteraQuantidade(\'' . $produtoId . '\', -1)" value="-">';
 
         echo '</form>';
         echo '</div>';
@@ -238,7 +242,7 @@ foreach ($produtosAgrupados as $cod_gruest => $produtos) {
             foreach ($_SESSION['carrinho'] as $index => $item) {
                 echo '<div class="carrinhoitem" id="carrinho-' . $index . '">';
                 echo '<div class="divitembtn">';
-                echo "<button type='button' class='btnplus' onclick='toggleObservacao(" . $index . ")'><b>+</b></button>";
+                echo "<button type='button' class='btnplus' onclick='toggleObservacao(" . $index . ")'><b>≡</b></button>";
                 echo "<p style='font-size: 43px'> {$item['quantidade']} x {$item['produto']}</p>";
                 echo "<button type='submit' class='btnremover' name='remover_item' value='" . $index . "'>Remover Item</button>";
                 echo "<br>";

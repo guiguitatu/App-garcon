@@ -1,8 +1,35 @@
 <?php
 session_start();
+include('trocanome.php');
 if (!$_COOKIE['usuario']){
     header("Location: login.php");
 }
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if(isset($_POST['opcao'])){
+        if($_POST['opcao'] == 'mesa'){
+            $_SERVER['opcao'] = 'mesa';
+            header('location: criaficha.php');
+        }else {
+            $_SERVER['opcao'] = 'ficha';
+        }
+    } else {
+        $_SERVER['erro'] = "Opção de ficha/mesa não selecionada";
+    }
+}
+
+try {
+    $conn = new PDO('firebird:host=PC-Gui;dbname=D:/Astracon/Dados/ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $sql = "select TIPOABERT from empresa where TIPOABERT like '0%' or TIPOABERT like '1%'  or TIPOABERT like '2%'  or TIPOABERT like '3%'  or TIPOABERT like '4%'";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $opcao = $stmt->fetchColumn();
+} catch (PDOException $e){
+    echo 'Erro de conexão: ' . $e;
+}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,16 +39,88 @@ if (!$_COOKIE['usuario']){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="imgs/logoastraconbranco.png" type="imagem">
-    <link rel="stylesheet" href="index.CSS">
+    <link rel="stylesheet" href="./index.css">
 
     <title>Formulário</title>
 </head>
 <body>
 <div class="main">
-    <form action="criaficha.php" method="get" class="form">
-        <label for="mesa">Digite o numero da mesa:</label>
+    <?php
+    echo '<h7 style="display: flex; justify-content: center"> <b> Garçon: ' . $_COOKIE['usuario']['nome'] . '</b> </h7>';
+    if (isset($_SESSION['erro'])){
+         echo '<div class="erro">';
+         foreach ($_SESSION['erro'] as $erro){
+            echo '<p>'. $erro . '</p>';
+         }
+        echo '</div>';
+    }
+    unset($_SESSION['erro']);
+
+    echo '<form action="criaficha.php" method="get" class="form">';
+        if ($opcao == '0-Todos'){
+            echo '
+            <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-evenly"> 
+                <div style="display: flex; align-items: center">
+                    <input type="radio" id="mesa" name="opcao" value="mesa" onchange="mudanome()">
+                    <label for="opcao1">Mesa</label>
+                </div>
+    
+                <div style="display: flex; align-items: center">
+                    <input type="radio" id="ficha" name="opcao" value="ficha" onchange="mudanome()">
+                    <label for="opcao2">Ficha</label>
+                </div>
+            </div>    
+            <label for="mesa" id="txtinput" style="display: flex; justify-content: center">Digite o numero:</label>';
+        } else if ($opcao == '1-Mesa'){
+        echo '
+            <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-evenly"> 
+                <div style="display: flex; align-items: center">
+                    <input type="radio" id="mesa" name="opcao" value="mesa" onchange="mudanome()" checked>
+                    <label for="opcao1">Mesa</label>
+                </div>
+    
+                <div style="display: flex; align-items: center">
+                    <input type="radio" id="ficha" name="opcao" value="ficha" onchange="mudanome()">
+                    <label for="opcao2">Ficha</label>
+                </div>
+            </div>    
+            <label for="mesa" id="txtinput" style="display: flex; justify-content: center">Digite o numero da mesa:</label>';
+    } else if ($opcao == '2-Ficha'){
+        echo '
+            <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-evenly"> 
+                <div style="display: flex; align-items: center">
+                    <input type="radio" id="mesa" name="opcao" value="mesa" onchange="mudanome()">
+                    <label for="opcao1">Mesa</label>
+                </div>
+    
+                <div style="display: flex; align-items: center">
+                    <input type="radio" id="ficha" name="opcao" value="ficha" onchange="mudanome()" checked>
+                    <label for="opcao2">Ficha</label>
+                </div>
+            </div>    
+            <label for="mesa" id="txtinput" style="display: flex; justify-content: center">Digite o numero da ficha:</label>';
+    } else if ($opcao == '3-Somente'){
+        echo '
+            <div style="display: none; flex-direction: row; align-items: center; justify-content: space-evenly"> 
+                <div style="display: flex; align-items: center">
+                    <input type="radio" id="mesa" name="opcao" value="mesa" onchange="mudanome()" checked>
+                    <label for="opcao1">Mesa</label>
+                </div>
+            </div>        
+            <label for="mesa" id="txtinput" style="display: flex; justify-content: center">Digite o numero da mesa:</label>';
+    } else if ($opcao == '4-Somente'){
+        echo '
+            <div style="display: none; flex-direction: row; align-items: center; justify-content: space-evenly"> 
+                <div style="display: flex; align-items: center">
+                    <input type="radio" id="mesa" name="opcao" value="ficha" onchange="mudanome()" checked>
+                    <label for="opcao1">Ficha</label>
+                </div>
+            </div>        
+            <label for="mesa" id="txtinput" style="display: flex; justify-content: center">Digite o numero da ficha:</label>';
+    } else
+    ?>
         <div class="btns">
-            <input type="text" id="mesa" name="mesa" pattern="[0-9]+" title="Número da mesa" readonly class="input">
+            <input type="text" id="nunmesa" name="mesa" pattern="[0-9]+" title="Número da mesa" readonly class="input">
             <button type="button" class="btnlimpa" onclick="limpa()">Limpar</button>
         </div>
 
@@ -50,20 +149,32 @@ if (!$_COOKIE['usuario']){
 <script>
 
     function limpa(){
-     let inp = document.getElementById('mesa');
+     let inp = document.getElementById('nunmesa');
      inp.value = ''
     }
 
     function mudanum(numero){
-        let inp = document.getElementById('mesa');
+        let inp = document.getElementById('nunmesa');
         if (inp.value.length < 4){
             inp.value = inp.value + numero;
         }
     }
 
     function backspace(){
-        let inp = document.getElementById('mesa');
+        let inp = document.getElementById('nunmesa');
         inp.value = inp.value.slice(0, -1);
+    }
+
+    function mudanome() {
+        let mesa = document.getElementById("mesa");
+        let ficha = document.getElementById("ficha");
+        let label = document.getElementById("txtinput");
+
+        if (mesa.checked) {
+            label.textContent = "Digite o número da mesa:";
+        } else if (ficha.checked) {
+            label.textContent = "Digite o número da ficha:";
+        }
     }
 </script>
 </body>

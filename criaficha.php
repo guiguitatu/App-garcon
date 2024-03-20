@@ -1,6 +1,8 @@
 <?php
 session_start();
-
+if ($_GET['mesa'] == null or $_GET['mesa'] == ''){
+    header('location: index.php');
+}
 if ($_COOKIE['usuario']) {
     $cod = $_COOKIE['usuario']['codido'];
     $gar = $_COOKIE['usuario']['nome'];
