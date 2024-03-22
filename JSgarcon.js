@@ -43,7 +43,7 @@ function mostrapedidos(){
     let ped = document.getElementById('produtos');
     let btns = document.getElementById('200');
     let btn = document.getElementById('btnverpedido');
-    let carrinho = document.getElementById('carrinhoform');
+    let carrinho = document.getElementById('carrinhodiv');
     ped.style.display = 'flex';
     btns.style.display = 'none';
     btn.style.display = 'none';
@@ -62,7 +62,7 @@ function telabtns(){
 
 function voltartelainicial(){
     let ped = document.getElementById("produtos");
-    let car = document.getElementById("carrinhoform");
+    let car = document.getElementById("carrinhodiv");
     let btns = document.getElementById("200");
     let btn = document.getElementById("btnverpedido");
     let confere = document.getElementById("conferepedido");
@@ -98,7 +98,7 @@ function escondediv(num) {
     if (num <= 100){
         carrinho = document.getElementById("200");
     } else {
-        carrinho = document.getElementById("carrinhoform");
+        carrinho = document.getElementById("carrinhodiv");
     }
     let confere = document.getElementById("conferepedido");
     let btn = document.getElementById("btnverpedido");
@@ -119,7 +119,7 @@ function escondediv(num) {
 function mostrabtns(num){
     console.log("funcmostrabtns")
     let btns = document.getElementById(num);
-    let carrinho = document.getElementById("carrinhoform");
+    let carrinho = document.getElementById("carrinhodiv");
     let pedido = document.getElementById('100');
 
 
@@ -182,7 +182,7 @@ function toggleObservacao(index) {
 }
 
 function mostraconclusao(para){
-    let idpedido = document.getElementById('carrinhoform');
+    let idpedido = document.getElementById('carrinhodiv');
     let idconc = document.getElementById("conferepedido");
     let btnpedido = document.getElementById("btnverpedido");
 

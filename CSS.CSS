@@ -1,5 +1,5 @@
 header{
-    margin: 0px;
+    margin: 0;
     width: 100vw;
     height: 100px;
     background-color: #233873;
@@ -33,7 +33,7 @@ body .btns{
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 600px;
+    height: 100vh;
     overflow-y: auto;
     margin-bottom: 20px;
 }
@@ -71,7 +71,7 @@ body .btns{
     align-items: center;
     margin-bottom: 20px;
     border: 5px solid #ccc;
-    padding: 10px;
+    padding: 10px 10px 60px 10px;
 }
 
 .product {
@@ -93,7 +93,11 @@ body .btns{
 
 .pedidos li{
     color: #000;
-    font-size: 30px;
+    font-size: 45px;
+}
+
+.pedidos ul{
+    margin: 40px 0 40px;
 }
 
 .itenspedidos{
@@ -103,6 +107,8 @@ body .btns{
 
 .carrinho{
     display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
     justify-content: center;
     height: auto;
@@ -120,8 +126,10 @@ body .btns{
 
 .divitembtn{
     display: flex;
+    width: 80vw;
+    flex-direction: row;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: flex-start;
 }
 
 .btnpedido{
@@ -170,19 +178,20 @@ body .btns{
 }
 
 .quant{
-    font-size: 30px;
+    font-size: 35px;
     align-items: center;
+    justify-content: center;
     width: 50px;
     height: 50px;
     margin-left: 15px;
 }
 
 .btnquant{
-    font-size: 200%;
-    width: 60px;
-    height: 60px;
+    font-size: 250%;
+    width: 70px;
+    height: 70px;
     border-radius: 20px;
-    margin: 0 15px 0 15px;
+    margin: 0 15px 0 23px;
     background-color: #35518c;
     color: #ffffff;
 }
@@ -246,7 +255,7 @@ body .btns{
     height: 80px;
     width: 250px;
     color: #ffff;
-    font-size: 17px;
+    font-size: 23px;
     border-radius: 15px;
     margin-left: 10px;
     background-color: #45a20f;
@@ -284,7 +293,7 @@ body .btns{
     height: 45px;
     width: 45px;
     border-radius: 30px;
-    margin-right: 5px;
+    margin-right: 10px;
     background-color: #000;
     color: #ffff;
     font-size: 30px;
@@ -294,4 +303,21 @@ body .btns{
 .gira {
     transform: rotate(90deg);
     transition: transform 0.5s ease-in-out;
+}
+
+.btnsair{
+    height: 70px;
+    width: auto;
+    padding: 5px 3px 5px 3px;
+    font-size: 23px;
+    border-radius: 10px;
+    background-color: #ec5858;
+    color: #ffff;
+    margin-right: 15px;
+}
+
+.produto{
+    display: flex;
+    width: 100%;
+    align-items: center;
 }

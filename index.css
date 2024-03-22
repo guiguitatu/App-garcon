@@ -133,3 +133,18 @@ option {
     font-weight: bold;
     margin-top: 10px;
 }
+
+.erro2 {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    width: auto;
+    padding: 0 10px 0 10px;
+    border-radius: 20px;
+    background-color: #f8b2b7;
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+}

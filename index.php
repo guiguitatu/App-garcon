@@ -1,6 +1,6 @@
 <?php
-session_start();
 include('trocanome.php');
+session_start();
 if (!$_COOKIE['usuario']){
     header("Location: login.php");
 }
@@ -8,18 +8,20 @@ if (!$_COOKIE['usuario']){
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(isset($_POST['opcao'])){
         if($_POST['opcao'] == 'mesa'){
-            $_SERVER['opcao'] = 'mesa';
-            header('location: criaficha.php');
-        }else {
-            $_SERVER['opcao'] = 'ficha';
+            $_SESSION['opcao'] = 'mesa';
+        } else {
+            $_SESSION['opcao'] = 'ficha';
         }
+        $_SESSION['mesa'] = $_POST['mesa'];
+        header('location: criaficha.php');
+        exit();
     } else {
-        $_SERVER['erro'] = "Opção de ficha/mesa não selecionada";
+        $_SESSION['erro'][] = "Opção de ficha/mesa não selecionada";
     }
 }
 
 try {
-    $conn = new PDO('firebird:host=PC-Gui;dbname=D:/Astracon/Dados/ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
+    $conn = new PDO('firebird:host=homepc;dbname=caminhoarquivo;charset=utf8', 'SYSDBA', 'masterkey');
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sql = "select TIPOABERT from empresa where TIPOABERT like '0%' or TIPOABERT like '1%'  or TIPOABERT like '2%'  or TIPOABERT like '3%'  or TIPOABERT like '4%'";
     $stmt = $conn->prepare($sql);
@@ -46,9 +48,9 @@ try {
 <body>
 <div class="main">
     <?php
-    echo '<h7 style="display: flex; justify-content: center"> <b> Garçon: ' . $_COOKIE['usuario']['nome'] . '</b> </h7>';
+    echo '<h7 style="display: flex; justify-content: center; margin-bottom: 40px"> <b> Garçom: ' . $_COOKIE['usuario']['nome'] . '</b> </h7>';
     if (isset($_SESSION['erro'])){
-         echo '<div class="erro">';
+         echo '<div class="erro2">';
          foreach ($_SESSION['erro'] as $erro){
             echo '<p>'. $erro . '</p>';
          }
@@ -56,63 +58,63 @@ try {
     }
     unset($_SESSION['erro']);
 
-    echo '<form action="criaficha.php" method="get" class="form">';
+    echo '<form action=' . htmlspecialchars($_SERVER['PHP_SELF']) .' method="post" class="form">';
         if ($opcao == '0-Todos'){
             echo '
-            <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-evenly"> 
+            <div style="display: flex; align-items: center; justify-content: space-evenly; margin: 0 0 40px;"> 
                 <div style="display: flex; align-items: center">
-                    <input type="radio" id="mesa" name="opcao" value="mesa" onchange="mudanome()">
+                    <input type="radio" id="mesa" name="opcao" value="mesa" onchange="mudanome()" style="width: 25px; height: 25px;">
                     <label for="opcao1">Mesa</label>
                 </div>
     
                 <div style="display: flex; align-items: center">
-                    <input type="radio" id="ficha" name="opcao" value="ficha" onchange="mudanome()">
+                    <input type="radio" id="ficha" name="opcao" value="ficha" onchange="mudanome()"style="width: 25px; height: 25px;">
                     <label for="opcao2">Ficha</label>
                 </div>
             </div>    
             <label for="mesa" id="txtinput" style="display: flex; justify-content: center">Digite o numero:</label>';
         } else if ($opcao == '1-Mesa'){
         echo '
-            <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-evenly"> 
+            <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-evenly; margin: 0 0 40px;"> 
                 <div style="display: flex; align-items: center">
                     <input type="radio" id="mesa" name="opcao" value="mesa" onchange="mudanome()" checked>
                     <label for="opcao1">Mesa</label>
                 </div>
     
                 <div style="display: flex; align-items: center">
-                    <input type="radio" id="ficha" name="opcao" value="ficha" onchange="mudanome()">
+                    <input type="radio" id="ficha" name="opcao" value="ficha" onchange="mudanome()" style="width: 25px; height: 25px;">
                     <label for="opcao2">Ficha</label>
                 </div>
             </div>    
             <label for="mesa" id="txtinput" style="display: flex; justify-content: center">Digite o numero da mesa:</label>';
     } else if ($opcao == '2-Ficha'){
         echo '
-            <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-evenly"> 
+            <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-evenly; margin: 0 0 40px;"> 
                 <div style="display: flex; align-items: center">
-                    <input type="radio" id="mesa" name="opcao" value="mesa" onchange="mudanome()">
+                    <input type="radio" id="mesa" name="opcao" value="mesa" onchange="mudanome()" style="width: 25px; height: 25px;"">
                     <label for="opcao1">Mesa</label>
                 </div>
     
                 <div style="display: flex; align-items: center">
-                    <input type="radio" id="ficha" name="opcao" value="ficha" onchange="mudanome()" checked>
+                    <input type="radio" id="ficha" name="opcao" value="ficha" onchange="mudanome()" style="width: 25px; height: 25px;" checked>
                     <label for="opcao2">Ficha</label>
                 </div>
             </div>    
             <label for="mesa" id="txtinput" style="display: flex; justify-content: center">Digite o numero da ficha:</label>';
     } else if ($opcao == '3-Somente'){
         echo '
-            <div style="display: none; flex-direction: row; align-items: center; justify-content: space-evenly"> 
+            <div style="display: none; flex-direction: row; align-items: center; justify-content: space-evenly; margin: 0 0 40px;"> 
                 <div style="display: flex; align-items: center">
-                    <input type="radio" id="mesa" name="opcao" value="mesa" onchange="mudanome()" checked>
+                    <input type="radio" id="mesa" name="opcao" value="mesa" onchange="mudanome()" checked style="width: 25px; height: 25px;">
                     <label for="opcao1">Mesa</label>
                 </div>
             </div>        
             <label for="mesa" id="txtinput" style="display: flex; justify-content: center">Digite o numero da mesa:</label>';
     } else if ($opcao == '4-Somente'){
         echo '
-            <div style="display: none; flex-direction: row; align-items: center; justify-content: space-evenly"> 
+            <div style="display: none; flex-direction: row; align-items: center; justify-content: space-evenly; margin: 0 0 40px;"> 
                 <div style="display: flex; align-items: center">
-                    <input type="radio" id="mesa" name="opcao" value="ficha" onchange="mudanome()" checked>
+                    <input type="radio" id="mesa" name="opcao" value="ficha" onchange="mudanome()" checked style="width: 25px; height: 25px;">
                     <label for="opcao1">Ficha</label>
                 </div>
             </div>        

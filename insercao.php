@@ -19,7 +19,7 @@ if (!empty($_SESSION['carrinho'])) {
 
     try {
         $mesa = $_GET['mesa'];
-        $conn = new PDO('firebird:host=PC-Gui;dbname=D:/Astracon/Dados/ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
+        $conn = new PDO('firebird:host=homepc;dbname=caminhoarquivo;charset=utf8', 'SYSDBA', 'masterkey');
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         foreach ($_SESSION['carrinho'] as $item) {
@@ -35,7 +35,11 @@ if (!empty($_SESSION['carrinho'])) {
             // Consultas SQL para obter valores necessários
             $sqlCodPro = "SELECT cod_pro FROM produto WHERE COD_PROAPP = " . $cod_pro;
             $sqlValor = "SELECT VALOR FROM produto WHERE COD_PROAPP = " . $cod_pro;
-            $sqlDocto = "select VENDABAR.docto as ID from VENDABAR  where ficha =" . $mesa . " and caixa = ''";
+            if ($_SESSION['opcao'] == 'ficha'){
+                $sqlDocto = "select VENDABAR.docto as ID from VENDABAR  where ficha =" . $mesa . " and caixa = ''";
+            } else {
+                $sqlDocto = "select VENDABAR.docto as ID from VENDABAR  where mesa =" . $mesa . " and caixa = ''";
+            }
             $sqldata = "select DATACAIXA from EMPRESA";
             $stmtCodPro = $conn->prepare($sqlCodPro);
             $stmtValor = $conn->prepare($sqlValor);
@@ -126,6 +130,7 @@ if (!empty($_SESSION['carrinho'])) {
             echo'<BR>';
         }
         unset($_SESSION['carrinho']);
+        unset($_SESSION['mesa']);
 
         echo 'Inserção no banco de dados realizada com sucesso!';
         header("Location: index.php");

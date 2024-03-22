@@ -38,15 +38,21 @@ span{
     justify-content: center;
 }
 
-.formu label{
+.inputobscria{
     font-size: 50px;
+    width: 700px;
+    height: 200px;
+}
+
+.formu label{
+    font-size: 70px;
     width: auto;
 }
 
 .formu input{
-    font-size: 30px;
-    width: 40%;
-    height: 50px;
+    font-size: 50px;
+    width: 70%;
+    height: 100px;
     border: 2px solid black;
     border-radius: 10px;
 }
@@ -104,4 +110,15 @@ body{
     background-color: #ec5858;
     color: #ffff;
     margin: 10px;
+}
+
+.btnsair{
+    height: 70px;
+    width: auto;
+    padding: 5px 3px 5px 3px;
+    font-size: 23px;
+    border-radius: 10px;
+    background-color: #ec5858;
+    color: #ffff;
+    margin-right: 15px;
 }
