@@ -31,4 +31,3 @@ Clique em abrir.</li>
 
     Pronto, o app já está no ar e você pode acessá-lo de qualquer dispositívo conectado
     na mesma internet do computador que está rodando o app.
-
