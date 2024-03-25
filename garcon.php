@@ -132,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['observacao'])) {
 <div class="btns" id="200">
     <?php
     try {
-        $conn = new PDO('firebird:host=homepc;dbname=caminhoarquivo;charset=utf8', 'SYSDBA', 'masterkey');
+        $conn = new PDO('firebird:host=PC-Gui;dbname=D:\Astracon\Dados\ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
         $sql = 'select * from GRUPOEST order by NOME';
         $stmt = $conn->query($sql);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
@@ -149,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['observacao'])) {
     ?>
     <?php
     if (empty($_SESSION['carrinho'])) {
-        echo '<h1>Não foi adicionado nada no carrinho</h1>';
+        echo '<br><h1>Não foi adicionado nada no carrinho</h1>';
     } else {
         echo '<button class="btnpedido" onclick="voltartelainicial()">Ver o que está sendo colocado no pedido</button>';
     }
@@ -167,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['observacao'])) {
     $mesa = $_SESSION['mesa'];
 
     try {
-        $conn = new PDO('firebird:host=homepc;dbname=caminhoarquivo;charset=utf8', 'SYSDBA', 'masterkey');
+        $conn = new PDO('firebird:host=PC-Gui;dbname=D:\Astracon\Dados\ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
 
         if ($_SESSION['opcao'] == 'ficha'){
             $sql = "SELECT produto.cod_proapp AS PRODUTO, produto.descricao AS NOME, produto.descricaonota AS DESCRICAO, produto.valor AS PRECO, PRODMOVBAR.quant AS QUANTIDADE, PRODMOVBAR.obs AS OBSERVACAO, PRODMOVBAR.codigo AS ID FROM produto
@@ -225,7 +225,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['observacao'])) {
 </div>
 <!-- Mostra as divs de cada COD_GRUEST -->
 <?php
-$conn = new PDO('firebird:host=homepc;dbname=caminhoarquivo;charset=utf8', 'SYSDBA', 'masterkey');
+$conn = new PDO('firebird:host=PC-Gui;dbname=D:\Astracon\Dados\ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
 $sql = "select COD_PROAPP, DESCRICAO, COD_GRUEST, VALOR from produto where COD_GRUEST is not null and valor is not null and cod_pro is not null and descricao is not null";
 $stmt2 = $conn->query($sql);
 $produtosAgrupados = array();

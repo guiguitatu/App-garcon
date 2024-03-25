@@ -2,7 +2,6 @@
 session_start();
 include('trocanome.php');
 date_default_timezone_set('America/Sao_Paulo');
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $garcon = $_POST['garcon'] ?? '';
     $senha = $_POST['senha'];
@@ -22,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $ps = $stmt->fetchColumn();
             $cod = $stmtcod->fetchColumn();
             if ($ps == $senha) {
+                $_SESSION['senha'] = $senha;
                 $garconarray = array(
                     'codido' => $cod,
                     'nome' => $garcon
@@ -73,6 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     foreach ($garcons as $garcon) {
                         echo "<option value='{$garcon['NOMEREP']}'>{$garcon['NOMEREP']}</option>";
                     }
+                    $conn = null;
                     ?>
                 </select>
             </div>

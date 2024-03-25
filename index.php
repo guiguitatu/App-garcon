@@ -1,10 +1,6 @@
 <?php
-include('trocanome.php');
 session_start();
-if (!$_COOKIE['usuario']){
-    header("Location: login.php");
-}
-
+include('trocanome.php');
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(isset($_POST['opcao'])){
         if($_POST['opcao'] == 'mesa'){
@@ -21,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 try {
-    $conn = new PDO('firebird:host=homepc;dbname=caminhoarquivo;charset=utf8', 'SYSDBA', 'masterkey');
+    $conn = new PDO('firebird:host=PC-Gui;dbname=D:\Astracon\Dados\ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sql = "select TIPOABERT from empresa where TIPOABERT like '0%' or TIPOABERT like '1%'  or TIPOABERT like '2%'  or TIPOABERT like '3%'  or TIPOABERT like '4%'";
     $stmt = $conn->prepare($sql);

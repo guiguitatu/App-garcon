@@ -1,5 +1,6 @@
 <?php
 session_start();
+include('trocanome.php');
 if (!isset($_SESSION['mesa'])){
     header('location: index.php');
 }
@@ -24,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $mesa != null){
     $numeromesa = intval($_SESSION["mesa"]);
 
     try {
-        $conn = new PDO('firebird:host=homepc;dbname=caminhoarquivo;charset=utf8', 'SYSDBA', 'masterkey');
+        $conn = new PDO('firebird:host=PC-Gui;dbname=D:\Astracon\Dados\ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
         $sqldata = "select DATACAIXA from EMPRESA";
         $stmtdata = $conn->prepare($sqldata);
         $stmtdata->execute();
@@ -69,7 +70,7 @@ values
  */
 try {
     $numeromesa = $_SESSION['mesa'];
-    $conn = new PDO('firebird:host=homepc;dbname=caminhoarquivo;charset=utf8', 'SYSDBA', 'masterkey');
+    $conn = new PDO('firebird:host=PC-Gui;dbname=D:\Astracon\Dados\ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
     if ($_SESSION['opcao'] == 'ficha') {
         $sqlficha = "SELECT ficha FROM vendabar WHERE FICHA = $numeromesa AND (CAIXA='' or CAIXA is NULL) AND (SITUACAO='' or SITUACAO is NULL) AND (BLOQUEADA = '' OR BLOQUEADA IS NULL)";
         $sqlbloqueada = "SELECT ficha FROM vendabar WHERE FICHA = $numeromesa AND (CAIXA='' or CAIXA is NULL) AND (SITUACAO='' or SITUACAO is NULL) AND BLOQUEADA = 'S'";
