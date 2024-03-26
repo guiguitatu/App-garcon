@@ -11,8 +11,21 @@ if ($_SERVER['REQUEST_URI'] == '/login') {
     exit;
 }
 
+$arquivos = array('login.php', 'garcon.php', 'criaficha.php', 'insercao.php', 'index.php');
+
+$txtantigo = 'firebird:host=nomepc;dbname=caminhoarquivo;charset=utf8';
+//trocar essa linha de baixo:
+$txtnovo = 'firebird:host=nomedopc;dbname=caminhoarquivoFDBnosistema;charset=utf8';
+
+foreach ($arquivos as $arquivo) {
+    $cont = file_get_contents($arquivo);
+
+    $newcont = str_replace($txtantigo, $txtnovo, $cont);
+
+    file_put_contents($arquivo, $newcont);
+}
+
 if (!$_COOKIE['token']){
-    unset($_SESSION['senha']);
     function generateToken($length): string
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -33,7 +46,8 @@ if (!$_COOKIE['token']){
     exit();
 }else {
     try {
-        $conn = new PDO('firebird:host=PC-Gui;dbname=D:\Astracon\Dados\ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
+        //trocar essa linha de baixo:
+        $conn = new PDO('firebird:host=nomedopc;dbname=caminhoarquivoFDBnosistema;charset=utf8', 'SYSDBA', 'masterkey');
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $e) {
         echo "erro de conexão: " . $e->getMessage();
@@ -59,16 +73,3 @@ if (!$_COOKIE['token']){
         echo "Erro na consulta" . $e->getMessage();
     }
 }
-
-$arquivos = array('login.php', 'garcon.php', 'criaficha.php', 'insercao.php', 'index.php', 'trocanome.php');
-
-$txtantigo = 'firebird:host=PC-Gui;dbname=D:\Astracon\Dados\ASTRABAR.FDB;charset=utf8';
-$txtnovo = 'firebird:host=PC-Gui;dbname=D:\Astracon\Dados\ASTRABAR.FDB;charset=utf8';
-
-foreach ($arquivos as $arquivo) {
-    $cont = file_get_contents($arquivo);
-
-    $newcont = str_replace($txtantigo, $txtnovo, $cont);
-
-    file_put_contents($arquivo, $newcont);
-};

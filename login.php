@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['erro'] = ["Garçom não selecionado"];
     } else {
         try {
-            $conn = new PDO('firebird:host=PC-Gui;dbname=D:/Astracon/Dados/ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
+            $conn = new PDO('firebird:host=nomepc;dbname=caminhoarquivo;charset=utf8', 'SYSDBA', 'masterkey');
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $sql = "SELECT PS from REPRESENTANTE where NOMEREP = '$garcon'";
             $sqlcod = "SELECT COD_REP from REPRESENTANTE where NOMEREP = '$garcon'";
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <select name="garcon" id="garcon">
                     <option value="">Selecione um garçom</option>
                     <?php
-                    $conn = new PDO('firebird:host=PC-Gui;dbname=D:/Astracon/Dados/ASTRABAR.FDB;charset=utf8', 'SYSDBA', 'masterkey');
+                    $conn = new PDO('firebird:host=nomepc;dbname=caminhoarquivo;charset=utf8', 'SYSDBA', 'masterkey');
                     $stmt = $conn->query('SELECT NOMEREP from REPRESENTANTE');
                     $garcons = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     foreach ($garcons as $garcon) {
