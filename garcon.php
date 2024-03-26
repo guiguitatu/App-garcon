@@ -3,7 +3,7 @@ session_start();
 include('trocanome.php');
 
 if ($_SESSION['mesa'] == null or $_SESSION['mesa'] == ''){
-    header('location: index.php');
+
 }
 if ($_COOKIE['usuario']) {
     $cod = $_COOKIE['usuario']['codido'];

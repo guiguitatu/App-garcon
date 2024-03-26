@@ -1,23 +1,5 @@
 <?php
 session_start();
-
-function generateToken($length) {
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $token = '';
-    $maxIndex = strlen($characters) - 1;
-
-    for ($i = 0; $i < $length; $i++) {
-        $randomIndex = mt_rand(0, $maxIndex);
-        $token .= $characters[$randomIndex];
-    }
-
-    return $token;
-}
-
-if (!$_COOKIE['token']){
-    setcookie('token', generateToken(10), time() + 60 * 60 * 24 * 7 * 4 * 12);
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,16 +22,13 @@ if (!$_COOKIE['token']){
     </div>
 </header>
 
+<div style="display: flex; flex-direction: column; align-items:center; width: 100vw">
+<h5>Dispositivo não habilitado</h5> <br>
+<h5>Entre em contato com o responsável do estabelecimento informando o token abaixo para habilitação do dispositivo.</h5> <br>
+<h5> Token:  <?php echo $_COOKIE['token']?></h5>
 
 
-<?php
-if (isset($_SESSION['teste'])){
-    echo '<h1>Porra</h1>';
-}
-unset($_SESSION['teste']);
-echo '<h1>' . $_COOKIE['token'] . $_SESSION['teste'] .'</h1>' ?>
-
-
+</div>
 
 </body>
 </html>

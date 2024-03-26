@@ -14,6 +14,16 @@ h1{
     margin: 0;
 }
 
+h5{
+    display: flex;
+    width: 80vw;
+    font-size: 45px;
+    color: black;
+    margin: 50px 0 0 0;
+    justify-content: center;
+    text-align: justify;
+}
+
 h8{
     font-size: 100px;
 }

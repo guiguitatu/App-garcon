@@ -1,8 +1,3 @@
 RewriteEngine on
 RewriteCond %{SERVER_PORT} !^3030$
 RewriteRule ^(.*)$ http://192.168.1.38:3030/$1 [R,L]
-
-RewriteRule ^login$ /login.php [L]
-RewriteRule ^garcon$ /garcon.php [L]
-RewriteRule ^criaficha$ /criaficha.php [L]
-RewriteRule ^index$ /index.php [L]
