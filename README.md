@@ -1,5 +1,10 @@
 # App-garcon
 
+>> Antes da instalação do app, é necessário configurar o ambiente para ele funcionar. <br> Para isso você deve:
+
+<li>Extrair a pasta compactada <b>php.zip</b> dentro da pasta do app para o ' C:/ '</li>
+<li> Copiar o arquivo fclient.dll para a pasta ' C:/Windows/System32 '</li><br>
+
 >>    Para a instalação é preciso seguir esses passos:
 
 <li> <b>Verificar o endereço de ip do computador (Se ele não estiver fixo, fixar ele)</b></li>
