@@ -41,10 +41,7 @@ if (!$_COOKIE['token']){
     }
 
     setcookie('token', generateToken(10), time() + 60 * 60 * 24 * 7 * 4 * 12);
-}if (!$_COOKIE['usuario']){
-    header("Location: login.php");
-    exit();
-}else {
+} else {
     try {
         //trocar essa linha de baixo:
         $conn = new PDO('firebird:host=nomedopc;dbname=caminhoarquivoFDBnosistema;charset=utf8', 'SYSDBA', 'masterkey');
