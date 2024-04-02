@@ -3,7 +3,7 @@
 >> Antes da instalação do app, é necessário configurar o ambiente para ele funcionar. <br> Para isso você deve:
 
 <li>Criar uma pasta dentro da pasta "Astracon" chamada appgarcom.</li>
-<li>Descompactar o conteúdo da pasta App-garcon-xx.xx.xx.zip para a pasta anteriormente criada.</li>
+<li>Descompactar o conteúdo da pasta App-garcon-xx.xx.xx.zip para a pasta anteriormente criada. </li>
 <li>Extrair por inteiro a pasta compactada <b>php.zip</b> que está dentro da pasta do app para o disco local C ' C:/ '</li>
 <li>Copiar o arquivo FBCLIENT.dll para a pasta ' <b>C:/Windows/System32 </b>'</li><br>
 

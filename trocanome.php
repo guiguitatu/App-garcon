@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_URI'] == '/login') {
 
 $arquivos = array('index.php', 'login.php', 'garcon.php', 'criaficha.php', 'insercao.php');
 
+
 $txtantigo = 'firebird:host=nomepc;dbname=caminhoarquivoFDBnosistema;charset=utf8';
 //trocar essa linha de baixo:
 $txtnovo = 'firebird:host=nomedopc;dbname=caminhoarquivoFDBnosistema;charset=utf8';

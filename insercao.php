@@ -20,6 +20,8 @@ if (!empty($_SESSION['carrinho'])) {
     try {
         $mesa = $_GET['mesa'];
         $conn = new PDO('firebird:host=nomedopc;dbname=caminhoarquivoFDBnosistema;charset=utf8', 'SYSDBA', 'masterkey');
+
+
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         foreach ($_SESSION['carrinho'] as $item) {
