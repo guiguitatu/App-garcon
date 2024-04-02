@@ -13,9 +13,9 @@ if ($_SERVER['REQUEST_URI'] == '/login') {
 
 $arquivos = array('index.php', 'login.php', 'garcon.php', 'criaficha.php', 'insercao.php');
 
-$txtnovo = 'firebird:host=nomepc;dbname=caminhoarquivoFDBnosistema;charset=utf8';
+$txtantigo = 'firebird:host=nomepc;dbname=caminhoarquivoFDBnosistema;charset=utf8';
 //trocar essa linha de baixo:
-$txtantigo = 'firebird:host=PC_GUI;dbname=D:/Astracon/Dados/ASTRABAR.fdb;charset=utf8';
+$txtnovo = 'firebird:host=nomedopc;dbname=caminhoarquivoFDBnosistema;charset=utf8';
 
 foreach ($arquivos as $arquivo) {
     $cont = file_get_contents($arquivo);
