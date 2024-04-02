@@ -1,16 +1,33 @@
 # App-garcom
 
->> Antes da instalação do app, é necessário configurar o ambiente para ele funcionar. <br> Para isso você deve:
+<h4>Para melhor entendimento vamos ao entendimento do manual.</h4><br>
+
+Isso é um passo a seguir:
+<li>Passo</li>
+
+Isso é uma seção:
+> Seção
+
+
+Isso é uma Observação:
+
+>> Observação
+
+<br>
+
+>Agora, vamos para o manual 
+
+<br>
+
+> Antes da instalação do app, é necessário configurar o ambiente para ele funcionar. <br> Para isso você deve:
 
 <li>Criar uma pasta dentro da pasta "Astracon" chamada appgarcom.</li>
-<li>Descompactar o conteúdo da pasta App-garcon-xx.xx.xx.zip para a pasta anteriormente criada. </li>
+<li>Descompactar a pasta App-garcon-xx.xx.xx.zip para a pasta anteriormente criada. </li>
 <li>Extrair por inteiro a pasta compactada <b>php.zip</b> que está dentro da pasta do app para o disco local C ' C:/ '</li>
 <li>Copiar o arquivo FBCLIENT.dll para a pasta ' <b>C:/Windows/System32 </b>'</li><br>
 
->>    Para a instalação é preciso seguir esses passos:
+<li><b>Se o IP do SERVIDOR estiver fixo, ir para a próxima seção, se não seguir os passos abaixo:</b></li>
 
-<li> <b>Verificar o endereço de ip do computador (Se ele não estiver fixo, fixar ele)</b></li>
-<li><b>Se o IP do computador estiver fixo, ir para depois das imagens.</b></li>
 <li> Para fixar o ip vá em configurações -> Rede e Internet</li> <br> 
 <img src="./imgs/Readme/rede.png" style="width: 800px; margin-left: 50px"> <br>
 <li> Em Status -> Propriedades</li> <br>
@@ -34,12 +51,18 @@ Clique em abrir.</li>
 <img src="./imgs/Readme/ip42.png"><br>
 <li>Depois clique em ok na janela de propriedade e feche a janela do adaptador</li><br>
 <img src="./imgs/Readme/ok.png">
+
+> Após o preparo do ambiente, fazer os seguintes passos para a instalação:
+
+<li>Verificar o nome do computador SERVIDOR e colocar um nome fácil, pois vai ser usado para configuração.</li><br>
+
+
 <li> Depois de fechado, clicar com o botão direito em <b>.htaccess</b> e clicar em <b>Abrir com</b> e escolher o bloco de notas, depois trocar o texto <b>ipcomputador</b> para o ip do computador fixado..</li>
 
->Você pode abrir os outros arquivos clicando com o botão direito e em <b>Abrir com...</b>, selecionando o bloco de notas, isso serve para os próximos arquivos que possam ser abertos mais para frente.
+>>Você pode abrir os outros arquivos clicando com o botão direito e em <b>Abrir com...</b>, selecionando o bloco de notas, isso serve para os próximos arquivos que possam ser abertos mais para frente.
 <li> Procure por duas linhas iguais à essa em <b>trocanome.php</b>: 
 
->//Troque essa linha de baixo:
+>>//Troque essa linha de baixo:
 
 <li> Troque a linha de baixo delas os textos "nomedopc", que é o nome do computador, e "caminhoarquivoFDBnosistema" para o arquivo do arquivo do FDB no computador, o mesmo que acessa o sistema.</li>
 
@@ -47,23 +70,23 @@ Clique em abrir.</li>
 
 <li> ir para o arquivo <b>serv.ps1</b> e trocar "caminhoparaapastadoserv" para o caminho da pasta que está o app, no caso a pasta 'appgarcom', e "ipdocomputador" para o ip do computador fixado.</li>
 
-<br><br>
+<br>
 
->>    terminado a instalação, agora: <br><br>Para fazer o app rodar você deve:
+>    terminado a instalação, agora: <br><br>Para fazer o app rodar você deve:
 
 <li> Clicar com o botão direito no arquivo, ou atalho, do arquivo serv.ps1 e clicar em <b>executar com o powershell</b>, assim vai abrir uma janela azul ou preta, que é a janela de controle do app, você pode minimizar essa página.</li><br>
 <img src="./imgs/Readme/abrirpower.png">
 
-> Ele vai abrir assim: <br> <img src="./imgs/Readme/power.png">
+>> Ele vai abrir assim: <br> <img src="./imgs/Readme/power.png">
 
->não fechar essa janela, se fechar ela, o app não ai rodar.
+>>não fechar essa janela, se fechar ela, o app não ai rodar.
 
 <br><br>
 
->>    Para acessar o app você deve:
+>    Para acessar o app você deve:
 <li>Entrar em um navegador de sua preferência e colocar o ip do computador previamente configurado + ":3030"</li>
 
->Exemplo, se o IP do computador for: 192.168.1.50 colocar no navegador: <br> 192.168.1.50:3030
+>>Exemplo, se o IP do computador for: 192.168.1.50 colocar no navegador: <br> 192.168.1.50:3030
 
->>  Pronto, o app já está no ar e você pode acessá-lo de qualquer dispositívo conectado
+>  Pronto, o app já está no ar e você pode acessá-lo de qualquer dispositívo conectado
 na mesma internet do computador que está rodando o app.
