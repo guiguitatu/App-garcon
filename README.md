@@ -50,14 +50,15 @@ Clique em abrir.</li>
 <li> Depois de aberto clicar em <b>Usar o seguinte endereço de ip</b> e colcoar o ip anotado anteriormente, porém, no lugar da bola vermelha, colocar .200 no campo <b>Endereço de ip</b>, depois de colocado é só apertar a tecla <b>TAB</b> no teclado e apertar em ok, ele vai preencher automáticamente o campo de baixo.</li><br>
 <img src="./imgs/Readme/ip42.png"><br>
 <li>Depois clique em ok na janela de propriedade e feche a janela do adaptador</li><br>
-<img src="./imgs/Readme/ok.png">
+<img src="./imgs/Readme/ok.png"><br><br><br>
 
 > Após o preparo do ambiente, fazer os seguintes passos para a instalação:
 
 <li>Verificar o nome do computador SERVIDOR e colocar um nome fácil, pois vai ser usado para configuração.</li><br>
 
-
-<li> Depois de fechado, clicar com o botão direito em <b>.htaccess</b> e clicar em <b>Abrir com</b> e escolher o bloco de notas, depois trocar o texto <b>ipcomputador</b> para o ip do computador fixado..</li>
+<li>Entrar na pasta ' <b>C:/Astracon/appgarcom </b>'</li>
+<li> Clicar com o botão direito em <b>.htaccess</b> e clicar em <b>Abrir com</b> e escolher o bloco de notas.
+<li> Depois trocar o texto <b>ipcomputador</b> para o ip do computador.</li>
 
 >>Você pode abrir os outros arquivos clicando com o botão direito e em <b>Abrir com...</b>, selecionando o bloco de notas, isso serve para os próximos arquivos que possam ser abertos mais para frente.
 <li> Procure por duas linhas iguais à essa em <b>trocanome.php</b>: 
