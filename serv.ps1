@@ -1,2 +1,2 @@
-cd caminhoparaapastadoserv
-php -S ipdocomputador:3030
+cd C:\Users\Guilherme\Documents\Astra\
+php -S 192.168.1.38:3030

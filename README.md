@@ -1,9 +1,9 @@
-# App-garcon
+# App-garcom
 
 >> Antes da instalação do app, é necessário configurar o ambiente para ele funcionar. <br> Para isso você deve:
 
-<li>Criar uma pasta dentro da pasta "Atracon" chamada appgarcon.</li>
-<li>Descompactar o conteúdo da pasta da última versão do app para a pasta anteriormente criada.</li>
+<li>Criar uma pasta dentro da pasta "Astracon" chamada appgarcom.</li>
+<li>Descompactar o conteúdo da pasta App-garcon-xx.xx.xx.zip para a pasta anteriormente criada.</li>
 <li>Extrair por inteiro a pasta compactada <b>php.zip</b> que está dentro da pasta do app para o disco local C ' C:/ '</li>
 <li>Copiar o arquivo FBCLIENT.dll para a pasta ' <b>C:/Windows/System32 </b>'</li><br>
 
@@ -35,21 +35,21 @@ Clique em abrir.</li>
 <li>Depois clique em ok na janela de propriedade e feche a janela do adaptador</li><br>
 <img src="./imgs/Readme/ok.png">
 <li> Depois de fechado, clicar com o botão direito em <b>.htaccess</b> e clicar em <b>Abrir com</b> e escolher o bloco de notas, depois trocar o texto <b>ipcomputador</b> para o ip do computador fixado..</li>
- 
+
 >Você pode abrir os outros arquivos clicando com o botão direito e em <b>Abrir com...</b>, selecionando o bloco de notas, isso serve para os próximos arquivos que possam ser abertos mais para frente.
 <li> Procure por duas linhas iguais à essa em <b>trocanome.php</b>: 
 
 >//Troque essa linha de baixo:
- 
+
 <li> Troque a linha de baixo delas os textos "nomedopc", que é o nome do computador, e "caminhoarquivoFDBnosistema" para o arquivo do arquivo do FDB no computador, o mesmo que acessa o sistema.</li>
 
 > exemplo, se o nome do computador for 'Servidor' e o arquivo FDB estiver na pasta 'C:/Astracon/Dados', irá ficar assim: <br> firebird:host=Servidor;dbname=C:/Astracon/Dados/NOMEDOSEUARQUIVOFDB.fdb;charset=utf8
 
-<li> ir para o arquivo <b>serv.ps1</b> e trocar "caminhoparaapastadoserv" para o caminho da pasta que está o app, no caso a pasta 'appgarcon', e "ipdocomputador" para o ip do computador fixado.</li>
+<li> ir para o arquivo <b>serv.ps1</b> e trocar "caminhoparaapastadoserv" para o caminho da pasta que está o app, no caso a pasta 'appgarcom', e "ipdocomputador" para o ip do computador fixado.</li>
 
 <br><br>
 
- >>    terminado a instalação, agora: <br><br>Para fazer o app rodar você deve:
+>>    terminado a instalação, agora: <br><br>Para fazer o app rodar você deve:
 
 <li> Clicar com o botão direito no arquivo, ou atalho, do arquivo serv.ps1 e clicar em <b>executar com o powershell</b>, assim vai abrir uma janela azul ou preta, que é a janela de controle do app, você pode minimizar essa página.</li><br>
 <img src="./imgs/Readme/abrirpower.png">
@@ -63,7 +63,7 @@ Clique em abrir.</li>
 >>    Para acessar o app você deve:
 <li>Entrar em um navegador de sua preferência e colocar o ip do computador previamente configurado + ":3030"</li>
 
->Exemplo, se o IP do computador for: 192.168.1.50 colocar no navegador: <br> 192.168.1.50:3030 
+>Exemplo, se o IP do computador for: 192.168.1.50 colocar no navegador: <br> 192.168.1.50:3030
 
 >>  Pronto, o app já está no ar e você pode acessá-lo de qualquer dispositívo conectado
-    na mesma internet do computador que está rodando o app.
+na mesma internet do computador que está rodando o app.

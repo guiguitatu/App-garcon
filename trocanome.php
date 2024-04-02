@@ -11,11 +11,11 @@ if ($_SERVER['REQUEST_URI'] == '/login') {
     exit;
 }
 
-$arquivos = array('login.php', 'garcon.php', 'criaficha.php', 'insercao.php', 'index.php');
+$arquivos = array('index.php', 'login.php', 'garcon.php', 'criaficha.php', 'insercao.php');
 
-$txtantigo = 'firebird:host=nomepc;dbname=caminhoarquivo;charset=utf8';
+$txtnovo = 'firebird:host=nomepc;dbname=caminhoarquivoFDBnosistema;charset=utf8';
 //trocar essa linha de baixo:
-$txtnovo = 'firebird:host=nomedopc;dbname=caminhoarquivoFDBnosistema;charset=utf8';
+$txtantigo = 'firebird:host=PC_GUI;dbname=D:/Astracon/Dados/ASTRABAR.fdb;charset=utf8';
 
 foreach ($arquivos as $arquivo) {
     $cont = file_get_contents($arquivo);
@@ -44,7 +44,7 @@ if (!$_COOKIE['token']){
 } else {
     try {
         //trocar essa linha de baixo:
-        $conn = new PDO('firebird:host=nomedopc;dbname=caminhoarquivoFDBnosistema;charset=utf8', 'SYSDBA', 'masterkey');
+        $conn = new PDO('firebird:host=PC_GUI;dbname=D:/Astracon/Dados/ASTRABAR.fdb;charset=utf8', 'SYSDBA', 'masterkey');
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $e) {
         echo "erro de conexão: " . $e->getMessage();
