@@ -17,12 +17,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 try {
-    $conn = new PDO('firebird:host=nomepc;dbname=caminhoarquivoFDBnosistema;charset=utf8', 'SYSDBA', 'masterkey');
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "select TIPOABERT from empresa where TIPOABERT like '0%' or TIPOABERT like '1%'  or TIPOABERT like '2%'  or TIPOABERT like '3%'  or TIPOABERT like '4%'";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
-    $opcao = $stmt->fetchColumn();
+    if ($_SESSION['tudocerto']) {
+        $conn = new PDO('firebird:host=nomepc;dbname=caminhoarquivoFDBnosistema;charset=utf8', 'SYSDBA', 'masterkey');
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "select TIPOABERT from empresa where TIPOABERT like '0%' or TIPOABERT like '1%'  or TIPOABERT like '2%'  or TIPOABERT like '3%'  or TIPOABERT like '4%'";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $opcao = $stmt->fetchColumn();
+    } else {
+        $_SESSION['erro'] = "Atualize a página";
+    }
 } catch (PDOException $e){
     echo 'Erro de conexão: ' . $e;
 }

@@ -43,7 +43,7 @@ Clique em abrir.</li>
 <img src="./imgs/Readme/cmd2.png" style="width: 700px"><br>
 <li> Depois de anotado o número ir emConfigurações -> Rede -> Status e clicar em <b>Alterar opções do adaptador</b></li><br>
 <img src="./imgs/Readme/adap.png" style="width: 500px"><br>
-<li>Clicando nele vai aparecer as opções de internet que o Computador está utilizando, clicar com o botão direito na opção que o computador estiver utilizando e clicar em <b>Propriedades</b></li><br>
+<li>Clicando nele vai aparecer as opções de internet que o SERVIDOR está utilizando, clicar com o botão direito na opção que o SERVIDOR estiver utilizando e clicar em <b>Propriedades</b></li><br>
 <img src="./imgs/Readme/prop.png">
 <li> Depois de clicado em Propriedades, procurar na tela o <b>Protocolo de IP versão 4</b> e clicar duas vezes nele.</li><br>
 <img src="./imgs/Readme/ip4.png">
@@ -58,18 +58,18 @@ Clique em abrir.</li>
 
 <li>Entrar na pasta ' <b>C:/Astracon/appgarcom </b>'</li>
 <li> Clicar com o botão direito em <b>.htaccess</b> e clicar em <b>Abrir com</b> e escolher o bloco de notas.
-<li> Depois trocar o texto <b>ipcomputador</b> para o ip do computador.</li>
+<li> Depois trocar o texto <b>ipcomputador</b> para o ip do SERVIDOR.</li>
 
 >>Você pode abrir os outros arquivos clicando com o botão direito e em <b>Abrir com...</b>, selecionando o bloco de notas, isso serve para os próximos arquivos que possam ser abertos mais para frente.
-<li> Procure por duas linhas iguais à essa em <b>trocanome.php</b>: 
+<li> Abrir com o bloco de notas o arquivo <b>trocanome.php</b> e procure por duas linhas iguais à essa: 
 
 >>//Troque essa linha de baixo:
 
-<li> Troque a linha de baixo delas os textos "nomedopc", que é o nome do computador, e "caminhoarquivoFDBnosistema" para o arquivo do arquivo do FDB no computador, o mesmo que acessa o sistema.</li>
+<li> Troque a linha de baixo delas os textos "nomedopc", que é o nome do SERVIDOR, e "caminhoarquivoFDBnosistema" para o arquivo do arquivo do FDB no SERVIDOR e salvar o arquivo.</li>
 
 > exemplo, se o nome do computador for 'Servidor' e o arquivo FDB estiver na pasta 'C:/Astracon/Dados', irá ficar assim: <br> firebird:host=Servidor;dbname=C:/Astracon/Dados/NOMEDOSEUARQUIVOFDB.fdb;charset=utf8
 
-<li> ir para o arquivo <b>serv.ps1</b> e trocar "caminhoparaapastadoserv" para o caminho da pasta que está o app, no caso a pasta 'appgarcom', e "ipdocomputador" para o ip do computador fixado.</li>
+<li> Abrir com o bloco de notas o arquivo <b>serv.ps1</b> e trocar "ipdocomputador" para o ip do SERVIDOR.</li>
 
 <br>
 
@@ -85,9 +85,9 @@ Clique em abrir.</li>
 <br><br>
 
 >    Para acessar o app você deve:
-<li>Entrar em um navegador de sua preferência e colocar o ip do computador previamente configurado + ":3030"</li>
+<li>Entrar em um navegador de sua preferência e colocar o ip do SERVIDOR previamente configurado + ":3030"</li>
 
->>Exemplo, se o IP do computador for: 192.168.1.50 colocar no navegador: <br> 192.168.1.50:3030
+>>Exemplo, se o IP do SERVIDOR for: 192.168.1.50 colocar no navegador: <br> 192.168.1.50:3030
 
 >  Pronto, o app já está no ar e você pode acessá-lo de qualquer dispositívo conectado
-na mesma internet do computador que está rodando o app.
+na mesma internet do SERVIDOR que está rodando o app.
