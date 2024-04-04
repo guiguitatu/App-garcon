@@ -29,7 +29,7 @@ foreach ($arquivos as $arquivo) {
 if (!$_COOKIE['token']){
     function generateToken($length): string
     {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $characters = '123456789abcdefghijklmnpqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ';
         $token = '';
         $maxIndex = strlen($characters) - 1;
 
