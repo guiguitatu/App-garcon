@@ -1,6 +1,19 @@
 <?php
 session_start();
 include('trocanome.php');
+if ($_COOKIE['usuario']) {
+    $cod = $_COOKIE['usuario']['codido'];
+    $gar = $_COOKIE['usuario']['nome'];
+    $gararray = array(
+        'codido' => $cod,
+        'garcon' => $gar
+    );
+    $_SESSION['usuario'] = $gararray;
+    $codgarcon = $_SESSION['usuario']['codido'];
+    $garcon = $_SESSION['usuario']['garcon'];
+} else {
+    header("Location: login.php");
+}
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(isset($_POST['opcao'])){
         if($_POST['opcao'] == 'mesa'){
@@ -48,7 +61,7 @@ try {
 <body>
 <div class="main">
     <?php
-    echo '<h7 style="display: flex; justify-content: center; margin-bottom: 40px"> <b> Garçom: ' . $_COOKIE['usuario']['nome'] . '</b> </h7>';
+    echo '<h7 style="display: flex; justify-content: center; margin-bottom: 40px"> <b> Garçom: ' . $garcon . '</b> </h7>';
     if (isset($_SESSION['erro'])){
          echo '<div class="erro2">';
          foreach ($_SESSION['erro'] as $erro){
