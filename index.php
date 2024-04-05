@@ -14,6 +14,7 @@ if ($_COOKIE['usuario']) {
 } else {
     header("Location: login.php");
 }
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(isset($_POST['opcao'])){
         if($_POST['opcao'] == 'mesa'){
