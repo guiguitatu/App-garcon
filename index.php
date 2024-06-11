@@ -1,16 +1,13 @@
 <?php
 session_start();
 include('trocanome.php');
+unset($_SESSION['']);
 if ($_COOKIE['usuario']) {
-    $cod = $_COOKIE['usuario']['codido'];
-    $gar = $_COOKIE['usuario']['nome'];
-    $gararray = array(
-        'codido' => $cod,
-        'garcon' => $gar
-    );
-    $_SESSION['usuario'] = $gararray;
-    $codgarcon = $_SESSION['usuario']['codido'];
-    $garcon = $_SESSION['usuario']['garcon'];
+    if ($_COOKIE['usuario']['nome'] == null or $_COOKIE['usuario']['nome'] == '' ){
+        header("Location: login.php");
+    }
+    $codgarcon = $_COOKIE['usuario']['codido'];
+    $garcon = $_COOKIE['usuario']['nome'];
 } else {
     header("Location: login.php");
 }
@@ -29,23 +26,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['erro'][] = "Opção de ficha/mesa não selecionada";
     }
 }
-
-try {
-    if ($_SESSION['tudocerto']) {
-        $conn = new PDO('firebird:host=nomepc;dbname=caminhoarquivoFDBnosistema;charset=utf8', 'SYSDBA', 'masterkey');
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "select TIPOABERT from empresa where TIPOABERT like '0%' or TIPOABERT like '1%'  or TIPOABERT like '2%'  or TIPOABERT like '3%'  or TIPOABERT like '4%'";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $opcao = $stmt->fetchColumn();
-    } else {
-        $_SESSION['erro'] = "Atualize a página";
-    }
-} catch (PDOException $e){
-    echo 'Erro de conexão: ' . $e;
-}
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -57,18 +37,47 @@ try {
     <link rel="shortcut icon" href="imgs/logoastraconbranco.png" type="imagem">
     <link rel="stylesheet" href="./index.css">
 
-    <title>Formulário</title>
+    <title>Index</title>
 </head>
-<body>
+<?php
+try {
+        $conn = new PDO('firebird:host=nomedopc;dbname=caminhoarquivoFDBnosistema;charset=utf8', 'SYSDBA', 'masterkey');
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "select TIPOABERT from empresa where TIPOABERT like '0%' or TIPOABERT like '1%'  or TIPOABERT like '2%'  or TIPOABERT like '3%'  or TIPOABERT like '4%'";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $opcao = $stmt->fetchColumn();
+        echo '<body>';
+
+} catch (PDOException $e){
+    echo '<body style="justify-content: center">
+            <div style="display: flex; flex-direction: column; width: 80vw; align-items: center; justify-content: center">
+            <p><b>Não foi possível fazer a conexão com o sistema, favor clicar no botão abaixo para atualizar a página e tentar novamente.</b></p><br><br>
+               <a href="index.php"><button style="width: 50vw; height: 100px; font-size: 30px">Recarregar a página</button></a>
+          </div>';
+    die();
+}
+?>
+
+<header>
+    <div style="position: absolute; z-index: 5; right: 15px; height: 95%; align-items: center; display: flex; justify-content: center">
+        <a href="config.php"><button class="btnconfig"><img src="./imgs/config.png" style="height: 80%"/> </button></a>
+    </div>
+</header>
+<br><br>
 <div class="main">
     <?php
-    echo '<h7 style="display: flex; justify-content: center; margin-bottom: 40px"> <b> Garçom: ' . $garcon . '</b> </h7>';
+    echo ' <div style="display: flex; flex-direction: row; align-items: center; margin-bottom: 40px">
+               <h7 style="display: flex; justify-content: center;"> <b> Garçom: ' . $garcon . '</b></h7>
+               <a href="sairusuario.php" style="text-decoration: none;"> <button class="btnlimpa" style="background-color: #ec5858">Sair</button></a>
+           </div>
+         ';
     if (isset($_SESSION['erro'])){
          echo '<div class="erro2">';
          foreach ($_SESSION['erro'] as $erro){
             echo '<p>'. $erro . '</p>';
          }
-        echo '</div>';
+        echo '</div><br>';
     }
     unset($_SESSION['erro']);
 

@@ -1,18 +1,42 @@
 body{
-    min-height: 100vh;
+    min-height: 90vh;
     display: flex;
     flex-direction: column;
     background-color: #bcbcbc;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     font-size: 30px;
+    margin: 0;
 }
 
 p{
     margin: 0;
 }
 
+header{
+    position: relative;
+    top: 0;
+    margin: 0;
+    width: 100vw;
+    height: 100px;
+    background-color: #bcbcbc;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.btnsair{
+    font-size: 20px;
+    margin-top: 10px;
+    background-color: #ec5858;
+    height: 50px;
+    width: 50%;
+}
+
 .form{
+    margin-bottom: 20px;
     display: flex;
     flex-direction: column;
 }
@@ -68,6 +92,15 @@ button {
     border-radius: 10px;
     border: 2px black solid;
 }
+.btnentrar {
+    font-size: 40px;
+    font-weight: bold;
+    height: 130px;
+    width: 80%;
+    background-color: #798eff;
+    border-radius: 10px;
+    border: 2px black solid;
+}
 
 .principal{
     background-color: #ffff;
@@ -78,12 +111,26 @@ button {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 700px;
-    height: 500px;
+    width: 800px;
+    height: 800px;
+}
 
+.config{
+    background-color: #ffff;
+    border: solid 3px black;
+    border-radius: 50px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 360px;
+    height: 360px;
 }
 
 h2 {
+    display: flex;
+    justify-content: center;
     font-size: 80px;
     margin: 10px auto 5px auto;
 }
@@ -93,13 +140,26 @@ option {
     font-weight: bold;
 }
 
+.conteudo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 90%;
+}
+
 .login {
     display: flex;
     flex-direction: column;
-    height: 300px;
+    height: 70%;
+    width: 90%;
+    align-items: center;
+    justify-content: center;
 }
 
 .input {
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -107,29 +167,50 @@ option {
 }
 
 .login label {
-    font-size: 50px;
+    font-size: 70px;
 }
 
 .login select {
-    width: 300px;
-    height: 45px;
-    font-size: 27px;
+    border: 2px solid black;
+    width: 450px;
+    height: 80px;
+    font-size: 45px;
 }
 .login input {
-    width: 300px;
-    height: 45px;
-    font-size: 27px;
+    border: 2px solid black;
+    width: 443px;
+    height: 75px;
+    font-size: 45px;
+}
+
+.garcon {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+}
+
+.btnconfig{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    height: 50px;
+    width: 50px;
+    background-color: #ffff;
 }
 
 .erro {
+    padding: 10px;
     display: grid;
     justify-content: center;
     align-items: center;
-    height: 60px;
+    height: 100px;
+    width: 90%;
     border-radius: 20px;
     background-color: #f8b2b7;
     color: red;
-    font-size: 30px;
+    font-size: 50px;
     font-weight: bold;
     margin-top: 10px;
 }

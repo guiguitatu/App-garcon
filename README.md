@@ -65,7 +65,7 @@ Clique em abrir.</li>
 
 >>//Troque essa linha de baixo:
 
-<li> Troque a linha de baixo delas os textos "nomedopc", que é o nome do SERVIDOR, e "caminhoarquivoFDBnosistema" para o arquivo do arquivo do FDB no SERVIDOR e salvar o arquivo.</li>
+<li> Troque a linha de baixo delas os textos "nomepc", que é o nome do SERVIDOR, e "caminhoarquivoFDBsistema" para o arquivo do arquivo do FDB no SERVIDOR e salvar o arquivo.</li>
 
 > exemplo, se o nome do computador for 'Servidor' e o arquivo FDB estiver na pasta 'C:/Astracon/Dados', irá ficar assim: <br> firebird:host=Servidor;dbname=C:/Astracon/Dados/NOMEDOSEUARQUIVOFDB.fdb;charset=utf8
 

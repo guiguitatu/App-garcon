@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $mesa != null){
     $numeromesa = intval($_SESSION["mesa"]);
 
     try {
-        $conn = new PDO('firebird:host=nomepc;dbname=caminhoarquivoFDBnosistema;charset=utf8', 'SYSDBA', 'masterkey');
+        $conn = new PDO('firebird:host=nomedopc;dbname=caminhoarquivoFDBnosistema;charset=utf8', 'SYSDBA', 'masterkey');
         $sqldata = "select DATACAIXA from EMPRESA";
         $stmtdata = $conn->prepare($sqldata);
         $stmtdata->execute();
@@ -70,7 +70,10 @@ values
  */
 try {
     $numeromesa = $_SESSION['mesa'];
-    $conn = new PDO('firebird:host=nomepc;dbname=caminhoarquivoFDBnosistema;charset=utf8', 'SYSDBA', 'masterkey');
+    if ($numeromesa == null || $numeromesa == ''){
+        header('location: index.php');
+    }
+    $conn = new PDO('firebird:host=nomedopc;dbname=caminhoarquivoFDBnosistema;charset=utf8', 'SYSDBA', 'masterkey');
 
     if ($_SESSION['opcao'] == 'ficha') {
         $sqlficha = "SELECT ficha FROM vendabar WHERE FICHA = $numeromesa AND (CAIXA='' or CAIXA is NULL) AND (SITUACAO='' or SITUACAO is NULL) AND (BLOQUEADA = '' OR BLOQUEADA IS NULL)";
@@ -114,20 +117,11 @@ try {
             echo '<h1>' . ' | Mesa: ' . $numeromesa . ' |</h1>';
         }
         echo "</header>";
-        echo '<article id="btns">';
-        if ($_SESSION['opcao'] == 'ficha') {
-            echo '<h2>Ficha não aberta ainda, abrir ficha?.</h2>';
-        } else if ($_SESSION['opcao'] == 'mesa') {
-            echo '<h2>Mesa não aberta ainda, abrir mesa?.</h2>';
-        }
-    echo '<div class="btnescolha">
-    <button class="sim" onclick="mudapagina(true)">Sim</button>
-    <button class="nao" onclick="mudapagina(false)">Não</button>
-    </div>
-    </article>
-    <div class="formu"  id="formficha" style="display: none">
-    <form method="post" style="display: flex;flex-direction: column;align-items: center; width: 95%" action="' . $_SERVER['PHP_SELF'] . '">
+        echo '
+    <div class="formu"  id="formficha">
+    <form method="post" style="display: flex;flex-direction: column;align-items: center; width: 95%" action="criaficha.php">
         <span>
+        <label>Criação da ficha: </label> <br>
         <label for="nome">Nome:</label>
         <input type="text" class="inputtxt" id="nome" name="nome" placeholder="Nome do cliente" maxlength="19"><br><br>
         </span>
@@ -142,7 +136,8 @@ try {
         <textarea id="observacao" class="inputobscria" name="observacao" rows="4" cols="100" placeholder="Observação para a ficha" maxlength="50"></textarea><br><br>
         </span>
         
-        <input type="submit" value="Enviar" class="btnenvia">
+        <input type="submit" value="Criar ficha" class="btnenvia">
+        <a href="index.php" style="text-decoration: none; width: 100vw; margin-top: 20px; display: flex; justify-content: center;"><input type="button" value="Voltar" class="btnenvia"></a>
     </form></div>';
     }
 } catch (PDOException $e) {

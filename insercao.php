@@ -2,15 +2,11 @@
 session_start();
 date_default_timezone_set('America/Sao_Paulo');
 if ($_COOKIE['usuario']) {
-    $cod = $_COOKIE['usuario']['codido'];
-    $gar = $_COOKIE['usuario']['nome'];
-    $gararray = array(
-        'codido' => $cod,
-        'garcon' => $gar
-    );
-    $_SESSION['usuario'] = $gararray;
-    $codgarcon = $_SESSION['usuario']['codido'];
-    $garcon = $_SESSION['usuario']['garcon'];
+    if ($_COOKIE['usuario']['nome'] == null or $_COOKIE['usuario']['nome'] == '' ){
+        header("Location: login.php");
+    }
+    $codgarcon = $_COOKIE['usuario']['codido'];
+    $garcon = $_COOKIE['usuario']['nome'];
 } else {
     header("Location: login.php");
 }

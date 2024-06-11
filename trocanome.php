@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 if ($_SERVER['REQUEST_URI'] == '/login') {
     header('Location: /login.php');
     exit;
@@ -11,12 +11,12 @@ if ($_SERVER['REQUEST_URI'] == '/login') {
     exit;
 }
 
-$arquivos = array('index.php', 'login.php', 'garcon.php', 'criaficha.php', 'insercao.php');
+$arquivos = array('token.php', 'index.php', 'login.php', 'garcon.php', 'criaficha.php', 'insercao.php');
 $_SESSION['tudocerto'] = true;
 
-$txtantigo = 'firebird:host=nomepc;dbname=caminhoarquivoFDBnosistema;charset=utf8';
+$txtantigo = 'firebird:host=nomedopc;dbname=caminhoarquivoFDBnosistema;charset=utf8';
 //trocar essa linha de baixo:
-$txtnovo = 'firebird:host=nomedopc;dbname=caminhoarquivoFDBnosistema;charset=utf8';
+$txtnovo = 'firebird:host=nomepc;dbname=caminhoarquivoFDBsistema;charset=utf8';
 
 foreach ($arquivos as $arquivo) {
     $cont = file_get_contents($arquivo);
@@ -64,9 +64,11 @@ if (!$_COOKIE['token']){
                 break;
             }
         }
-
-        if (!$bool) {header('location: esse.php');}
-
+        if ($_SESSION['origin'] != 'token') {
+            if (!$bool) {
+                header('location: token.php');
+            }
+        }
     } catch (PDOException $e) {
         echo "Erro na consulta" . $e->getMessage();
     }

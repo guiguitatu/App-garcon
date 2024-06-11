@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['erro'] = ["Garçom não selecionado"];
     } else {
         try {
-            $conn = new PDO('firebird:host=nomepc;dbname=caminhoarquivoFDBnosistema;charset=utf8', 'SYSDBA', 'masterkey');
+            $conn = new PDO('firebird:host=nomedopc;dbname=caminhoarquivoFDBnosistema;charset=utf8', 'SYSDBA', 'masterkey');
 
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $sql = "SELECT PS from REPRESENTANTE where NOMEREP = '$garcon'";
@@ -49,16 +49,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8" name="viewport" content="user-scalable=no">
     <link rel="stylesheet" href="index.css">
 </head>
-<body class="login">
+<body style="justify-content: center">
 <main class="principal">
     <div class="conteudo">
-        <h2> Faça seu login </h2>
+        <h2> Faça seu login </h2><br>
         <?php if ($_SESSION['erro']): ?>
             <div class="erro">
                 <?php foreach ($_SESSION['erro'] as $erro): ?>
                     <p><?= $erro ?></p>
                 <?php endforeach ?>
-            </div>
+            </div> <br>
         <?php endif;
         unset($_SESSION['erro']);
         ?>
@@ -68,21 +68,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <select name="garcon" id="garcon">
                     <option value="">Selecione um garçom</option>
                     <?php
-                    $conn = new PDO('firebird:host=nomepc;dbname=caminhoarquivoFDBnosistema;charset=utf8', 'SYSDBA', 'masterkey');
-                    $stmt = $conn->query('SELECT NOMEREP from REPRESENTANTE');
-                    $garcons = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    foreach ($garcons as $garcon) {
-                        echo "<option value='{$garcon['NOMEREP']}'>{$garcon['NOMEREP']}</option>";
+                    try {
+                        $conn = new PDO('firebird:host=nomedopc;dbname=caminhoarquivoFDBnosistema;charset=utf8', 'SYSDBA', 'masterkey');
+                        $stmt = $conn->query('SELECT NOMEREP from REPRESENTANTE');
+                        $garcons = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($garcons as $garcon) {
+                            echo "<option value='{$garcon['NOMEREP']}'>{$garcon['NOMEREP']}</option>";
+                        }
+                        $conn = null;
+                    } catch (PDOException $e) {
+                        echo "Não foi possível conectar com o banco.";
                     }
-                    $conn = null;
                     ?>
                 </select>
-            </div>
+            </div><br>
             <div class="input">
                 <label for="senha">Senha:</label>
-                <input type="password" id="senha" name="senha" required>
-            </div>
-            <button type="submit">Entrar</button>
+                <input type="password" id="senha" name="senha" required style="margin-right: 0">
+            </div><br><br>
+            <button type="submit" class="btnentrar">Entrar</button>
         </form>
     </div>
 </main>
