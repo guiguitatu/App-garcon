@@ -15,7 +15,7 @@ if (!empty($_SESSION['carrinho'])) {
 
     try {
         $mesa = $_GET['mesa'];
-        $conn = new PDO('firebird:host=nomedopc;dbname=caminhoarquivoFDBnosistema;charset=utf8', 'SYSDBA', 'masterkey');
+        $conn = new PDO('firebird:host=PC-GUI;dbname=D:/Astracon/DadosClientes/ASTRACONNFCEZEZITOS.fdb;charset=utf8', 'SYSDBA', 'masterkey');
 
 
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -34,9 +34,9 @@ if (!empty($_SESSION['carrinho'])) {
             $sqlCodPro = "SELECT cod_pro FROM produto WHERE COD_PROAPP = " . $cod_pro;
             $sqlValor = "SELECT VALOR FROM produto WHERE COD_PROAPP = " . $cod_pro;
             if ($_SESSION['opcao'] == 'ficha'){
-                $sqlDocto = "select VENDABAR.docto as ID from VENDABAR  where ficha =" . $mesa . " and caixa = ''";
+                $sqlDocto = "select VENDABAR.docto as ID from VENDABAR  where ficha =" . $mesa . " and caixa = '' and (VENDABAR.situacao <> 'C' OR VENDABAR.situacao is null)";
             } else {
-                $sqlDocto = "select VENDABAR.docto as ID from VENDABAR  where mesa =" . $mesa . " and caixa = ''";
+                $sqlDocto = "select VENDABAR.docto as ID from VENDABAR  where mesa =" . $mesa . " and caixa = '' and (VENDABAR.situacao <> 'C' OR VENDABAR.situacao is null)";
             }
             $sqldata = "select DATACAIXA from EMPRESA";
             $stmtCodPro = $conn->prepare($sqlCodPro);
@@ -44,10 +44,14 @@ if (!empty($_SESSION['carrinho'])) {
             $stmtDocto = $conn->prepare($sqlDocto);
             $stmtdata = $conn->prepare($sqldata);
 
-            $stmtCodPro->execute();
-            $stmtValor->execute();
-            $stmtDocto->execute();
-            $stmtdata->execute();
+            try {
+                $stmtCodPro->execute();
+                $stmtValor->execute();
+                $stmtDocto->execute();
+                $stmtdata->execute();
+            } catch (PDOException $e) {
+                echo "Erro de consulta pra inserção: " . $e->getMessage();
+            }
             $cod_pro = $stmtCodPro->fetchColumn();
             $valor_unit = floatval($stmtValor->fetchColumn());
             $docto = intval($stmtDocto->fetchColumn());
@@ -124,7 +128,11 @@ if (!empty($_SESSION['carrinho'])) {
             $stmtInsercao->bindParam(':hora', $hora);
             $stmtInsercao->bindParam(':observacao', $observacao);
             echo $sqlInsercao . '<br>';
-            $stmtInsercao->execute();
+            try {
+                $stmtInsercao->execute();
+            } catch (PDOException $e) {
+                echo "Erro de inserção: " . $e->getMessage();
+            }
             echo'<BR>';
         }
         unset($_SESSION['carrinho']);
@@ -135,7 +143,6 @@ if (!empty($_SESSION['carrinho'])) {
         exit;
     } catch (PDOException $e) {
         echo "Erro de conexão: " . $e->getMessage();
-    } catch (Exception $e) {
     }
 } else {
     echo 'Carrinho vazio. Nada a inserir.';

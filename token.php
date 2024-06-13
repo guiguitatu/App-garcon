@@ -4,7 +4,7 @@ $_SESSION['origin'] = 'token';
 include('trocanome.php');
 $token = $_COOKIE['token'];
     try {
-        $conn = new PDO('firebird:host=nomedopc;dbname=caminhoarquivoFDBnosistema;charset=utf8');
+        $conn = new PDO('firebird:host=PC-GUI;dbname=D:/Astracon/DadosClientes/ASTRACONNFCEZEZITOS.fdb;charset=utf8');
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $e) {
         echo 'Não foi possível conectar ao banco.';

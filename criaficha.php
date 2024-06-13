@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $mesa != null){
     $numeromesa = intval($_SESSION["mesa"]);
 
     try {
-        $conn = new PDO('firebird:host=nomedopc;dbname=caminhoarquivoFDBnosistema;charset=utf8', 'SYSDBA', 'masterkey');
+        $conn = new PDO('firebird:host=PC-GUI;dbname=D:/Astracon/DadosClientes/ASTRACONNFCEZEZITOS.fdb;charset=utf8', 'SYSDBA', 'masterkey');
         $sqldata = "select DATACAIXA from EMPRESA";
         $stmtdata = $conn->prepare($sqldata);
         $stmtdata->execute();
@@ -73,7 +73,7 @@ try {
     if ($numeromesa == null || $numeromesa == ''){
         header('location: index.php');
     }
-    $conn = new PDO('firebird:host=nomedopc;dbname=caminhoarquivoFDBnosistema;charset=utf8', 'SYSDBA', 'masterkey');
+    $conn = new PDO('firebird:host=PC-GUI;dbname=D:/Astracon/DadosClientes/ASTRACONNFCEZEZITOS.fdb;charset=utf8', 'SYSDBA', 'masterkey');
 
     if ($_SESSION['opcao'] == 'ficha') {
         $sqlficha = "SELECT ficha FROM vendabar WHERE FICHA = $numeromesa AND (CAIXA='' or CAIXA is NULL) AND (SITUACAO='' or SITUACAO is NULL) AND (BLOQUEADA = '' OR BLOQUEADA IS NULL)";

@@ -1,5 +1,5 @@
 header{
-    margin: 0;
+    margin: 0 0 10px;
     width: 100vw;
     height: 100px;
     background-color: #233873;
@@ -7,7 +7,6 @@ header{
     display: flex;
     justify-content: center;
     align-items: center;
-
 }
 
 h1{
@@ -293,6 +292,7 @@ body .btns{
     text-decoration: none;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s;
+    z-index: 1000;
 }
 
 .btn-flutuante:hover {
@@ -330,4 +330,47 @@ body .btns{
     display: flex;
     width: 100%;
     align-items: center;
+}
+
+.busca {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.inputbusca {
+    width: 80vw;
+    height: 50px;
+    font-size: 50px;
+    border: solid black 2px
+}
+
+.resultado {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 90vw;
+    max-height: 50vh; /* Limitar a altura máxima para evitar que a div cubra toda a tela */
+    overflow-y: auto; /* Adicionar barra de rolagem se necessário */
+    background-color: white; /* Fundo branco para visibilidade */
+    border: 1px solid #ccc; /* Adicionar borda */
+    padding: 10px; /* Adicionar padding para espaçamento */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adicionar sombra para destaque */
+}
+
+#search-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.botao-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px; /* Adicionar margem para separar da caixa de resultados */
 }

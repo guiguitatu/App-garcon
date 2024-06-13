@@ -1,41 +1,47 @@
 function adicionarItensCarrinho(grupoId) {
-    let formulariosProdutos = document.querySelectorAll('.product-group' + grupoId);
+    let formulariosProdutos = document.querySelectorAll('.product form');
     let itensParaCarrinho = [];
 
     formulariosProdutos.forEach(function(formulario) {
-        let quantidadeInputs = formulario.querySelectorAll('.quant');
+        let quantidadeInput = formulario.querySelector('.quant');
+        let quantidade = parseInt(quantidadeInput.value, 10);
 
-        quantidadeInputs.forEach(function(quantidadeInput) {
-            let quantidade = quantidadeInput.value;
-            if (parseInt(quantidade) > 0) {
-                let produto = quantidadeInput.closest('form').querySelector('input[name="produto"]').value;
-                let codPro = quantidadeInput.closest('form').querySelector('input[name="cod_pro"]').value;
-                let preco = quantidadeInput.closest('form').querySelector('input[name="preco"]').value;
-                let codGruest = quantidadeInput.closest('form').querySelector('input[name="cod_gruest"]').value;
+        console.log('Produto:', formulario.querySelector('input[name="produto"]').value, 'Quantidade:', quantidade); // Log de depuração
 
-                itensParaCarrinho.push({
-                    produto: produto,
-                    cod_pro: codPro,
-                    preco: preco,
-                    cod_gruest: codGruest,
-                    quantidade: quantidade
-                });
-            }
-        });
+        if (quantidade > 0) {
+            let produto = formulario.querySelector('input[name="produto"]').value;
+            let codPro = formulario.querySelector('input[name="cod_pro"]').value;
+            let preco = formulario.querySelector('input[name="preco"]').value;
+            let codGruest = formulario.querySelector('input[name="cod_gruest"]').value;
+
+            itensParaCarrinho.push({
+                produto: produto,
+                cod_pro: codPro,
+                preco: preco,
+                cod_gruest: codGruest,
+                quantidade: quantidade
+            });
+        }
     });
 
-    let form = document.createElement('form');
-    form.method = 'POST';
-    form.action = 'garcon.php';
+    console.log('Itens para Carrinho:', itensParaCarrinho); // Depuração final
 
-    let inputItens = document.createElement('input');
-    inputItens.type = 'hidden';
-    inputItens.name = 'itens_para_carrinho';
-    inputItens.value = JSON.stringify(itensParaCarrinho);
+    if (itensParaCarrinho.length > 0) {
+        let form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'garcon.php';
 
-    form.appendChild(inputItens);
-    document.body.appendChild(form);
-    form.submit();
+        let inputItens = document.createElement('input');
+        inputItens.type = 'hidden';
+        inputItens.name = 'itens_para_carrinho';
+        inputItens.value = JSON.stringify(itensParaCarrinho);
+
+        form.appendChild(inputItens);
+        document.body.appendChild(form);
+        form.submit();
+    } else {
+        alert('Nenhum item selecionado para adicionar ao carrinho.');
+    }
 }
 
 
@@ -195,4 +201,91 @@ function mostraconclusao(para){
 function mudanum(numero){
     let inp = document.getElementById(numero);
     inp.value = inp.value + 1;
+}
+
+function searchFunction() {
+    let input = document.getElementById('search').value;
+    if (input.length > 0) {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                try {
+                    let data = JSON.parse(this.responseText);
+                    console.log('Resposta JSON:', data); // Depuração
+                    let resultDiv = document.getElementById("result");
+                    resultDiv.innerHTML = ''; // Limpa os resultados anteriores
+
+                    if (Array.isArray(data)) {
+                        let produtosAgrupados = {};
+                        for (let i = 0; i < data.length; i++) {
+                            let produto = data[i];
+                            let cod_gruest = produto.COD_GRUEST;
+                            if (!produtosAgrupados[cod_gruest]) {
+                                produtosAgrupados[cod_gruest] = [];
+                            }
+                            produtosAgrupados[cod_gruest].push(produto);
+                        }
+
+                        for (let cod_gruest in produtosAgrupados) {
+                            let groupDiv = document.createElement('div');
+                            groupDiv.className = 'product-group product-group' + cod_gruest;
+                            groupDiv.id = cod_gruest;
+                            groupDiv.style.display = 'block';
+
+                            let produtos = produtosAgrupados[cod_gruest];
+                            for (let j = 0; j < produtos.length; j++) {
+                                let produto = produtos[j];
+                                let produtoId = 'produto_' + produto.COD_PROAPP + '_' + cod_gruest;
+                                let itemDiv = document.createElement('div');
+                                itemDiv.className = 'product';
+
+                                let form = document.createElement('form');
+                                form.action = '';
+                                form.className = 'produto';
+                                form.method = 'post';
+                                form.onkeydown = function() {
+                                    return event.key !== 'Enter';
+                                };
+
+                                let valorFormatado = typeof produto.VALOR === 'number' ? produto.VALOR.toFixed(2).replace('.', ',') : "0,00";
+
+                                form.innerHTML = `
+                                    <input type="hidden" name="produto" value="${produto.DESCRICAO}">
+                                    <input type="hidden" name="cod_pro" value="${produto.COD_PROAPP}">
+                                    <input type="hidden" name="preco" value="${valorFormatado}">
+                                    <input type="hidden" name="cod_gruest" value="${cod_gruest}">
+                                    <input type="button" class="btnquant" id="mais${produtoId}" name="mais" onclick="alteraQuantidade('${produtoId}', 1)" value="+">
+                                    <input name="quantidade" class="quant" id="${produtoId}" value="0" min="0">
+                                    <input type="button" class="btnquant" name="menos" onclick="alteraQuantidade('${produtoId}', -1)" value="-">
+                                    <p>${produto.DESCRICAO}</p>
+                                `;
+                                itemDiv.appendChild(form);
+                                groupDiv.appendChild(itemDiv);
+                            }
+
+                            let adicionarBtn = document.createElement('button');
+                            adicionarBtn.className = 'btn-flutuante';
+                            adicionarBtn.textContent = 'Adicionar Itens ao Carrinho';
+                            adicionarBtn.onclick = function() {
+                                adicionarItensCarrinho(cod_gruest);
+                            };
+                            groupDiv.appendChild(adicionarBtn);
+
+                            console.log('Grupo de Produto:', groupDiv); // Verificar se os elementos do grupo estão corretos
+                            resultDiv.appendChild(groupDiv);
+                        }
+                    } else {
+                        resultDiv.textContent = 'Nenhum dado encontrado';
+                    }
+                } catch (error) {
+                    console.error('Erro ao analisar a resposta:', error);
+                    console.log('Resposta:', this.responseText);
+                }
+            }
+        };
+        xhttp.open("GET", "busca.php?q=" + encodeURIComponent(input), true);
+        xhttp.send();
+    } else {
+        document.getElementById("result").innerHTML = "";
+    }
 }
