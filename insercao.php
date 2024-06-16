@@ -1,6 +1,8 @@
 <?php
 session_start();
 date_default_timezone_set('America/Sao_Paulo');
+
+include_once('conexao.php');
 if ($_COOKIE['usuario']) {
     if ($_COOKIE['usuario']['nome'] == null or $_COOKIE['usuario']['nome'] == '' ){
         header("Location: login.php");
@@ -15,9 +17,7 @@ if (!empty($_SESSION['carrinho'])) {
 
     try {
         $mesa = $_GET['mesa'];
-        $conn = new PDO('firebird:host=PC-GUI;dbname=D:/Astracon/DadosClientes/ASTRACONNFCEZEZITOS.fdb;charset=utf8', 'SYSDBA', 'masterkey');
-
-
+       
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         foreach ($_SESSION['carrinho'] as $item) {

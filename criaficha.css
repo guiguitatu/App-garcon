@@ -39,22 +39,25 @@ span{
 }
 
 .inputobscria{
-    font-size: 50px;
-    width: 700px;
+    font-size: 40px;
+    width: 60vw;
     height: 200px;
+    padding-left: 30px;
+    padding-top: 15px;
 }
 
-.formu label{
-    font-size: 70px;
-    width: auto;
+.inputtxt {
+    width: 70vw;
+    height: 50px;
 }
 
 .formu input{
-    font-size: 50px;
-    width: 70%;
-    height: 100px;
+    font-size: 40px;
+    width: 60vw;
+    height: 70px;
     border: 2px solid black;
     border-radius: 10px;
+    padding-left: 30px;
 }
 
 textarea{

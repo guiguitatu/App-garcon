@@ -61,7 +61,7 @@ Clique em abrir.</li>
 <li> Depois trocar o texto <b>ipcomputador</b> para o ip do SERVIDOR.</li>
 
 >>Você pode abrir os outros arquivos clicando com o botão direito e em <b>Abrir com...</b>, selecionando o bloco de notas, isso serve para os próximos arquivos que possam ser abertos mais para frente.
-<li> Abrir com o bloco de notas o arquivo <b>trocanome.php</b> e procure por duas linhas iguais à essa: 
+<li> Abrir com o bloco de notas o arquivo <b>conexao.php</b> e procure pela linha igual à essa: 
 
 >>//Troque essa linha de baixo:
 

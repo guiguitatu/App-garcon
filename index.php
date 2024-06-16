@@ -1,6 +1,7 @@
 <?php
 session_start();
 include('trocanome.php');
+include_once('conexao.php');
 unset($_SESSION['']);
 if ($_COOKIE['usuario']) {
     if ($_COOKIE['usuario']['nome'] == null or $_COOKIE['usuario']['nome'] == '' ){
@@ -41,7 +42,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <?php
 try {
-        $conn = new PDO('firebird:host=PC-GUI;dbname=D:/Astracon/DadosClientes/ASTRACONNFCEZEZITOS.fdb;charset=utf8', 'SYSDBA', 'masterkey');
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $sql = "select TIPOABERT from empresa where TIPOABERT like '0%' or TIPOABERT like '1%'  or TIPOABERT like '2%'  or TIPOABERT like '3%'  or TIPOABERT like '4%'";
         $stmt = $conn->prepare($sql);
@@ -69,7 +69,7 @@ try {
     <?php
     echo ' <div style="display: flex; flex-direction: row; align-items: center; margin-bottom: 40px">
                <h7 style="display: flex; justify-content: center;"> <b> Garçom: ' . $garcon . '</b></h7>
-               <a href="sairusuario.php" style="text-decoration: none;"> <button class="btnlimpa" style="background-color: #ec5858">Sair</button></a>
+               <a href="sairusuario.php" style="text-decoration: none;"> <button class="btnlimpa" style="background-color: #ec5858; margin-left:30px; font-size:20px;">Sair</button></a>
            </div>
          ';
     if (isset($_SESSION['erro'])){
@@ -100,7 +100,7 @@ try {
         echo '
             <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-evenly; margin: 0 0 40px;"> 
                 <div style="display: flex; align-items: center">
-                    <input type="radio" id="mesa" name="opcao" value="mesa" onchange="mudanome()" checked>
+                    <input type="radio" id="mesa" name="opcao" value="mesa" onchange="mudanome()" style="width: 25px; height: 25px;" checked>
                     <label for="opcao1">Mesa</label>
                 </div>
     
@@ -168,7 +168,7 @@ try {
             <button type="button" class="zero" onclick="mudanum(0)">0</button>
             <button type="button" class="btnnums" onclick="backspace()">⌫</button>
         </div>
-        <button type="submit" style="margin-top: 5px">Enviar</button>
+        <button type="submit" style="margin-top: 5px; font-size: 30px">Enviar</button>
     </form>
 </div>
 <script>

@@ -1,5 +1,6 @@
 <?php
 header('Content-Type: application/json'); // Garante que o tipo de conteúdo seja JSON
+include_once("conexao.php");
 
 $q = $_GET['q'] ?? '';
 if (empty($q)) {
@@ -8,7 +9,6 @@ if (empty($q)) {
 }
 
 try {
-    $conn = new PDO('firebird:host=PC-GUI;dbname=D:/Astracon/DadosClientes/ASTRACONNFCEZEZITOS.fdb;charset=utf8', 'SYSDBA', 'masterkey');
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Verifique se a entrada é numérica

@@ -1,4 +1,6 @@
-function adicionarItensCarrinho(grupoId) {
+// Função existente para adicionar todos os itens ao carrinho
+function adicionarItensCarrinho() {
+    // Selecionar todas as divs de produtos na página
     let formulariosProdutos = document.querySelectorAll('.product form');
     let itensParaCarrinho = [];
 
@@ -43,7 +45,6 @@ function adicionarItensCarrinho(grupoId) {
         alert('Nenhum item selecionado para adicionar ao carrinho.');
     }
 }
-
 
 function mostrapedidos(){
     let ped = document.getElementById('produtos');
@@ -100,6 +101,7 @@ function alteraQuantidade(inputId, quantidade) {
 
 function escondediv(num) {
     let div = document.getElementById(num);
+    let envia = document.getElementById("adicionar-todos-carrinho")
     let carrinho;
     if (num <= 100){
         carrinho = document.getElementById("200");
@@ -114,11 +116,13 @@ function escondediv(num) {
         carrinho.style.display = 'none';
         confere.style.display = 'none';
         btn.style.display = 'none';
+        envia.style.display = "block"
     } else {
         div.style.display = 'none';
         carrinho.style.display = 'flex';
         btn.style.display = 'block';
         confere.style.display = 'none';
+        envia.style.display = "none"
     }
 }
 
@@ -205,7 +209,11 @@ function mudanum(numero){
 
 function searchFunction() {
     let input = document.getElementById('search').value;
+    let botaoAdicionarCarrinho = document.getElementById('adicionar-todos-carrinho');
+
     if (input.length > 0) {
+        botaoAdicionarCarrinho.style.display = 'block';
+
         let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState === 4 && this.status === 200) {
@@ -263,15 +271,6 @@ function searchFunction() {
                                 groupDiv.appendChild(itemDiv);
                             }
 
-                            let adicionarBtn = document.createElement('button');
-                            adicionarBtn.className = 'btn-flutuante';
-                            adicionarBtn.textContent = 'Adicionar Itens ao Carrinho';
-                            adicionarBtn.onclick = function() {
-                                adicionarItensCarrinho(cod_gruest);
-                            };
-                            groupDiv.appendChild(adicionarBtn);
-
-                            console.log('Grupo de Produto:', groupDiv); // Verificar se os elementos do grupo estão corretos
                             resultDiv.appendChild(groupDiv);
                         }
                     } else {
@@ -286,6 +285,7 @@ function searchFunction() {
         xhttp.open("GET", "busca.php?q=" + encodeURIComponent(input), true);
         xhttp.send();
     } else {
+        botaoAdicionarCarrinho.style.display = 'none';
         document.getElementById("result").innerHTML = "";
     }
 }

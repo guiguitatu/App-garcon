@@ -1,6 +1,7 @@
 <?php
 session_start();
 include('trocanome.php');
+include_once('conexao.php');
 date_default_timezone_set('America/Sao_Paulo');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $garcon = $_POST['garcon'] ?? '';
@@ -10,8 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['erro'] = ["Garçom não selecionado"];
     } else {
         try {
-            $conn = new PDO('firebird:host=PC-GUI;dbname=D:/Astracon/DadosClientes/ASTRACONNFCEZEZITOS.fdb;charset=utf8', 'SYSDBA', 'masterkey');
-
+            
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $sql = "SELECT PS from REPRESENTANTE where NOMEREP = '$garcon'";
             $sqlcod = "SELECT COD_REP from REPRESENTANTE where NOMEREP = '$garcon'";
@@ -69,13 +69,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <option value="">Selecione um garçom</option>
                     <?php
                     try {
-                        $conn = new PDO('firebird:host=PC-GUI;dbname=D:/Astracon/DadosClientes/ASTRACONNFCEZEZITOS.fdb;charset=utf8', 'SYSDBA', 'masterkey');
                         $stmt = $conn->query('SELECT NOMEREP from REPRESENTANTE');
                         $garcons = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         foreach ($garcons as $garcon) {
                             echo "<option value='{$garcon['NOMEREP']}'>{$garcon['NOMEREP']}</option>";
                         }
-                        $conn = null;
                     } catch (PDOException $e) {
                         echo "Não foi possível conectar com o banco.";
                     }

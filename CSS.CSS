@@ -13,6 +13,11 @@ h1{
     margin: 0;
 }
 
+h3 {
+   color: #ffff; 
+   font-size: 23px; 
+}
+
 h5{
     display: flex;
     width: 80vw;
@@ -173,13 +178,17 @@ body .btns{
     justify-content: center;
     margin: 10px;
     font-size: 30px;
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background-color: #e37069;
     color: #fff;
-    width: 250px;
-    height: 250px;
+    width: 150px;
+    height: 200px;
     border-radius: 10px;
     border-color: #e37069;
+    font-size: 20px;
 }
 
 .hidden{
@@ -197,8 +206,8 @@ body .btns{
 
 .btnquant{
     font-size: 250%;
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
     border-radius: 20px;
     margin: 0 15px 0 23px;
     background-color: #35518c;
@@ -234,7 +243,7 @@ body .btns{
     margin: 10px 5px 5px 10px;
     border-radius: 10px;
     height: 100px;
-    width: 330px;
+    width: 33vw;
     color: #ffff
 }
 .btnverificapedido{
@@ -244,7 +253,7 @@ body .btns{
     margin: 10px 5px 5px 10px;
     border-radius: 10px;
     height: 100px;
-    width: 330px;
+    width: 33vw;
     color: #ffff
 }
 
@@ -277,9 +286,9 @@ body .btns{
 }
 
 .btn-flutuante {
-    width: 500px;
-    height: 100px;
-    font-size: 35px;
+    width: 300px;
+    height: 50px;
+    font-size: 20px;
     position: fixed;
     bottom: 20px;
     right: 20px;

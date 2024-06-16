@@ -1,6 +1,7 @@
 <?php
 session_start();
 include('trocanome.php');
+include_once('conexao.php');
 
 if ($_SESSION['mesa'] == null or $_SESSION['mesa'] == '') {
 
@@ -108,18 +109,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['observacao'])) {
 <body>
 
 <header>
-    <div style="position: relative; width: 100vw; z-index: 10; height: 100px; display: flex; justify-content: center; align-items: center">
+    <div style="position: relative; width: 100vw;margin-left:50px; z-index: 10; height: 100px; display: flex; justify-content: flex-start; align-items: center">
         <div style="display: flex; flex-direction: row; align-items: center; height: 100%; justify-content: center">
-            <h1>Astra</h1>
+            <h3>Astra</h3>
             <?php
             $mesa = $_SESSION['mesa'];
             if ($_SESSION['opcao'] == 'mesa') {
-                echo '<h1>' . ' | Mesa: ' . $mesa . ' | </h1>';
+                echo '<h3>' . ' | Mesa: ' . $mesa . ' | </h3>';
             } else {
-                echo '<h1>' . ' | Ficha: ' . $mesa . ' | </h1>';
+                echo '<h3>' . ' | Ficha: ' . $mesa . ' | </h3>';
             }
             echo ' ';
-            echo '<h1>Usuário: ' . $garcon . '</h1>';
+            echo '<h3>Usuário: ' . $garcon . '</h3>';
             ?>
         </div>
         <div style="position: absolute; z-index: 5; right: 0; height: 70px">
@@ -140,12 +141,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['observacao'])) {
     <div class="botao-container">
         <?php
         try {
-            $conn = new PDO('firebird:host=PC-GUI;dbname=D:/Astracon/DadosClientes/ASTRACONNFCEZEZITOS.fdb;charset=utf8', 'SYSDBA', 'masterkey');
             $sql = 'select * from GRUPOEST order by NOME';
             $stmt = $conn->query($sql);
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
-                echo '<button class="btndivs" onclick="escondediv(' . $row['COD_GRUEST'] . ')"> <img src="imgs/comer.png" style="height: 150px; width: 150px;"> <br>' . $row['NOME'] . '</button>';
+                echo '<button class="btndivs" onclick="escondediv(' . $row['COD_GRUEST'] . ')"> <img src="imgs/comer.png" style="height: 100px; width: 100px;"> <br>' . $row['NOME'] . '</button>';
 
             }
         } catch (PDOException $e) {
@@ -173,8 +173,7 @@ if (empty($_SESSION['carrinho'])) {
 $mesa = $_SESSION['mesa'];
 
 try {
-    $conn = new PDO('firebird:host=PC-GUI;dbname=D:/Astracon/DadosClientes/ASTRACONNFCEZEZITOS.fdb;charset=utf8', 'SYSDBA', 'masterkey');
-
+    
     if ($_SESSION['opcao'] == 'ficha') {
         $sql = "SELECT produto.cod_proapp AS PRODUTO, produto.descricao AS NOME, produto.descricaonota AS DESCRICAO, produto.valor AS PRECO, PRODMOVBAR.quant AS QUANTIDADE, PRODMOVBAR.obs AS OBSERVACAO, PRODMOVBAR.codigo AS ID FROM produto
     INNER JOIN PRODMOVBAR ON produto.cod_pro = PRODMOVBAR.cod_pro
@@ -231,7 +230,6 @@ try {
 </div>
 <!-- Mostra as divs de cada COD_GRUEST -->
 <?php
-$conn = new PDO('firebird:host=PC-GUI;dbname=D:/Astracon/DadosClientes/ASTRACONNFCEZEZITOS.fdb;charset=utf8', 'SYSDBA', 'masterkey');
 $sql = "select COD_PROAPP, DESCRICAO, COD_GRUEST, VALOR from produto where COD_GRUEST is not null and valor is not null and cod_pro is not null and descricao is not null";
 
 $stmt2 = $conn->query($sql);
@@ -240,6 +238,17 @@ while ($row = $stmt2->fetch(PDO::FETCH_ASSOC)) {
     $cod_gruest = $row['COD_GRUEST'];
     $produtosAgrupados[$cod_gruest][] = $row;
 }
+
+// Função de comparação para ordenar os produtos por descrição
+function compararDescricao($a, $b) {
+    return strcmp($a['DESCRICAO'], $b['DESCRICAO']);
+}
+
+// Ordenar produtos dentro de cada grupo
+foreach ($produtosAgrupados as $cod_gruest => &$produtos) {
+    usort($produtos, 'compararDescricao');
+}
+unset($produtos); // Desreferenciar para evitar erros futuros
 
 foreach ($produtosAgrupados as $cod_gruest => $produtos) {
     echo '<div class="product-group product-group' . $cod_gruest . '" id="' . $cod_gruest . '" style="display: none">';
@@ -255,14 +264,13 @@ foreach ($produtosAgrupados as $cod_gruest => $produtos) {
         echo '<input type="button" class="btnquant" id="mais' . $produtoId . '" name="mais" onclick="alteraQuantidade(\'' . $produtoId . '\', 1)" value="+">';
         echo '<input name="quantidade" class="quant" id="' . $produtoId . '" value="0" min="0">';
         echo '<input type="button" class="btnquant" name="menos" onclick="alteraQuantidade(\'' . $produtoId . '\', -1)" value="-">';
-        echo "<p style='font-size: 60px'>" . $produto['DESCRICAO'] . "</p>";
+        echo "<p style='font-size: 30px'>" . $produto['DESCRICAO'] . "</p>";
         echo '</form>';
         echo '</div>';
     }
     echo '</div>';
 }
-    echo '<button class="btn-flutuante" onclick="adicionarItensCarrinho()">Adicionar Itens ao Carrinho</button>';
-    echo '</div>';
+echo '<button class="btn-flutuante" style="display:none;" id="adicionar-todos-carrinho"  onclick="adicionarItensCarrinho()">Adicionar Itens ao Carrinho</button>';
 ?>
 <!-- Div para o carrinho -->
 <div class="carrinho" id="carrinhodiv">
@@ -283,11 +291,11 @@ foreach ($produtosAgrupados as $cod_gruest => $produtos) {
             echo '<div class="carrinhoitem" id="carrinho-' . $index . '">';
             echo '<div class="divitembtn">';
             echo "<button type='button' class='btnplus' onclick='toggleObservacao(" . $index . ")'><b>≡</b></button>";
-            echo "<p style='font-size: 43px'> {$item['produto']}</p>";
+            echo "<p style='font-size: 30px'> {$item['produto']}</p>";
             if ($item['quantidade'] > 1) {
                 echo "<button type='submit' class='btnquant' name='remover_item' value='{$index}'><b>-</b></button>";
             } else {
-                echo "<button type='submit' style='background-color: #ff4655; width: auto; padding: 0 5px 0 5px; font-size: 30px' class='btnquant' name='remover_item' value='{$index}'>Remover item</button>";
+                echo "<button type='submit' style='height:55px; background-color: #ff4655; width: auto; padding: 0 5px 0 5px; font-size: 25px' class='btnquant' name='remover_item' value='{$index}'>Remover item</button>";
             }
             echo "<p style='font-size: 43px'> {$item['quantidade']}</p>";
             echo "<button type='submit' class='btnquant' name='adicionar_item' value='{$index}'><b>+</b></button>";
@@ -309,7 +317,7 @@ foreach ($produtosAgrupados as $cod_gruest => $produtos) {
         echo '</div>';
         echo '<div class="btnlimpaconfere">';
         echo '<button type="submit" class="btnlimpacarrinho" name="limpar_carrinho" value="Limpar pedido">Limpar pedido</button>';
-        echo '<button type="button" class="btnverificapedido" name="mandarpedido" value="Verificarpedido" class="btnsmanda" onclick="mostraconclusao(300)">Conferir o pedido e fazer a insercão</button>';
+        echo '<button type="button" class="btnverificapedido" name="mandarpedido" value="Verificarpedido" class="btnsmanda" onclick="mostraconclusao(300)">Conferir o pedido</button>';
         echo '</div>';
     }
     echo '<button type="button" class="btnpedido" onclick="mostrabtns(200)">Adicionar item à ficha</button>';
