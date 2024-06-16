@@ -1,5 +1,7 @@
 # App-garcom
 
+<h1> Trabalho feito por Guilherme Sampaio Furquim </h1>
+
 <h4>Para melhor entendimento vamos ao entendimento do manual.</h4><br>
 
 Isso é um passo a seguir:

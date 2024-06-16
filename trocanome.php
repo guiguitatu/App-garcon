@@ -12,7 +12,6 @@ if ($_SERVER['REQUEST_URI'] == '/login') {
     exit;
 }
 
-$arquivos = array('conexao.php');
 $_SESSION['tudocerto'] = true;
 
 if (!$_COOKIE['token']){
