@@ -1,6 +1,4 @@
-// Função existente para adicionar todos os itens ao carrinho
-function adicionarItensCarrinho() {
-    // Selecionar todas as divs de produtos na página
+function adicionarTodosItensCarrinho() {
     let formulariosProdutos = document.querySelectorAll('.product form');
     let itensParaCarrinho = [];
 
@@ -130,7 +128,6 @@ function mostrabtns(num){
     console.log("funcmostrabtns")
     let btns = document.getElementById(num);
     let carrinho = document.getElementById("carrinhodiv");
-    let pedido = document.getElementById('100');
 
 
     carrinho.style.display = 'none';
@@ -205,6 +202,11 @@ function mostraconclusao(para){
 function mudanum(numero){
     let inp = document.getElementById(numero);
     inp.value = inp.value + 1;
+}
+
+window.onload = function() {
+    let botaoAdicionarCarrinho = document.getElementById('adicionar-todos-carrinho');
+    botaoAdicionarCarrinho.style.display = 'none'; // Esconder o botão inicialmente
 }
 
 function searchFunction() {
@@ -288,4 +290,20 @@ function searchFunction() {
         botaoAdicionarCarrinho.style.display = 'none';
         document.getElementById("result").innerHTML = "";
     }
+}
+
+function searchInGroup(cod_gruest) {
+    let input = document.querySelector('.product-group' + cod_gruest + ' .search-group').value.toLowerCase();
+
+    let produtos = document.querySelectorAll('.product-group' + cod_gruest + ' .product');
+
+    produtos.forEach(function(produto) {
+        let descricao = produto.querySelector('input[name="produto"]').value.toLowerCase();
+
+        if (descricao.includes(input)) {
+            produto.style.display = 'block';
+        } else {
+            produto.style.display = 'none';
+        }
+    });
 }

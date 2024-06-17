@@ -80,11 +80,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['carrinho'][$index]['quantidade']++;
 
             header('Location: ' . $_SERVER['PHP_SELF']);
-            exit;
         } else {
             header('Location: ' . $_SERVER['HTTP_REFERER']);
-            exit;
         }
+        exit;
     }
 }
 
@@ -137,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['observacao'])) {
         <input type="text" class="inputbusca" id="search" onkeyup="searchFunction()" placeholder="Buscar produto...">
         <div id="result" class="resultado"></div>
     </div>
-
+    <!-- Botões CODGRUEST -->
     <div class="botao-container">
         <?php
         try {
@@ -145,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['observacao'])) {
             $stmt = $conn->query($sql);
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
-                echo '<button class="btndivs" onclick="escondediv(' . $row['COD_GRUEST'] . ')"> <img src="imgs/comer.png" style="height: 100px; width: 100px;"> <br>' . $row['NOME'] . '</button>';
+                echo '<button class="btndivs" onclick="escondediv(' . $row['COD_GRUEST'] . ')"> <img src="imgs/comer.png" style="height: 130px; width: 130px;"><p style="margin:5px 0 5px 0">' . $row['NOME'] . '</p></button>';
 
             }
         } catch (PDOException $e) {
@@ -213,7 +212,7 @@ try {
         echo '</ul>';
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo '<button class="btnpedido" onclick="voltartelainicial()">Inserir item à ficha</button>';
-            echo '<button class="btnpedido" onclick="telabtns()">Voltar para tela dos botões';
+            echo '<button class="btnpedido" onclick="telabtns()">Voltar para tela dos categoria</button';
         } else {
             echo '<button class="btnpedido" onclick="telabtns()"> Inserir item na ficha </button>';
         }
@@ -252,7 +251,8 @@ unset($produtos); // Desreferenciar para evitar erros futuros
 
 foreach ($produtosAgrupados as $cod_gruest => $produtos) {
     echo '<div class="product-group product-group' . $cod_gruest . '" id="' . $cod_gruest . '" style="display: none">';
-    echo '<button class="btnpedido" onclick="escondediv(' . $cod_gruest . ')" style="align-content: center">Voltar a tela de botões</button>';
+    echo '<button class="btnpedido" onclick="escondediv(' . $cod_gruest . ')" style="align-content: center">Voltar a tela de categorias</button>';
+    echo '<input type="text" class="search-group" onkeyup="searchInGroup(' . $cod_gruest . ')" placeholder="Buscar produto...">';
     foreach ($produtos as $produto) {
         $produtoId = 'produto_' . $produto['COD_PROAPP'] . '_' . $cod_gruest;
         echo '<div class="product">';
@@ -264,14 +264,14 @@ foreach ($produtosAgrupados as $cod_gruest => $produtos) {
         echo '<input type="button" class="btnquant" id="mais' . $produtoId . '" name="mais" onclick="alteraQuantidade(\'' . $produtoId . '\', 1)" value="+">';
         echo '<input name="quantidade" class="quant" id="' . $produtoId . '" value="0" min="0">';
         echo '<input type="button" class="btnquant" name="menos" onclick="alteraQuantidade(\'' . $produtoId . '\', -1)" value="-">';
-        echo "<p style='font-size: 30px'>" . $produto['DESCRICAO'] . "</p>";
+        echo "<p style='font-size: 35px'>" . $produto['DESCRICAO'] . "</p>";
         echo '</form>';
         echo '</div>';
     }
     echo '</div>';
 }
-echo '<button class="btn-flutuante" style="display:none;" id="adicionar-todos-carrinho"  onclick="adicionarItensCarrinho()">Adicionar Itens ao Carrinho</button>';
-?>
+echo '<button class="btn-flutuante" style="display:none;" id="adicionar-todos-carrinho" onclick="adicionarTodosItensCarrinho()">Adicionar Itens ao Carrinho</button>';?>
+
 <!-- Div para o carrinho -->
 <div class="carrinho" id="carrinhodiv">
     <?php
@@ -291,7 +291,7 @@ echo '<button class="btn-flutuante" style="display:none;" id="adicionar-todos-ca
             echo '<div class="carrinhoitem" id="carrinho-' . $index . '">';
             echo '<div class="divitembtn">';
             echo "<button type='button' class='btnplus' onclick='toggleObservacao(" . $index . ")'><b>≡</b></button>";
-            echo "<p style='font-size: 30px'> {$item['produto']}</p>";
+            echo "<p style='font-size: 40px'> {$item['produto']}</p>";
             if ($item['quantidade'] > 1) {
                 echo "<button type='submit' class='btnquant' name='remover_item' value='{$index}'><b>-</b></button>";
             } else {
