@@ -33,16 +33,32 @@ if (!empty($_SESSION['carrinho'])) {
             // Consultas SQL para obter valores necessários
             $sqlCodPro = "SELECT cod_pro FROM produto WHERE COD_PROAPP = " . $cod_pro;
             $sqlValor = "SELECT VALOR FROM produto WHERE COD_PROAPP = " . $cod_pro;
-            if ($_SESSION['opcao'] == 'ficha'){
-                $sqlDocto = "select VENDABAR.docto as ID from VENDABAR  where ficha =" . $mesa . " and caixa = '' and (VENDABAR.situacao <> 'C' OR VENDABAR.situacao is null)";
+            if ($_SESSION['opcao'] == 'mesa'){
+                $sqlDocto = "select VENDABAR.docto as ID from VENDABAR  where mesa =" . $mesa . " and (caixa = '' or caixa is null) and (VENDABAR.situacao <> 'C' OR VENDABAR.situacao is null)";
             } else {
-                $sqlDocto = "select VENDABAR.docto as ID from VENDABAR  where mesa =" . $mesa . " and caixa = '' and (VENDABAR.situacao <> 'C' OR VENDABAR.situacao is null)";
+                $sqlDocto = "select VENDABAR.docto as ID from VENDABAR  where ficha =" . $mesa . " and (caixa = '' or caixa is null) and (VENDABAR.situacao <> 'C' OR VENDABAR.situacao is null)";
             }
+
+
             $sqldata = "select DATACAIXA from EMPRESA";
             $stmtCodPro = $conn->prepare($sqlCodPro);
             $stmtValor = $conn->prepare($sqlValor);
             $stmtDocto = $conn->prepare($sqlDocto);
             $stmtdata = $conn->prepare($sqldata);
+
+            try {
+                $stmtCodPro->execute();
+            } catch (PDOException $e) {
+                echo "Erro ao executar stmtCodPro: " . $e->getMessage();
+                exit;
+            }
+
+            try {
+                $stmtValor->execute();
+            } catch (PDOException $e) {
+                echo "Erro ao executar stmtValor: " . $e->getMessage();
+                exit;
+            }
 
             try {
                 $stmtCodPro->execute();
@@ -137,12 +153,12 @@ if (!empty($_SESSION['carrinho'])) {
         }
         unset($_SESSION['carrinho']);
         unset($_SESSION['mesa']);
-
+        $conn = null;
         echo 'Inserção no banco de dados realizada com sucesso!';
         header("Location: index.php");
         exit;
     } catch (PDOException $e) {
-        echo "Erro de conexão: " . $e->getMessage();
+        echo "Erro de e: " . $sqlInsercao . $e->getMessage();
     }
 } else {
     echo 'Carrinho vazio. Nada a inserir.';

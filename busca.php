@@ -19,13 +19,11 @@ try {
 
     if ($isNumeric) {
         $sql = "SELECT COD_PROAPP, DESCRICAO, COD_GRUEST, VALOR, COD_PRO FROM produto WHERE cod_pro LIKE :q AND COD_GRUEST is not null AND VALOR is not null AND COD_PRO is not null AND descricao is not null";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute(['q' => '%' . $q . '%']);
     } else {
-        $sql = "SELECT COD_PROAPP, DESCRICAO, COD_GRUEST, VALOR, COD_PRO FROM produto WHERE (descricao LIKE :q OR descricao LIKE :upper OR descricao LIKE :lower) AND COD_GRUEST is not null AND VALOR is not null AND COD_PRO is not null AND descricao is not null";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute(['q' => '%' . $q . '%', 'upper' => '%' . $upper . '%', 'lower' => '%' . $lower . '%']);
+        $sql = "SELECT COD_PROAPP, DESCRICAO, COD_GRUEST, VALOR, COD_PRO FROM produto WHERE LOWER(descricao) LIKE LOWER(:q) AND COD_GRUEST is not null AND VALOR is not null AND COD_PRO is not null AND descricao is not null";
     }
+    $stmt = $conn->prepare($sql);
+    $stmt->execute(['q' => '%' . $q . '%']);
 
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

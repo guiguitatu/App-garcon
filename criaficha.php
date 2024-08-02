@@ -41,6 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $mesa != null){
         }
         $stmtinsert = $conn->prepare($sqlinsert);
         $stmtinsert->execute();
+        $conn = null;
 
         header("location: garcon.php");
     } catch (PDOException $e) {
@@ -53,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $mesa != null){
         echo "<h1> <?php var_dump($observacao);?></h1><br>";
         echo "<h1> <?php var_dump($numeromesa);?></h1><br>";
 
-        echo "<h2> Erro na barbaridade: ". $e->getMessage() . "</h2>";
+        echo "<h2> Erro: ". $e->getMessage() . "</h2>";
     }
 }
 
@@ -77,20 +78,26 @@ try {
     if ($_SESSION['opcao'] == 'ficha') {
         $sqlficha = "SELECT ficha FROM vendabar WHERE FICHA = $numeromesa AND (CAIXA='' or CAIXA is NULL) AND (SITUACAO='' or SITUACAO is NULL) AND (BLOQUEADA = '' OR BLOQUEADA IS NULL)";
         $sqlbloqueada = "SELECT ficha FROM vendabar WHERE FICHA = $numeromesa AND (CAIXA='' or CAIXA is NULL) AND (SITUACAO='' or SITUACAO is NULL) AND BLOQUEADA = 'S'";
+        $sqlbloqueadatab = "SELECT ficha, OBS from ficha_bloq where ficha = $numeromesa";
     } else {
         $sqlficha = "SELECT MESA FROM vendabar WHERE MESA = $numeromesa AND (CAIXA='' or CAIXA is NULL) AND (SITUACAO='' or SITUACAO is NULL) AND (BLOQUEADA = '' OR BLOQUEADA IS NULL)";
         $sqlbloqueada = "SELECT MESA FROM vendabar WHERE MESA = $numeromesa AND (CAIXA='' or CAIXA is NULL) AND (SITUACAO='' or SITUACAO is NULL) AND BLOQUEADA = 'S'";
     }
     $stmtficha = $conn->prepare($sqlficha);
     $stmtbloqueada = $conn->prepare($sqlbloqueada);
+    $stmtbloqueadatab = $conn->prepare($sqlbloqueadatab);
     $stmtficha->execute();
     $stmtbloqueada->execute();
+    $stmtbloqueadatab->execute();
     $mesabar = $stmtficha->fetchColumn();
     $bloqueada = $stmtbloqueada->fetchColumn();
-
+    $bloqueadatab = $stmtbloqueadatab->fetch(PDO::FETCH_ASSOC);
+    $obs = $bloqueadatab['OBS'];
+    $ficha = $bloqueadatab['FICHA'];
+    $conn = null;
     if ($mesabar != null){
         header("location: garcon.php");
-    } else if($bloqueada != null) {
+    } else if($bloqueada != null && $ficha == null) {
         echo '<link rel="shortcut icon" href="imgs/logoastraconbranco.png" type="imagem">';
         echo '<link rel="stylesheet" href="criaficha.CSS">';
         echo "<header>";
@@ -98,12 +105,22 @@ try {
         if ($_SESSION['opcao'] == 'ficha') {
             echo '<h1>' . ' | Ficha: ' . $numeromesa . ' | </h1>';
             echo "</header>";
-            echo "<h2>Essa ficha está bloqueada, favor escolha outra ficha</h2>";
+            echo "<h2 style='text-align: center'>Ficha bloqueada para lançamento <br> Aguardando finalização/pagamento.</h2>";
         } else if ($_SESSION['opcao'] == 'mesa') {
             echo '<h1>' . ' | Mesa: ' . $numeromesa . ' | </h1>';
             echo "</header>";
             echo "<h2>Essa Mesa está bloqueada, favor escolha outra mesa</h2>";
         }
+        echo "<a href='index.php'><button class='btnvolta'>Voltar para a inserção da ficha</button></a>";
+    } else if ($bloqueadatab != null) {
+        echo '<link rel="shortcut icon" href="imgs/logoastraconbranco.png" type="imagem">';
+        echo '<link rel="stylesheet" href="criaficha.CSS">';
+        echo "<header>";
+        echo "<h1>Astra </h1>";
+        echo '<h1>' . ' | Ficha: ' . $numeromesa . ' | </h1>';
+        echo "</header>";
+        echo "<h2  style='text-align: center'>ATENÇÃO! <br><br> Ficha não autorizada, bloqueada para uso.</h2>";
+        echo "<h2>OBS: " . $obs . "</h2><br>";
         echo "<a href='index.php'><button class='btnvolta'>Voltar para a inserção da ficha</button></a>";
     } else {
         echo '<link rel="stylesheet" href="criaficha.CSS">';

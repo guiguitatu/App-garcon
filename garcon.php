@@ -2,10 +2,20 @@
 session_start();
 include('trocanome.php');
 include_once('conexao.php');
+include_once('buscabloqueada.php');
 
 if ($_SESSION['mesa'] == null or $_SESSION['mesa'] == '') {
-
+    header("Location: index.php");
 }
+
+$mesa = $_SESSION['mesa'];
+
+$numeromesa = intval($mesa);
+
+if ($bloqueadatab != null || $bloqueada != null) {
+    header('location: criaficha.php');
+}
+
 if ($_COOKIE['usuario']) {
     $cod = $_COOKIE['usuario']['codido'];
     $gar = $_COOKIE['usuario']['nome'];
@@ -50,6 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($itensParaCarrinho)) {
 
         header('Location: ' . $_SERVER['HTTP_REFERER']);
         exit;
+    } elseif ($_POST['mandar']) {
+        header('Location: insercao.php?mesa=' . $mesa);
     }
 }
 
@@ -112,7 +124,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['observacao'])) {
         <div style="display: flex; flex-direction: row; align-items: center; height: 100%; justify-content: center">
             <h3>Astra</h3>
             <?php
-            $mesa = $_SESSION['mesa'];
             if ($_SESSION['opcao'] == 'mesa') {
                 echo '<h3>' . ' | Mesa: ' . $mesa . ' | </h3>';
             } else {
@@ -131,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['observacao'])) {
 </header>
 
 <!--Mostra os botões dpara a inserção no pedido-->
-<div class="btns" id="200">
+<div class="btns" id="200" style="display: flex">
     <div class="busca" id="divbusca">
         <input type="text" class="inputbusca" id="search" onkeyup="searchFunction()" placeholder="Buscar produto...">
         <div id="result" class="resultado"></div>
@@ -163,16 +174,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['observacao'])) {
 <!-- Mostra os itens para o pedido -->
 
 <?php
-if (empty($_SESSION['carrinho'])) {
-    echo '<div id="produtos" class="pedidos" id="100" style="display: flex">';
-} else {
-    echo '<div id="produtos" class="pedidos" id="100" style="display: none">';
-}
+echo '<div id="produtos" class="pedidos" id="100" style="display: none">';
+
 
 $mesa = $_SESSION['mesa'];
 
 try {
-    
+
     if ($_SESSION['opcao'] == 'ficha') {
         $sql = "SELECT produto.cod_proapp AS PRODUTO, produto.descricao AS NOME, produto.descricaonota AS DESCRICAO, produto.valor AS PRECO, PRODMOVBAR.quant AS QUANTIDADE, PRODMOVBAR.obs AS OBSERVACAO, PRODMOVBAR.codigo AS ID FROM produto
     INNER JOIN PRODMOVBAR ON produto.cod_pro = PRODMOVBAR.cod_pro
@@ -239,7 +247,8 @@ while ($row = $stmt2->fetch(PDO::FETCH_ASSOC)) {
 }
 
 // Função de comparação para ordenar os produtos por descrição
-function compararDescricao($a, $b) {
+function compararDescricao($a, $b)
+{
     return strcmp($a['DESCRICAO'], $b['DESCRICAO']);
 }
 
@@ -264,16 +273,16 @@ foreach ($produtosAgrupados as $cod_gruest => $produtos) {
         echo '<input type="button" class="btnquant" id="mais' . $produtoId . '" name="mais" onclick="alteraQuantidade(\'' . $produtoId . '\', 1)" value="+">';
         echo '<input name="quantidade" class="quant" id="' . $produtoId . '" value="0" min="0">';
         echo '<input type="button" class="btnquant" name="menos" onclick="alteraQuantidade(\'' . $produtoId . '\', -1)" value="-">';
-        echo "<p style='font-size: 35px'>" . $produto['DESCRICAO'] . "</p>";
+        echo "<p style='font-size: 45px'>" . $produto['DESCRICAO'] . "</p>";
         echo '</form>';
         echo '</div>';
     }
     echo '</div>';
 }
-echo '<button class="btn-flutuante" style="display:none;" id="adicionar-todos-carrinho" onclick="adicionarTodosItensCarrinho()">Adicionar Itens ao Carrinho</button>';?>
+echo '<button class="btn-flutuante" style="display:none;" id="adicionar-todos-carrinho" onclick="adicionarTodosItensCarrinho()">Adicionar Itens ao Carrinho</button>'; ?>
 
 <!-- Div para o carrinho -->
-<div class="carrinho" id="carrinhodiv">
+<div class="carrinho" id="carrinhodiv" style="display: none">
     <?php
     if (empty($_SESSION['carrinho'])) {
         echo '<form action="" method="post" class="formcarrinho" id="carrinhoform" style="display: none" onkeydown="return event.key != \'Enter\';">';
@@ -315,6 +324,7 @@ echo '<button class="btn-flutuante" style="display:none;" id="adicionar-todos-ca
             echo '</div>';
         }
         echo '</div>';
+        echo '<a href="insercao.php?mesa=' . $mesa . '" style="text-decoration: none"><button type="button" class="btnenvia" name="mandarpedido" value="mandar">Enviar o pedido</button></a>';
         echo '<div class="btnlimpaconfere">';
         echo '<button type="submit" class="btnlimpacarrinho" name="limpar_carrinho" value="Limpar pedido">Limpar pedido</button>';
         echo '<button type="button" class="btnverificapedido" name="mandarpedido" value="Verificarpedido" class="btnsmanda" onclick="mostraconclusao(300)">Conferir o pedido</button>';
@@ -327,14 +337,14 @@ echo '<button class="btn-flutuante" style="display:none;" id="adicionar-todos-ca
 </div>
 
 
-<button class='btnpedido' onclick="mostrapedidos()" id="btnverpedido" id="btnverprodutos" style="display: none">Ver os
+<button class='btnpedido' onclick="mostrapedidos()" id="btnverpedido" id="btnverprodutos" style="display: flex">Ver os
     itens da ficha
 </button>
 <div class="pedidoconfere" id="conferepedido">
-    <form action="insercao.php?mesa=<?php echo $mesa ?>" method="post" style="justify-content: center">
+    <form action="insercao.php?mesa=<?php echo $mesa ?>" method="post">
         <?php
         foreach ($_SESSION['carrinho'] as $index => $item) {
-            echo '<div class="carrinho-item" id="carrinho-' . $index . '">';
+            echo '<div class="carrinhoitem" id="carrinho-' . $index . '">';
             //echo "<li style='font-size: 35px;'>{$item['quantidade']} x {$item['produto']} - $ {$item['preco']}</li>";
             echo "<li style='font-size: 45px;'>{$item['quantidade']} x {$item['produto']}</li>";
             if ($item['observacao'] != "") {
@@ -342,7 +352,7 @@ echo '<button class="btn-flutuante" style="display:none;" id="adicionar-todos-ca
             }
         }
         echo '<button type="submit" name="mandarpedido" value="Verificarpedido" class="btnenvia">Fazer a inserção na ficha</button>';
-        echo '<button type="button" class="btnpedido" style="width: 500px;" onclick="voltartelainicial()">Voltar para tela do pedido';
+        echo '<button type="button" class="btnpedido" onclick="voltartelainicial()">Voltar para tela do pedido';
         ?>
     </form>
 </div>

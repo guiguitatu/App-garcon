@@ -25,6 +25,7 @@ $token = $_COOKIE['token'];
         }
 
         if ($bool){
+            $conn = null;
             header('Location: index.php');
         }
     } catch (PDOException $e) {

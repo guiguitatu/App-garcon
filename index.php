@@ -27,6 +27,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['erro'][] = "Opção de ficha/mesa não selecionada";
     }
 }
+
+function isOnline() {
+    $connected = @fsockopen("www.google.com", 80);
+
+    if ($connected){
+        $is_conn = true;
+        fclose($connected);
+    }else{
+        $is_conn = false;
+    }
+    return $is_conn;
+}
+
+if(isOnline()) {
+    echo "O dispositivo está online";
+} else {
+    echo "O dispositivo está offline";
+}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -142,7 +162,16 @@ try {
                 </div>
             </div>        
             <label for="mesa" id="txtinput" style="display: flex; justify-content: center">Digite o numero da ficha:</label>';
-    } else
+    } else {
+            echo '
+            <div style="display: none; flex-direction: row; align-items: center; justify-content: space-evenly; margin: 0 0 40px;"> 
+                <div style="display: flex; align-items: center">
+                    <input type="radio" id="mesa" name="opcao" value="ficha" onchange="mudanome()" checked style="width: 25px; height: 25px;">
+                    <label for="opcao1">Ficha</label>
+                </div>
+            </div>        
+            <label for="mesa" id="txtinput" style="display: flex; justify-content: center">Digite o numero da ficha:</label>';
+        }
     ?>
         <div class="btns">
             <input type="text" id="nunmesa" name="mesa" pattern="[0-9]+" title="Número da mesa" readonly class="input">
