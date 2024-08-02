@@ -2,7 +2,7 @@ function adicionarTodosItensCarrinho() {
     let formulariosProdutos = document.querySelectorAll('.product form');
     let itensParaCarrinho = [];
 
-    formulariosProdutos.forEach(function(formulario) {
+    formulariosProdutos.forEach(function (formulario) {
         let quantidadeInput = formulario.querySelector('.quant');
         let quantidade = parseInt(quantidadeInput.value, 10);
 
@@ -15,11 +15,7 @@ function adicionarTodosItensCarrinho() {
             let codGruest = formulario.querySelector('input[name="cod_gruest"]').value;
 
             itensParaCarrinho.push({
-                produto: produto,
-                cod_pro: codPro,
-                preco: preco,
-                cod_gruest: codGruest,
-                quantidade: quantidade
+                produto: produto, cod_pro: codPro, preco: preco, cod_gruest: codGruest, quantidade: quantidade
             });
         }
     });
@@ -44,7 +40,7 @@ function adicionarTodosItensCarrinho() {
     }
 }
 
-function mostrapedidos(){
+function mostrapedidos() {
     let ped = document.getElementById('produtos');
     let btns = document.getElementById('200');
     let btn = document.getElementById('btnverpedido');
@@ -55,7 +51,7 @@ function mostrapedidos(){
     carrinho.style.display = 'none';
 }
 
-function telabtns(){
+function telabtns() {
     let btns = document.getElementById('200');
     let pedido = document.getElementById('produtos');
     let btnpedido = document.getElementById('btnverpedido');
@@ -65,7 +61,7 @@ function telabtns(){
     btnpedido.style.display = 'block';
 }
 
-function voltartelainicial(){
+function voltartelainicial() {
     let ped = document.getElementById("produtos");
     let car = document.getElementById("carrinhodiv");
     let btns = document.getElementById("200");
@@ -84,7 +80,7 @@ function alteraQuantidade(inputId, quantidade) {
     if (quantidade === 1) {
         btnmais.style.backgroundColor = '#e37069';
     } else {
-        if (input.value <= 1){
+        if (input.value <= 1) {
             btnmais.style.backgroundColor = '#35518c';
         }
     }
@@ -101,7 +97,7 @@ function escondediv(num) {
     let div = document.getElementById(num);
     let envia = document.getElementById("adicionar-todos-carrinho")
     let carrinho;
-    if (num <= 100){
+    if (num <= 100) {
         carrinho = document.getElementById("200");
     } else {
         carrinho = document.getElementById("carrinhodiv");
@@ -124,7 +120,7 @@ function escondediv(num) {
     }
 }
 
-function mostrabtns(num){
+function mostrabtns(num) {
     console.log("funcmostrabtns")
     let btns = document.getElementById(num);
     let carrinho = document.getElementById("carrinhodiv");
@@ -156,8 +152,7 @@ function adicionarObservacao(index) {
     formData.append('observacao[' + index + ']', observacao);
 
     fetch('garcon.php', {
-        method: 'POST',
-        body: formData
+        method: 'POST', body: formData
     })
         .then(response => {
             if (!response.ok) {
@@ -188,23 +183,23 @@ function toggleObservacao(index) {
     }
 }
 
-function mostraconclusao(para){
+function mostraconclusao(para) {
     let idpedido = document.getElementById('carrinhodiv');
     let idconc = document.getElementById("conferepedido");
     let btnpedido = document.getElementById("btnverpedido");
 
-    idpedido.style.display= 'none';
-    idconc.style.display= 'flex';
+    idpedido.style.display = 'none';
+    idconc.style.display = 'flex';
     btnpedido.style.display = 'none';
 
 }
 
-function mudanum(numero){
+function mudanum(numero) {
     let inp = document.getElementById(numero);
     inp.value = inp.value + 1;
 }
 
-window.onload = function() {
+window.onload = function () {
     let botaoAdicionarCarrinho = document.getElementById('adicionar-todos-carrinho');
     botaoAdicionarCarrinho.style.display = 'none'; // Esconder o botão inicialmente
 }
@@ -237,11 +232,16 @@ function searchFunction() {
                         }
 
                         for (let cod_gruest in produtosAgrupados) {
+                            let count = produtosAgrupados[cod_gruest];
                             let groupDiv = document.createElement('div');
                             groupDiv.className = 'product-group product-group' + cod_gruest;
                             groupDiv.id = cod_gruest;
                             groupDiv.style.display = 'block';
-
+                            let pElement = document.createElement('p');
+                            pElement.textContent = "Categoria: " + count[cod_gruest].NOME;
+                            pElement.style.margin = '20px 0 10px 25px';
+                            pElement.style.fontSize = '60px';
+                            groupDiv.appendChild(pElement);
                             let produtos = produtosAgrupados[cod_gruest];
                             for (let j = 0; j < produtos.length; j++) {
                                 let produto = produtos[j];
@@ -267,7 +267,7 @@ function searchFunction() {
                                     <input type="button" class="btnquant" id="mais${produtoId}" name="mais" onclick="alteraQuantidade('${produtoId}', 1)" value="+">
                                     <input name="quantidade" class="quant" id="${produtoId}" value="0" min="0">
                                     <input type="button" class="btnquant" name="menos" onclick="alteraQuantidade('${produtoId}', -1)" value="-">
-                                    <p>${produto.DESCRICAO}</p>
+                                    <p style="font-size: 55px">${produto.DESCRICAO}</p>
                                 `;
                                 itemDiv.appendChild(form);
                                 groupDiv.appendChild(itemDiv);
@@ -297,7 +297,7 @@ function searchInGroup(cod_gruest) {
 
     let produtos = document.querySelectorAll('.product-group' + cod_gruest + ' .product');
 
-    produtos.forEach(function(produto) {
+    produtos.forEach(function (produto) {
         let descricao = produto.querySelector('input[name="produto"]').value.toLowerCase();
 
         if (descricao.includes(input)) {

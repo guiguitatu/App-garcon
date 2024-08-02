@@ -162,5 +162,7 @@ try {
     echo "<h1>Astra</h1>";
     echo "</header>";
 
-    echo "<h2> Erro na Consulta: ". $e->getMessage() . "</h2>";
+    echo "<h2> Erro 400 </h2>
+            <p>Erro em criação de ficha.</p>
+";
 }

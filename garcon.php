@@ -245,18 +245,15 @@ while ($row = $stmt2->fetch(PDO::FETCH_ASSOC)) {
     $cod_gruest = $row['COD_GRUEST'];
     $produtosAgrupados[$cod_gruest][] = $row;
 }
-
-// Função de comparação para ordenar os produtos por descrição
 function compararDescricao($a, $b)
 {
     return strcmp($a['DESCRICAO'], $b['DESCRICAO']);
 }
 
-// Ordenar produtos dentro de cada grupo
 foreach ($produtosAgrupados as $cod_gruest => &$produtos) {
     usort($produtos, 'compararDescricao');
 }
-unset($produtos); // Desreferenciar para evitar erros futuros
+unset($produtos);
 
 foreach ($produtosAgrupados as $cod_gruest => $produtos) {
     echo '<div class="product-group product-group' . $cod_gruest . '" id="' . $cod_gruest . '" style="display: none">';

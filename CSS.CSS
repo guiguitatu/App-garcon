@@ -204,9 +204,9 @@ body .btns{
 }
 
 .btnquant{
-    font-size: 250%;
-    width: 65px;
-    height: 65px;
+    font-size: 300%;
+    width: 85px;
+    height: 85px;
     border-radius: 20px;
     margin: 0 15px 0 23px;
     background-color: #35518c;
@@ -350,8 +350,8 @@ body .btns{
 
 .inputbusca {
     width: 80vw;
-    height: 50px;
-    font-size: 50px;
+    height: 100px;
+    font-size: 70px;
     border: solid black 2px
 }
 
