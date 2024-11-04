@@ -1,7 +1,7 @@
 <?php
 session_start();
 date_default_timezone_set('America/Sao_Paulo');
-
+ob_start();
 include_once('conexao.php');
 if ($_COOKIE['usuario']) {
     if ($_COOKIE['usuario']['nome'] == null or $_COOKIE['usuario']['nome'] == '' ){
@@ -17,6 +17,7 @@ if (!empty($_SESSION['carrinho'])) {
 
     try {
         $mesa = $_GET['mesa'];
+        set_time_limit(300);
        
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -163,3 +164,4 @@ if (!empty($_SESSION['carrinho'])) {
 } else {
     echo 'Carrinho vazio. Nada a inserir.';
 }
+ob_end_flush();

@@ -1,8 +1,8 @@
-<?php
+﻿<?php
 
 try{
     //troque essa linha de baixo
-    $conn = new PDO('firebird:host=PC-GUI;dbname=D:\Astracon\DadosClientes\ASTRACONNFCEBARUsina.FDB;charset=utf8', 'SYSDBA', 'masterkey');
+    $conn = new PDO('firebird:host=ASTRACON1;dbname=C:\Astracon\DadosClientes\ASTRACONNFCEBarUsina.FDB;charset=utf8', 'SYSDBA', 'masterkey');
 } catch (PDOException $e) {
     echo ' 
      <link rel="stylesheet" href="css.CSS">

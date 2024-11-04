@@ -163,13 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['observacao'])) {
         }
         ?>
     </div>
-    <?php
-    if (empty($_SESSION['carrinho'])) {
-        echo '<br><h1>Não foi adicionado nada no carrinho</h1>';
-    } else {
-        echo '<button class="btnpedido" onclick="voltartelainicial()">Ver o que está sendo colocado no pedido</button>';
-    }
-    ?>
+
 </div>
 <!-- Mostra os itens para o pedido -->
 
@@ -218,15 +212,11 @@ try {
             echo '<li>' . round($item['QUANTIDADE']) . 'x ' . $item['NOME'] . '</li>';
         }
         echo '</ul>';
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            echo '<button class="btnpedido" onclick="voltartelainicial()">Inserir item à ficha</button>';
-            echo '<button class="btnpedido" onclick="telabtns()">Voltar para tela dos categoria</button';
-        } else {
-            echo '<button class="btnpedido" onclick="telabtns()"> Inserir item na ficha </button>';
-        }
+            echo '<button class="btnpedido" onclick="voltartelainicial()">Voltar</button>';
+
     } else {
         echo "<h1>Não há nada inserido na ficha ainda</h1>";
-        echo '<button class="btnpedido" onclick="telabtns(200)"> Inserir item na ficha </button>';
+        echo '<button class="btnpedido" onclick="voltartelainicial()"> Voltar </button>';
     }
     echo '</div>';
 
@@ -257,7 +247,7 @@ unset($produtos);
 
 foreach ($produtosAgrupados as $cod_gruest => $produtos) {
     echo '<div class="product-group product-group' . $cod_gruest . '" id="' . $cod_gruest . '" style="display: none">';
-    echo '<button class="btnpedido" onclick="escondediv(' . $cod_gruest . ')" style="align-content: center">Voltar a tela de categorias</button>';
+    echo '<button class="btnpedido" id="btn' . $cod_gruest . '" onclick="escondediv(' . $cod_gruest . ')" style="align-content: center">Voltar a tela de categorias</button>';
     echo '<input type="text" class="search-group" onkeyup="searchInGroup(' . $cod_gruest . ')" placeholder="Buscar produto...">';
     foreach ($produtos as $produto) {
         $produtoId = 'produto_' . $produto['COD_PROAPP'] . '_' . $cod_gruest;
@@ -279,20 +269,24 @@ foreach ($produtosAgrupados as $cod_gruest => $produtos) {
 echo '<button class="btn-flutuante" style="display:none;" id="adicionar-todos-carrinho" onclick="adicionarTodosItensCarrinho()">Adicionar Itens ao Carrinho</button>'; ?>
 
 <!-- Div para o carrinho -->
-<div class="carrinho" id="carrinhodiv" style="display: none">
+<div class="carrinho" id="carrinhodiv" style="display: flex">
     <?php
     if (empty($_SESSION['carrinho'])) {
-        echo '<form action="" method="post" class="formcarrinho" id="carrinhoform" style="display: none" onkeydown="return event.key != \'Enter\';">';
+        echo '<form action="" method="post" class="formcarrinho" id="carrinhoform" onkeydown="return event.key != \'Enter\';">';
     } else {
         echo '<form action="" method="post" class="formcarrinho" id="carrinhoform" onkeydown="return event.key != \'Enter\';">';
     }
     ?>
 
     <?php
-    if (empty($_SESSION['carrinho'])) {
-        echo "<h1>Nada adicionado ao carrinho ainda</h1>";
-    } else {
-        echo '<div style="width: 80vw; height: auto; display: flex; flex-direction: column; align-items: flex-start;">';
+    if (!empty($_SESSION['carrinho'])) {
+        echo '<a href="insercao.php?mesa=' . $mesa . '" style="text-decoration: none"><button type="button" class="btnenvia" name="mandarpedido" value="mandar">Enviar o pedido</button></a>
+        <div class="btnlimpaconfere">
+        <button type="submit" class="btnlimpacarrinho" name="limpar_carrinho" value="Limpar pedido">Limpar pedido</button>
+        <button type="button" class="btnverificapedido" name="mandarpedido" value="Verificarpedido" class="btnsmanda" onclick="mostraconclusao()">Conferir o pedido</button>
+        </div>
+        <hr style="width: 80vw; border: solid #7e7a7a 3px; margin: 20px 0 20px">
+        <div style="width: 80vw; height: auto; display: flex; flex-direction: column; align-items: center;">';
         foreach ($_SESSION['carrinho'] as $index => $item) {
             echo '<div class="carrinhoitem" id="carrinho-' . $index . '">';
             echo '<div class="divitembtn">';
@@ -310,24 +304,21 @@ echo '<button class="btn-flutuante" style="display:none;" id="adicionar-todos-ca
 
             $observacao = $item['observacao'] ?? '';
             if ($observacao != null) {
-                echo '<div style="display: flex; flex-direction: row; width: 80vw; justify-content: flex-start" id="observacao-' . $index . '">';
-            } else {
-                echo '<div style="display: none; flex-direction: row; width: 80vw; justify-content: flex-start" id="observacao-' . $index . '">';
+                echo '<p class="obsp" id="observacaop-' . $index . '">' . $observacao . '</p>';
             }
+            echo '<div style="display: none; flex-direction: row; width: 80vw; justify-content: flex-start; padding-left: 100px;" id="observacao-' . $index . '">';
 
             echo '<input type="text" style="display: flex" class="inputobs" name="observacao[' . $index . ']" placeholder="Digite a observação" class="input-observacao" value="' . htmlspecialchars($observacao) . '" onsubmit="hideMobileKeyboardOnEnter(event)">';
-            echo '<button type="button" class="btnobs" onclick="adicionarObservacao(' . $index . ')">Adicionar Observação</button>';
+            if ($observacao != null) {
+                echo '<button type="button" class="btnobs" onclick="adicionarObservacao(' . $index . ')">Mudar Observação</button>';
+            } else {
+                echo '<button type="button" class="btnobs" onclick="adicionarObservacao(' . $index . ')">Adicionar Observação</button>';
+            }
             echo '</div>';
             echo '</div>';
         }
-        echo '</div>';
-        echo '<a href="insercao.php?mesa=' . $mesa . '" style="text-decoration: none"><button type="button" class="btnenvia" name="mandarpedido" value="mandar">Enviar o pedido</button></a>';
-        echo '<div class="btnlimpaconfere">';
-        echo '<button type="submit" class="btnlimpacarrinho" name="limpar_carrinho" value="Limpar pedido">Limpar pedido</button>';
-        echo '<button type="button" class="btnverificapedido" name="mandarpedido" value="Verificarpedido" class="btnsmanda" onclick="mostraconclusao(300)">Conferir o pedido</button>';
-        echo '</div>';
     }
-    echo '<button type="button" class="btnpedido" onclick="mostrabtns(200)">Adicionar item à ficha</button>';
+
     ?>
     <input type="hidden" name="refresh" value="1">
     </form>
@@ -335,9 +326,10 @@ echo '<button class="btn-flutuante" style="display:none;" id="adicionar-todos-ca
 
 
 <button class='btnpedido' onclick="mostrapedidos()" id="btnverpedido" id="btnverprodutos" style="display: flex">Ver os
-    itens da ficha
+    itens existentes na ficha
 </button>
-<div class="pedidoconfere" id="conferepedido">
+</div>
+<div class="pedidoconfere" id="conferepedido" style="display: none">
     <form action="insercao.php?mesa=<?php echo $mesa ?>" method="post">
         <?php
         foreach ($_SESSION['carrinho'] as $index => $item) {

@@ -130,7 +130,6 @@ body .btns{
 }
 
 .pedidoconfere{
-    display: none;
     padding-top: 30px;
     justify-items: center;
 }
@@ -141,7 +140,8 @@ body .btns{
 
 .divitembtn{
     display: flex;
-    width: 80vw;
+    width: 70vw;
+    height: 90px;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
@@ -228,12 +228,13 @@ body .btns{
 }
 
 .carrinhoitem{
-    margin: 10px;
-    border: black 5px;
+    margin: 10px 10px 0;
+    padding: 10px;
+    border-radius: 20px;
     justify-content: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .btnlimpacarrinho{
@@ -318,11 +319,6 @@ body .btns{
     font-weight: 20;
 }
 
-.gira {
-    transform: rotate(90deg);
-    transition: transform 0.5s ease-in-out;
-}
-
 .btnsair{
     height: 70px;
     width: auto;
@@ -336,7 +332,8 @@ body .btns{
 
 .produto{
     display: flex;
-    width: 100%;
+    width: 90vh;
+    height: 50%;
     align-items: center;
 }
 
@@ -389,4 +386,10 @@ body .btns{
     font-size: 30px;
     margin: 15px 0 15px 0;
     border: solid black 2px;
+}
+
+.obsp{
+    font-size: 30px;
+    margin: 5px 10px 0 60px;
+    color: #575757
 }

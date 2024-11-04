@@ -2,6 +2,7 @@
 session_start();
 include('trocanome.php');
 include_once('conexao.php');
+date_default_timezone_set('America/Sao_Paulo');
 if (!isset($_SESSION['mesa'])){
     header('location: index.php');
 }
@@ -74,7 +75,7 @@ try {
     if ($numeromesa == null || $numeromesa == ''){
         header('location: index.php');
     }
-   
+
     if ($_SESSION['opcao'] == 'ficha') {
         $sqlficha = "SELECT ficha FROM vendabar WHERE FICHA = $numeromesa AND (CAIXA='' or CAIXA is NULL) AND (SITUACAO='' or SITUACAO is NULL) AND (BLOQUEADA = '' OR BLOQUEADA IS NULL)";
         $sqlbloqueada = "SELECT ficha FROM vendabar WHERE FICHA = $numeromesa AND (CAIXA='' or CAIXA is NULL) AND (SITUACAO='' or SITUACAO is NULL) AND BLOQUEADA = 'S'";
@@ -83,15 +84,26 @@ try {
         $sqlficha = "SELECT MESA FROM vendabar WHERE MESA = $numeromesa AND (CAIXA='' or CAIXA is NULL) AND (SITUACAO='' or SITUACAO is NULL) AND (BLOQUEADA = '' OR BLOQUEADA IS NULL)";
         $sqlbloqueada = "SELECT MESA FROM vendabar WHERE MESA = $numeromesa AND (CAIXA='' or CAIXA is NULL) AND (SITUACAO='' or SITUACAO is NULL) AND BLOQUEADA = 'S'";
     }
+    $sqlabre = "SELECT aberturaapp FROM empresa";
+    $stmtabre = $conn->prepare($sqlabre);
     $stmtficha = $conn->prepare($sqlficha);
     $stmtbloqueada = $conn->prepare($sqlbloqueada);
-    $stmtbloqueadatab = $conn->prepare($sqlbloqueadatab);
+    if($_SESSION['opcao'] == 'ficha') {
+        $stmtbloqueadatab = $conn->prepare($sqlbloqueadatab);
+    }
     $stmtficha->execute();
     $stmtbloqueada->execute();
-    $stmtbloqueadatab->execute();
+    $stmtabre->execute();
+    if ($_SESSION['opcao'] == 'ficha') {
+        $stmtbloqueadatab->execute();
+    }
     $mesabar = $stmtficha->fetchColumn();
     $bloqueada = $stmtbloqueada->fetchColumn();
-    $bloqueadatab = $stmtbloqueadatab->fetch(PDO::FETCH_ASSOC);
+    $cons = $stmtabre->fetchColumn();
+    $abre = $cons[0];
+    if ($_SESSION['opcao'] == 'ficha') {
+        $bloqueadatab = $stmtbloqueadatab->fetch(PDO::FETCH_ASSOC);
+    }
     $obs = $bloqueadatab['OBS'];
     $ficha = $bloqueadatab['FICHA'];
     $conn = null;
@@ -111,18 +123,19 @@ try {
             echo "</header>";
             echo "<h2>Essa Mesa está bloqueada, favor escolha outra mesa</h2>";
         }
-        echo "<a href='index.php'><button class='btnvolta'>Voltar para a inserção da ficha</button></a>";
     } else if ($bloqueadatab != null) {
-        echo '<link rel="shortcut icon" href="imgs/logoastraconbranco.png" type="imagem">';
-        echo '<link rel="stylesheet" href="criaficha.CSS">';
-        echo "<header>";
-        echo "<h1>Astra </h1>";
-        echo '<h1>' . ' | Ficha: ' . $numeromesa . ' | </h1>';
-        echo "</header>";
-        echo "<h2  style='text-align: center'>ATENÇÃO! <br><br> Ficha não autorizada, bloqueada para uso.</h2>";
-        echo "<h2>OBS: " . $obs . "</h2><br>";
-        echo "<a href='index.php'><button class='btnvolta'>Voltar para a inserção da ficha</button></a>";
-    } else {
+    echo '<link rel="shortcut icon" href="imgs/logoastraconbranco.png" type="imagem">';
+    echo '<link rel="stylesheet" href="criaficha.CSS">';
+    echo "<header>";
+    echo "<h1>Astra </h1>";
+    echo '<h1>' . ' | Ficha: ' . $numeromesa . ' | </h1>';
+    echo "</header>";
+    echo "<h2  style='text-align: center'>ATENÇÃO! <br><br> Ficha não autorizada, bloqueada para uso.</h2>";
+    echo "<h2>OBS: " . $obs . "</h2><br>";
+    echo "<a href='index.php'><button class='btnvolta'>Voltar</button></a>";
+    echo '<link rel="stylesheet" href="criaficha.CSS">';
+
+} else if ($abre == 'S' | $abre == null) {
         echo '<link rel="stylesheet" href="criaficha.CSS">';
         echo '<script src="criaficha.js"></script>';
         echo "<header>";
@@ -134,10 +147,16 @@ try {
         }
         echo "</header>";
         echo '
-    <div class="formu"  id="formficha">
-    <form method="post" style="display: flex;flex-direction: column;align-items: center; width: 95%" action="criaficha.php">
-        <span>
-        <label style="font-size: 50px">Criação da ficha: </label> <br>
+        <div class="formu"  id="formficha">
+        <form method="post" style="display: flex;flex-direction: column;align-items: center; width: 95%" action="criaficha.php">
+            <span>
+        ';
+        if($_SESSION['opcao'] == 'ficha'){
+            echo '<label style="font-size: 50px">Criação da ficha: </label> <br>';
+        } else if ($_SESSION['opcao'] == 'mesa'){
+            echo '<label style="font-size: 50px">Criação da mesa: </label> <br>';
+        }
+        echo '
         <label for="nome" style="font-size: 40px">Nome:</label>
         <input type="text" class="inputtxt" id="nome" name="nome" placeholder="Nome do cliente" maxlength="19"><br><br>
         </span>
@@ -149,20 +168,35 @@ try {
         
         <span>
         <label for="observacao" style="font-size: 40px">Observação:</label><br>
-        <textarea id="observacao" class="inputobscria" name="observacao" rows="4" cols="100" placeholder="Observação para a ficha" maxlength="50"></textarea><br><br>
+        ';
+        if ($_SESSION['opcao'] == 'ficha'){
+            echo '<textarea id="observacao" class="inputobscria" name="observacao" rows="4" cols="100" placeholder="Observação da ficha" maxlength="50"></textarea><br><br>';
+            echo '<input type="submit" value="Criar ficha" class="btnenvia">';
+        } else {
+            echo '<textarea id="observacao" class="inputobscria" name="observacao" rows="4" cols="100" placeholder="Observação da mesa" maxlength="50"></textarea><br><br>';
+            echo '<input type="submit" value="Criar mesa" class="btnenvia">';
+        }
+        echo '
         </span>
         
-        <input type="submit" value="Criar ficha" class="btnenvia">
         <a href="index.php" style="text-decoration: none; width: 100vw; margin-top: 20px; display: flex; justify-content: center;"><input type="button" value="Voltar" class="btnenvia"></a>
     </form></div>';
+    } else {
+        echo '<link rel="shortcut icon" href="imgs/logoastraconbranco.png" type="imagem">';
+        echo '<link rel="stylesheet" href="criaficha.CSS">';
+        echo "<header>";
+        echo "<h1>Astra </h1>";
+        echo '<h1>' . ' | Ficha/Mesa: ' . $numeromesa . ' | </h1>';
+        echo "</header>";
+        echo "<h2  style='text-align: center'>Ficha/Mesa não aberta</h2>";
+        echo "<a href='index.php'><button class='btnvolta'>Voltar</button></a>";
+        echo '<link rel="stylesheet" href="criaficha.CSS">';
     }
 } catch (PDOException $e) {
     echo '<link rel="stylesheet" href="criaficha.CSS">';
     echo "<header>";
     echo "<h1>Astra</h1>";
     echo "</header>";
-
-    echo "<h2> Erro 400 </h2>
-            <p>Erro em criação de ficha.</p>
-";
+    echo "<h2>Erro 400";
+    echo "<h2>Erro na criação da ficha</h2>";
 }

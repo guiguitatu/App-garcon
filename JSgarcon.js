@@ -71,6 +71,7 @@ function voltartelainicial() {
     ped.style.display = 'none';
     confere.style.display = 'none';
     car.style.display = 'flex';
+    btns.style.display = 'flex';
     btn.style.display = 'block';
 }
 
@@ -94,8 +95,11 @@ function alteraQuantidade(inputId, quantidade) {
 }
 
 function escondediv(num) {
+    let btn = document.getElementById('btn' + num);
     let div = document.getElementById(num);
-    let envia = document.getElementById("adicionar-todos-carrinho")
+    let envia = document.getElementById("adicionar-todos-carrinho");
+    let busca = document.getElementById("search");
+    busca.innerHTML = "";
     let carrinho;
     if (num <= 100) {
         carrinho = document.getElementById("200");
@@ -103,20 +107,20 @@ function escondediv(num) {
         carrinho = document.getElementById("carrinhodiv");
     }
     let confere = document.getElementById("conferepedido");
-    let btn = document.getElementById("btnverpedido");
+    let btnVerPedido = document.getElementById("btnverpedido");
     confere.style.display = 'none';
     if (div.style.display === 'none' || div.style.display === '') {
         div.style.display = 'flex';
         carrinho.style.display = 'none';
         confere.style.display = 'none';
-        btn.style.display = 'none';
-        envia.style.display = "block"
+        btnVerPedido.style.display = 'none';
+        envia.style.display = "block";
     } else {
         div.style.display = 'none';
         carrinho.style.display = 'flex';
-        btn.style.display = 'block';
+        btnVerPedido.style.display = 'block';
         confere.style.display = 'none';
-        envia.style.display = "none"
+        envia.style.display = "none";
     }
 }
 
@@ -161,7 +165,6 @@ function adicionarObservacao(index) {
             return response.text();
         })
         .then(data => {
-            // Atualize a interface do usuário conforme necessário, se desejar
             console.log('Observação adicionada com sucesso:');
             window.location.reload();
         })
@@ -171,15 +174,15 @@ function adicionarObservacao(index) {
 }
 
 function toggleObservacao(index) {
-    let observacaoDiv = document.querySelector(`#observacao-${index}`);
-    let seta = observacaoDiv.previousElementSibling.querySelector('span');
+    let observacaoDiv = document.getElementById('observacao-' + index);
+    let observacaop = document.getElementById('observacaop-' + index);
 
     if (observacaoDiv.style.display === "none") {
         observacaoDiv.style.display = "flex";
-        seta.classList.add('.gira');
+        observacaop.style.display = "none";
     } else {
         observacaoDiv.style.display = "none";
-        seta.classList.remove('.gira');
+        observacaop.style.display = "block";
     }
 }
 
@@ -187,9 +190,11 @@ function mostraconclusao(para) {
     let idpedido = document.getElementById('carrinhodiv');
     let idconc = document.getElementById("conferepedido");
     let btnpedido = document.getElementById("btnverpedido");
+    let btns = document.getElementById(200);
 
+    btns.style.display = 'none';
     idpedido.style.display = 'none';
-    idconc.style.display = 'flex';
+    idconc.style.display = 'flex'
     btnpedido.style.display = 'none';
 
 }
@@ -201,25 +206,22 @@ function mudanum(numero) {
 
 window.onload = function () {
     let botaoAdicionarCarrinho = document.getElementById('adicionar-todos-carrinho');
-    botaoAdicionarCarrinho.style.display = 'none'; // Esconder o botão inicialmente
+    botaoAdicionarCarrinho.style.display = 'none';
 }
 
 function searchFunction() {
     let input = document.getElementById('search').value;
     let botaoAdicionarCarrinho = document.getElementById('adicionar-todos-carrinho');
-
     if (input.length > 0) {
         botaoAdicionarCarrinho.style.display = 'block';
-
         let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState === 4 && this.status === 200) {
                 try {
                     let data = JSON.parse(this.responseText);
-                    console.log('Resposta JSON:', data); // Depuração
+                    console.log('Resposta JSON:', data);
                     let resultDiv = document.getElementById("result");
-                    resultDiv.innerHTML = ''; // Limpa os resultados anteriores
-
+                    resultDiv.innerHTML = '';
                     if (Array.isArray(data)) {
                         let produtosAgrupados = {};
                         for (let i = 0; i < data.length; i++) {
@@ -230,7 +232,6 @@ function searchFunction() {
                             }
                             produtosAgrupados[cod_gruest].push(produto);
                         }
-
                         for (let cod_gruest in produtosAgrupados) {
                             let count = produtosAgrupados[cod_gruest];
                             let groupDiv = document.createElement('div');
@@ -238,7 +239,11 @@ function searchFunction() {
                             groupDiv.id = cod_gruest;
                             groupDiv.style.display = 'block';
                             let pElement = document.createElement('p');
-                            pElement.textContent = "Categoria: " + count[cod_gruest].NOME;
+                            if (count[0] && count[0].NOME) {
+                                pElement.textContent = "Categoria: " + count[0].NOME;
+                            } else {
+                                pElement.textContent = "Categoria: Desconhecida";
+                            }
                             pElement.style.margin = '20px 0 10px 25px';
                             pElement.style.fontSize = '60px';
                             groupDiv.appendChild(pElement);
@@ -248,7 +253,7 @@ function searchFunction() {
                                 let produtoId = 'produto_' + produto.COD_PROAPP + '_' + cod_gruest;
                                 let itemDiv = document.createElement('div');
                                 itemDiv.className = 'product';
-
+                                itemDiv.style = 'width: 100%';
                                 let form = document.createElement('form');
                                 form.action = '';
                                 form.className = 'produto';
@@ -256,9 +261,7 @@ function searchFunction() {
                                 form.onkeydown = function() {
                                     return event.key !== 'Enter';
                                 };
-
                                 let valorFormatado = typeof produto.VALOR === 'number' ? produto.VALOR.toFixed(2).replace('.', ',') : "0,00";
-
                                 form.innerHTML = `
                                     <input type="hidden" name="produto" value="${produto.DESCRICAO}">
                                     <input type="hidden" name="cod_pro" value="${produto.COD_PROAPP}">
@@ -267,12 +270,11 @@ function searchFunction() {
                                     <input type="button" class="btnquant" id="mais${produtoId}" name="mais" onclick="alteraQuantidade('${produtoId}', 1)" value="+">
                                     <input name="quantidade" class="quant" id="${produtoId}" value="0" min="0">
                                     <input type="button" class="btnquant" name="menos" onclick="alteraQuantidade('${produtoId}', -1)" value="-">
-                                    <p style="font-size: 55px">${produto.DESCRICAO}</p>
+                                    <p style="font-size: 55px; margin:25px 0 25px 30px">${produto.DESCRICAO}</p>
                                 `;
                                 itemDiv.appendChild(form);
                                 groupDiv.appendChild(itemDiv);
                             }
-
                             resultDiv.appendChild(groupDiv);
                         }
                     } else {
